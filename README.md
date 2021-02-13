@@ -16,5 +16,4 @@ This project is open source software, licensed under the terms of the [Zero Clau
 
 See [LICENSE.md] for full details.
 
-
 [LICENSE.md]: https://github.com/hannobraun/my-boss/blob/main/LICENSE.md
