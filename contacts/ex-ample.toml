@@ -6,37 +6,37 @@ notes = [
 ]
 
 
-[[orgs]]
+[[organizations]]
 name = "Ex Ample's Employer"
 role = "CTO"
 
-[[orgs]]
+[[organizations]]
 name = "Open Source Project"
 role = "Maintainer"
 
 
-[[contact.email]]
+[[addresses.email]]
 value = "mail@example.com"
-note = "personal email"
+notes = ["personal email"]
 
-[[contact.phone]]
+[[addresses.phone]]
 value = "+99 9999 999999"
-note = "work phone"
+notes = ["work phone"]
 
-[[contact.matrix]]
+[[addresses.matrix]]
 value = "@matrix:example.com"
-note = "best way to reach him quickly"
+notes = ["best way to reach him quickly"]
 
 
-[interaction.last]
+[interactions.latest]
 to = 2021-02-13
 from = 2021-02-13
 
 
-[[interaction.next]]
+[[interactions.planned]]
 date = 2021-02-20
 notes = ["weekly call"]
 
-[[interaction.next]]
+[[interactions.planned]]
 date = 2021-03-13
 notes = ["ask how that thing went"]
