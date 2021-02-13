@@ -16,4 +16,5 @@ This project is open source software, licensed under the terms of the [Zero Clau
 
 See [LICENSE.md] for full details.
 
+[Zero Clause BSD License]: https://opensource.org/licenses/0BSD
 [LICENSE.md]: https://github.com/hannobraun/my-boss/blob/main/LICENSE.md
