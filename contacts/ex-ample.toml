@@ -1,0 +1,42 @@
+name = "Ex Ample"
+
+notes = [
+    "he's completely fictional, therefore we never met",
+    "I'm using him as an example contact to show the file format",
+]
+
+
+[[orgs]]
+name = "Ex Ample's Employer"
+role = "CTO"
+
+[[orgs]]
+name = "Open Source Project"
+role = "Maintainer"
+
+
+[[contact.email]]
+value = "mail@example.com"
+note = "personal email"
+
+[[contact.phone]]
+value = "+99 9999 999999"
+note = "work phone"
+
+[[contact.matrix]]
+value = "@matrix:example.com"
+note = "best way to reach him quickly"
+
+
+[interaction.last]
+to = 2021-02-13
+from = 2021-02-13
+
+
+[[interaction.next]]
+date = 2021-02-20
+notes = ["weekly call"]
+
+[[interaction.next]]
+date = 2021-03-13
+notes = ["ask how that thing went"]
