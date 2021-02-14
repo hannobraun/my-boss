@@ -28,15 +28,15 @@ value = "@matrix:example.com"
 notes = ["best way to reach him quickly"]
 
 
-[interactions.latest]
-to = 2021-02-13
-from = 2021-02-13
+[communication.latest]
+to = "2021-02-13"
+from = "2021-02-13"
 
 
-[[interactions.planned]]
-date = 2021-02-20
+[[communication.planned]]
+date = "2021-02-20"
 notes = ["weekly call"]
 
-[[interactions.planned]]
-date = 2021-03-13
+[[communication.planned]]
+date = "2021-03-13"
 notes = ["ask how that thing went"]
