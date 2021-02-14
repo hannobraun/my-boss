@@ -81,3 +81,19 @@ pub struct PlannedCommunication {
     /// Notes about the planned communication
     pub notes: Vec<String>,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::Contact;
+
+    #[test]
+    fn contact_should_match_example_contact_file() {
+        let contact = include_str!("../contacts/ex-ample.toml");
+        let contact: Contact = toml::from_str(contact).unwrap();
+
+        println!("{:?}", contact);
+
+        // Nothing to check, I think. It's enough that the previous calls don't
+        // panic.
+    }
+}
