@@ -1,4 +1,3 @@
-// TASK: Hook this up to serde.
 // TASK: Add code to serialize to and deserialize from TOML.
 
 use std::collections::HashMap;
