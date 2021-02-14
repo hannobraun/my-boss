@@ -3,7 +3,10 @@
 
 use std::collections::HashMap;
 
+use serde::{Deserialize, Serialize};
+
 /// A contact
+#[derive(Deserialize, Serialize)]
 pub struct Contact {
     /// The contact's name
     pub name: String,
@@ -24,6 +27,7 @@ pub struct Contact {
 }
 
 /// An organization that a contact is part of
+#[derive(Deserialize, Serialize)]
 pub struct Organization {
     /// The name of the organization
     pub name: String,
@@ -35,6 +39,7 @@ pub struct Organization {
 /// An address (or equivalent concept) related to a means of communication
 ///
 /// Could be an email address, street address, phone number, etc.
+#[derive(Deserialize, Serialize)]
 pub struct Address {
     /// The address itself
     pub value: String,
@@ -44,6 +49,7 @@ pub struct Address {
 }
 
 /// The dates of interaction last and next with the contact
+#[derive(Deserialize, Serialize)]
 pub struct Communication {
     /// The latest interaction with the contact
     pub latest: LatestCommunication,
@@ -52,6 +58,7 @@ pub struct Communication {
 }
 
 /// The latest communication with a contact
+#[derive(Deserialize, Serialize)]
 pub struct LatestCommunication {
     /// The last communication to the contact
     ///
@@ -65,6 +72,7 @@ pub struct LatestCommunication {
 }
 
 /// A planned communication with a contact
+#[derive(Deserialize, Serialize)]
 pub struct PlannedCommunication {
     /// The date of the planned communication
     ///
