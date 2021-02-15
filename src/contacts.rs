@@ -106,7 +106,7 @@ mod tests {
         println!("{:?}", contact);
 
         // Nothing to check, I think. It's enough that the previous calls don't
-        // panic.
+        // cause an error.
 
         Ok(())
     }
