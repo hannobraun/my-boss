@@ -102,9 +102,7 @@ mod tests {
     #[test]
     fn contact_should_match_example_contact_file() -> Result<(), Box<dyn Error>>
     {
-        let contact = include_str!("../contacts/ex-ample.toml");
-        let contact: Contact = toml::from_str(contact)?;
-
+        let contact = Contact::load("contacts/ex-ample.toml")?;
         println!("{:?}", contact);
 
         // Nothing to check, I think. It's enough that the previous calls don't
