@@ -1,6 +1,6 @@
-// TASK: Add code to serialize to and deserialize from TOML.
+// TASK: Add code to serialize to TOML.
 
-use std::collections::HashMap;
+use std::{collections::HashMap, error::Error, fs::File, io::Read, path::Path};
 
 use serde::{Deserialize, Serialize};
 
@@ -23,6 +23,17 @@ pub struct Contact {
 
     /// Records of communication with the contact
     pub communication: Communication,
+}
+
+impl Contact {
+    pub fn load(path: impl AsRef<Path>) -> Result<Self, Box<dyn Error>> {
+        let mut contact = Vec::new();
+        File::open(path)?.read_to_end(&mut contact)?;
+
+        let contact = toml::from_slice(&contact)?;
+
+        Ok(contact)
+    }
 }
 
 /// An organization that a contact is part of
