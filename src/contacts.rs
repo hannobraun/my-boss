@@ -95,16 +95,21 @@ pub struct PlannedCommunication {
 
 #[cfg(test)]
 mod tests {
+    use std::error::Error;
+
     use super::Contact;
 
     #[test]
-    fn contact_should_match_example_contact_file() {
+    fn contact_should_match_example_contact_file() -> Result<(), Box<dyn Error>>
+    {
         let contact = include_str!("../contacts/ex-ample.toml");
-        let contact: Contact = toml::from_str(contact).unwrap();
+        let contact: Contact = toml::from_str(contact)?;
 
         println!("{:?}", contact);
 
         // Nothing to check, I think. It's enough that the previous calls don't
         // panic.
+
+        Ok(())
     }
 }
