@@ -43,6 +43,7 @@ checksum = "4fb1fa934250de4de8aef298d81c729a7d33d8c239daa3a7575e6b92bfc7313b"
 dependencies = [
  "autocfg",
  "hashbrown",
+ "serde",
 ]
 
 [[package]]
@@ -55,6 +56,7 @@ checksum = "b7282d924be3275cec7f6756ff4121987bc6481325397dde6ba3e7802b1a8b1c"
 name = "my-boss"
 version = "0.1.0"
 dependencies = [
+ "indexmap",
  "serde",
  "tempfile",
  "toml",
