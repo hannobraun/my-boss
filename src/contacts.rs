@@ -1,7 +1,8 @@
 // TASK: Add code to serialize to TOML.
 
-use std::{collections::HashMap, error::Error, fs::File, io::Read, path::Path};
+use std::{error::Error, fs::File, io::Read, path::Path};
 
+use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
 /// A contact
@@ -19,7 +20,7 @@ pub struct Contact {
     /// Means of communication with the contact
     ///
     /// The key is a means of communication, like "email" or "phone".
-    pub addresses: HashMap<String, Vec<Address>>,
+    pub addresses: IndexMap<String, Vec<Address>>,
 
     /// Records of communication with the contact
     pub communication: Communication,
