@@ -10,13 +10,13 @@ publish = false
 version  = "1.6.1"
 features = ["serde"]
 
-[dependencies.toml]
-version  = "*"
-features = ["preserve_order"]
-
 [dependencies.serde]
 version  = "*"
 features = ["derive"]
+
+[dependencies.toml]
+version  = "*"
+features = ["preserve_order"]
 
 
 [dev-dependencies]
