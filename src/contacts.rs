@@ -1,5 +1,3 @@
-// TASK: Add code to serialize to TOML.
-
 use std::{
     error::Error,
     fs::File,
