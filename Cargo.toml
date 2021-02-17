@@ -14,6 +14,12 @@ features = ["serde"]
 version  = "*"
 features = ["derive"]
 
+# TASK: Switch to released version once 0.3.0 is out.
+[dependencies.time]
+git      = "https://github.com/time-rs/time.git"
+branch   = "main"
+features = ["serde-human-readable"]
+
 [dependencies.toml]
 version  = "*"
 features = ["preserve_order"]
