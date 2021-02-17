@@ -71,12 +71,12 @@ pub struct Communication {
 pub struct LatestCommunication {
     /// The last communication to the contact
     ///
-    /// TASK: Use structure date type.
+    /// TASK: Use structured date type.
     pub to: String,
 
     /// The latest communication from the contact
     ///
-    /// TASK: Use structure date type.
+    /// TASK: Use structured date type.
     pub from: String,
 }
 
@@ -85,7 +85,7 @@ pub struct LatestCommunication {
 pub struct PlannedCommunication {
     /// The date of the planned communication
     ///
-    /// TASK: Use structure date type.
+    /// TASK: Use structured date type.
     pub date: String,
 
     /// Notes about the planned communication
