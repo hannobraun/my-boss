@@ -1,9 +1,4 @@
-use std::{
-    error::Error,
-    fs::File,
-    io::{prelude::*, Read},
-    path::Path,
-};
+use std::{error::Error, fs::File, io::Read, path::Path};
 
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
@@ -37,12 +32,6 @@ impl Contact {
         let contact = toml::from_slice(&contact)?;
 
         Ok(contact)
-    }
-
-    pub fn store(&self, path: impl AsRef<Path>) -> Result<(), Box<dyn Error>> {
-        let contact = toml::to_vec(self)?;
-        File::create(path)?.write_all(&contact)?;
-        Ok(())
     }
 }
 
