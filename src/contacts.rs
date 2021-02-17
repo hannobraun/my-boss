@@ -2,6 +2,7 @@ use std::{error::Error, fs::File, io::Read, path::Path};
 
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
+use time::Date;
 
 /// A contact
 #[derive(Debug, Deserialize, Serialize)]
@@ -70,23 +71,17 @@ pub struct Communication {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct LatestCommunication {
     /// The last communication to the contact
-    ///
-    /// TASK: Use structured date type.
-    pub to: String,
+    pub to: Date,
 
     /// The latest communication from the contact
-    ///
-    /// TASK: Use structured date type.
-    pub from: String,
+    pub from: Date,
 }
 
 /// A planned communication with a contact
 #[derive(Debug, Deserialize, Serialize)]
 pub struct PlannedCommunication {
     /// The date of the planned communication
-    ///
-    /// TASK: Use structured date type.
-    pub date: String,
+    pub date: Date,
 
     /// Notes about the planned communication
     pub notes: Vec<String>,
