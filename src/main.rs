@@ -9,8 +9,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     // TASK: Display only those contacts for whom a planned communication date
     //       is due.
     for contact in Contacts::load("contacts")?.iter() {
-        // TASK: Display short summary of contact. Name, maybe dates.
-        println!("{:#?}", contact);
+        println!("{}", contact.summary());
     }
 
     Ok(())

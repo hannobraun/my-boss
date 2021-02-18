@@ -1,5 +1,6 @@
 use std::{
     error::Error,
+    fmt::Display,
     fs::{self, File},
     io::Read,
     path::Path,
@@ -62,6 +63,11 @@ impl Contact {
         let contact = toml::from_slice(&contact)?;
 
         Ok(contact)
+    }
+
+    pub fn summary(&self) -> impl Display {
+        // TASK: Add dates of latest communication to summary.
+        format!("{}", self.name)
     }
 }
 
