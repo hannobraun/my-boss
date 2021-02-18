@@ -1,8 +1,32 @@
-use std::{error::Error, fs::File, io::Read, path::Path};
+use std::{
+    error::Error,
+    fs::{self, File},
+    io::Read,
+    path::Path,
+};
 
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use time::Date;
+
+/// Collection of all contacts
+#[derive(Debug)]
+pub struct Contacts(Vec<Contact>);
+
+impl Contacts {
+    /// Load all contacts in a directory
+    pub fn load(path: impl AsRef<Path>) -> Result<Self, Box<dyn Error>> {
+        let mut contacts = Vec::new();
+
+        for entry in fs::read_dir(path)? {
+            let entry = entry?;
+            let contact = Contact::load(entry.path())?;
+            contacts.push(contact);
+        }
+
+        Ok(Self(contacts))
+    }
+}
 
 /// A contact
 #[derive(Debug, Deserialize, Serialize)]
