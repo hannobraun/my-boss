@@ -26,6 +26,11 @@ impl Contacts {
 
         Ok(Self(contacts))
     }
+
+    /// Iterate over all contacts
+    pub fn iter(&self) -> impl Iterator<Item = &Contact> {
+        self.0.iter()
+    }
 }
 
 /// A contact
