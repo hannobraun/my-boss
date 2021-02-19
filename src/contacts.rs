@@ -66,8 +66,11 @@ impl Contact {
     }
 
     pub fn summary(&self) -> impl Display {
-        // TASK: Add dates of latest communication to summary.
-        format!("{}", self.name)
+        let latest = &self.communication.latest;
+        format!(
+            "{} (communication to {}; from: {})",
+            self.name, latest.to, latest.from,
+        )
     }
 }
 
