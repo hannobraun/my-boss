@@ -1,4 +1,4 @@
-use std::{error::Error, path::PathBuf};
+use std::{error::Error, fs::File, io::prelude::*, path::PathBuf};
 
 use serde::{Deserialize, Serialize};
 
@@ -9,9 +9,11 @@ pub struct Config {
 
 impl Config {
     pub fn load() -> Result<Self, Box<dyn Error>> {
-        // TASK: Actually load configuration.
-        Ok(Self {
-            contacts: PathBuf::from("contacts"),
-        })
+        let mut config = Vec::new();
+        File::open("my-boss.toml")?.read_to_end(&mut config)?;
+
+        let config = toml::from_slice(&config)?;
+
+        Ok(config)
     }
 }
