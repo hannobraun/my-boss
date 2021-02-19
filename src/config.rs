@@ -1,14 +1,14 @@
-use std::path::PathBuf;
+use std::{error::Error, path::PathBuf};
 
 pub struct Config {
     pub contacts: PathBuf,
 }
 
 impl Config {
-    pub fn load() -> Self {
+    pub fn load() -> Result<Self, Box<dyn Error>> {
         // TASK: Actually load configuration.
-        Self {
+        Ok(Self {
             contacts: PathBuf::from("contacts"),
-        }
+        })
     }
 }
