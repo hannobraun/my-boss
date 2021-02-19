@@ -1,10 +1,10 @@
+pub mod config;
+pub mod contacts;
+
 use std::error::Error;
 
 use config::Config;
 use contacts::Contacts;
-
-pub mod config;
-pub mod contacts;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let config = Config::load();
