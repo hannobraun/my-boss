@@ -205,19 +205,13 @@ dependencies = [
 [[package]]
 name = "time"
 version = "0.3.0-dev"
-source = "git+https://github.com/time-rs/time.git?branch=main#6c3c3955d8411194c75bce71c697fc84880df32e"
+source = "git+https://github.com/time-rs/time.git?branch=main#8a880f67ce30eee601142ad712938df2a0413b2e"
 dependencies = [
  "const_fn",
  "itoa",
  "libc",
  "serde",
- "time-macros",
 ]
-
-[[package]]
-name = "time-macros"
-version = "0.2.0-dev"
-source = "git+https://github.com/time-rs/time.git?branch=main#6c3c3955d8411194c75bce71c697fc84880df32e"
 
 [[package]]
 name = "toml"
