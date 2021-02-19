@@ -16,3 +16,5 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     Ok(())
 }
+
+// TASK: Split into binary (called "mb") and library.
