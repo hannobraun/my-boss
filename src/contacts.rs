@@ -32,6 +32,16 @@ impl Contacts {
     pub fn all(&self) -> impl Iterator<Item = &Contact> {
         self.0.iter()
     }
+
+    /// Iterate over contacts for whom the next communication is due
+    pub fn due(&self, date: Date) -> impl Iterator<Item = &Contact> {
+        self.0.iter().filter(move |contact| {
+            match contact.communication.next_planned() {
+                Some(next_planned) => next_planned <= date,
+                None => false,
+            }
+        })
+    }
 }
 
 /// A contact
@@ -116,6 +126,21 @@ pub struct Communication {
     pub latest: LatestCommunication,
 
     pub planned: Vec<PlannedCommunication>,
+}
+
+impl Communication {
+    pub fn next_planned(&self) -> Option<Date> {
+        let mut next_planned = None;
+
+        for planned in &self.planned {
+            let date = next_planned.unwrap_or(planned.date);
+            if planned.date <= date {
+                next_planned = Some(planned.date);
+            }
+        }
+
+        next_planned
+    }
 }
 
 /// The latest communication with a contact
