@@ -29,7 +29,7 @@ impl Contacts {
     }
 
     /// Iterate over all contacts
-    pub fn iter(&self) -> impl Iterator<Item = &Contact> {
+    pub fn all(&self) -> impl Iterator<Item = &Contact> {
         self.0.iter()
     }
 }
