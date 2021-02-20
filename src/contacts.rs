@@ -51,6 +51,9 @@ pub struct Contact {
     /// The key is a means of communication, like "email" or "phone".
     pub addresses: IndexMap<String, Vec<Address>>,
 
+    /// Links to the contact's website and other online profiles
+    pub links: Vec<Link>,
+
     /// Records of communication with the contact
     pub communication: Communication,
 }
@@ -93,6 +96,16 @@ pub struct Address {
     pub value: String,
 
     /// Notes on this address
+    pub notes: Vec<String>,
+}
+
+/// A link to a contact's website or other online profile
+#[derive(Debug, Deserialize, Serialize)]
+pub struct Link {
+    /// The link itself
+    pub value: String,
+
+    /// Notes on this link
     pub notes: Vec<String>,
 }
 

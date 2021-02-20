@@ -6,6 +6,15 @@ notes = [
 ]
 
 
+[[links]]
+value = "https://example.com/"
+notes = ["personal website"]
+
+[[links]]
+value = "https://github.com/example"
+notes = ["GitHub profile"]
+
+
 [[organizations]]
 name = "Ex Ample's Employer"
 role = "CTO"
