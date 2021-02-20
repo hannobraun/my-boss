@@ -1,10 +1,6 @@
-pub mod config;
-pub mod contacts;
-
 use std::error::Error;
 
-use config::Config;
-use contacts::Contacts;
+use my_boss::{config::Config, contacts::Contacts};
 
 fn main() -> Result<(), Box<dyn Error>> {
     let config = Config::load()?;
@@ -16,5 +12,3 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     Ok(())
 }
-
-// TASK: Split into binary (called "mb") and library.
