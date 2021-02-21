@@ -9,8 +9,10 @@ pub struct Config {
 
 impl Config {
     pub fn load() -> Result<Self, Box<dyn Error>> {
+        let path = "my-boss.toml";
+
         let mut config = Vec::new();
-        File::open("my-boss.toml")?.read_to_end(&mut config)?;
+        File::open(path)?.read_to_end(&mut config)?;
 
         let config = toml::from_slice(&config)?;
 
