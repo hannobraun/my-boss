@@ -6,6 +6,9 @@ edition = "2018"
 publish = false
 
 
+[dependencies]
+anyhow = "*"
+
 [dependencies.indexmap]
 version  = "1.6.1"
 features = ["serde"]
