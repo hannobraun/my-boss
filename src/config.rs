@@ -1,4 +1,4 @@
-use std::{error::Error, fs::File, io::prelude::*, path::PathBuf};
+use std::{fs::File, io::prelude::*, path::PathBuf};
 
 use serde::{Deserialize, Serialize};
 
@@ -8,7 +8,7 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn load() -> Result<Self, Box<dyn Error>> {
+    pub fn load() -> anyhow::Result<Self> {
         let path = "my-boss.toml";
 
         let mut config = Vec::new();
