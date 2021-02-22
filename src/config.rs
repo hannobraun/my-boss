@@ -11,6 +11,25 @@ pub struct Config {
 }
 
 impl Config {
+    pub fn init() -> anyhow::Result<()> {
+        let config = Self::default();
+        let config = toml::to_vec(&config).with_context(|| {
+            format!("Error serializing default configuration ({:?})", config)
+        })?;
+
+        // TASK: Fail, if file already exists.
+        File::create(PATH)
+            .with_context(|| {
+                format!("Error creating configuration file `{}`", PATH)
+            })?
+            .write_all(&config)
+            .with_context(|| {
+                format!("Error writing configuration file `{}`", PATH)
+            })?;
+
+        Ok(())
+    }
+
     pub fn load() -> anyhow::Result<Self> {
         let mut config = Vec::new();
         File::open(PATH)

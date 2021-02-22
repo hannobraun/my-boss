@@ -13,8 +13,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     match args.command {
         Command::Init => {
-            // TASK: Create configuration file with default values.
-            todo!()
+            Config::init()?;
         }
         Command::Contacts => {
             let config = Config::load()?;
