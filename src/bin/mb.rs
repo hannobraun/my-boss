@@ -10,7 +10,6 @@ use time::OffsetDateTime;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let args = Args::parse();
-    let config = Config::load()?;
 
     match args.command {
         Command::Init => {
@@ -18,6 +17,8 @@ fn main() -> Result<(), Box<dyn Error>> {
             todo!()
         }
         Command::Contacts => {
+            let config = Config::load()?;
+
             // TASK: Use local time instead. As of this writing, this is blocked
             //       by this issue: https://github.com/time-rs/time/issues/293
             let today = OffsetDateTime::now_utc().date();
