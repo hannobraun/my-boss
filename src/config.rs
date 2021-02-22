@@ -29,3 +29,11 @@ impl Config {
         Ok(config)
     }
 }
+
+impl Default for Config {
+    fn default() -> Self {
+        Self {
+            contacts: PathBuf::from("contacts"),
+        }
+    }
+}
