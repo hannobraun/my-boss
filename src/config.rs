@@ -1,4 +1,8 @@
-use std::{fs::File, io::prelude::*, path::PathBuf};
+use std::{
+    fs::{File, OpenOptions},
+    io::prelude::*,
+    path::PathBuf,
+};
 
 use anyhow::Context as _;
 use serde::{Deserialize, Serialize};
@@ -17,8 +21,10 @@ impl Config {
             format!("Error serializing default configuration ({:?})", config)
         })?;
 
-        // TASK: Fail, if file already exists.
-        File::create(PATH)
+        OpenOptions::new()
+            .create_new(true)
+            .write(true)
+            .open(PATH)
             .with_context(|| {
                 format!("Error creating configuration file `{}`", PATH)
             })?
