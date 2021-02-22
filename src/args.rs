@@ -8,5 +8,6 @@ pub struct Args {
 
 #[derive(Clap)]
 pub enum Command {
+    Init,
     Contacts,
 }

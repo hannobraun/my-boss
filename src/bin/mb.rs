@@ -9,13 +9,14 @@ use my_boss::{
 use time::OffsetDateTime;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    // TASK: Add `mb init` command that creates configuration file with default
-    //       values.
-
     let args = Args::parse();
     let config = Config::load()?;
 
     match args.command {
+        Command::Init => {
+            // TASK: Create configuration file with default values.
+            todo!()
+        }
         Command::Contacts => {
             // TASK: Use local time instead. As of this writing, this is blocked
             //       by this issue: https://github.com/time-rs/time/issues/293
