@@ -19,7 +19,8 @@ impl Contacts {
     pub fn load(path: impl AsRef<Path>) -> Result<Self, Box<dyn Error>> {
         let mut contacts = Vec::new();
 
-        for entry in fs::read_dir(path)? {
+        let entries = fs::read_dir(path)?;
+        for entry in entries {
             let entry = entry?;
             let contact = Contact::load(entry.path())?;
             contacts.push(contact);
