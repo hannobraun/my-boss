@@ -10,6 +10,9 @@ use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use time::Date;
 
+// TASK: Add minimal contact without much data; make fields optional to make it
+//       work.
+
 /// Collection of all contacts
 #[derive(Debug)]
 pub struct Contacts(Vec<Contact>);
