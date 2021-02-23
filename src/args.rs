@@ -9,6 +9,9 @@ pub struct Args {
 
 #[derive(Clap)]
 pub enum Command {
+    /// Create a configuration file with default values
     Init,
+
+    /// Manage contacts
     Contacts,
 }
