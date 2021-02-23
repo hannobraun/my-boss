@@ -19,23 +19,33 @@ impl Contacts {
     pub fn load(path: impl AsRef<Path>) -> anyhow::Result<Self> {
         let mut contacts = Vec::new();
 
-        let path = path.as_ref();
-        let entries = fs::read_dir(path).with_context(|| {
-            format!("Failed to read directory `{}`", path.display())
-        })?;
+        let mut directories = Vec::new();
+        directories.push(path.as_ref().to_path_buf());
 
-        // TASK: Step into directories and load all contacts recursively.
-        for entry in entries {
-            let entry = entry.with_context(|| {
-                format!("Failed to retrieve directory entry")
+        while let Some(directory) = directories.pop() {
+            let entries = fs::read_dir(&directory).with_context(|| {
+                format!("Failed to read directory `{}`", directory.display())
             })?;
-            let contact = Contact::load(entry.path()).with_context(|| {
-                format!(
-                    "Failed to load contact from `{}`",
-                    entry.path().display()
-                )
-            })?;
-            contacts.push(contact);
+
+            for entry in entries {
+                let entry = entry.with_context(|| {
+                    format!("Failed to retrieve directory entry")
+                })?;
+
+                if entry.path().is_dir() {
+                    directories.push(entry.path().to_path_buf());
+                    continue;
+                }
+
+                let contact =
+                    Contact::load(entry.path()).with_context(|| {
+                        format!(
+                            "Failed to load contact from `{}`",
+                            entry.path().display()
+                        )
+                    })?;
+                contacts.push(contact);
+            }
         }
 
         Ok(Self(contacts))
