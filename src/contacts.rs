@@ -1,11 +1,11 @@
 use std::{
-    error::Error,
     fmt::Display,
     fs::{self, File},
     io::Read,
     path::Path,
 };
 
+use anyhow::Context as _;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use time::Date;
@@ -16,13 +16,25 @@ pub struct Contacts(Vec<Contact>);
 
 impl Contacts {
     /// Load all contacts in a directory
-    pub fn load(path: impl AsRef<Path>) -> Result<Self, Box<dyn Error>> {
+    pub fn load(path: impl AsRef<Path>) -> anyhow::Result<Self> {
         let mut contacts = Vec::new();
 
-        let entries = fs::read_dir(path)?;
+        let path = path.as_ref();
+        let entries = fs::read_dir(path).with_context(|| {
+            format!("Failed to read directory `{}`", path.display())
+        })?;
+
+        // TASK: Step into directories and load all contacts recursively.
         for entry in entries {
-            let entry = entry?;
-            let contact = Contact::load(entry.path())?;
+            let entry = entry.with_context(|| {
+                format!("Failed to retrieve directory entry")
+            })?;
+            let contact = Contact::load(entry.path()).with_context(|| {
+                format!(
+                    "Failed to load contact from `{}`",
+                    entry.path().display()
+                )
+            })?;
             contacts.push(contact);
         }
 
@@ -70,11 +82,22 @@ pub struct Contact {
 }
 
 impl Contact {
-    pub fn load(path: impl AsRef<Path>) -> Result<Self, Box<dyn Error>> {
-        let mut contact = Vec::new();
-        File::open(path)?.read_to_end(&mut contact)?;
+    pub fn load(path: impl AsRef<Path>) -> anyhow::Result<Self> {
+        let path = path.as_ref();
 
-        let contact = toml::from_slice(&contact)?;
+        let mut contact = Vec::new();
+        File::open(path)
+            .with_context(|| {
+                format!("Failed to open file `{}`", path.display())
+            })?
+            .read_to_end(&mut contact)
+            .with_context(|| {
+                format!("Failed to read file `{}`", path.display())
+            })?;
+
+        let contact = toml::from_slice(&contact).with_context(|| {
+            format!("Failed to deserialize contact `{}`", path.display())
+        })?;
 
         Ok(contact)
     }
