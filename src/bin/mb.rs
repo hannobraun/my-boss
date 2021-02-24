@@ -16,6 +16,8 @@ fn main() -> Result<(), Box<dyn Error>> {
             Config::init()?;
         }
         Command::Contacts => {
+            // TASK: Add flag that prints all contacts.
+
             let config = Config::load()?;
 
             // TASK: Use local time instead. As of this writing, this is blocked
