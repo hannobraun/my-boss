@@ -22,7 +22,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             //       by this issue: https://github.com/time-rs/time/issues/293
             let today = OffsetDateTime::now_utc().date();
             for contact in Contacts::load(config.contacts)?.due(today) {
-                println!("{}", contact.summary());
+                println!("{}", contact.summary()?);
             }
         }
     }

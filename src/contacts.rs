@@ -1,5 +1,5 @@
 use std::{
-    fmt::Display,
+    fmt::{Display, Write as _},
     fs::{self, File},
     io::Read,
     path::Path,
@@ -115,12 +115,17 @@ impl Contact {
         Ok(contact)
     }
 
-    pub fn summary(&self) -> impl Display {
+    pub fn summary(&self) -> anyhow::Result<impl Display> {
+        let mut summary = String::new();
+
         let latest = &self.communication.latest;
-        format!(
+        write!(
+            summary,
             "{} (communication to {}; from: {})",
             self.name, latest.to, latest.from,
-        )
+        )?;
+
+        Ok(summary)
     }
 }
 
