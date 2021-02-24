@@ -202,18 +202,13 @@ pub struct PlannedCommunication {
 
 #[cfg(test)]
 mod tests {
-    use std::error::Error;
-
     use super::Contacts;
 
     #[test]
-    fn contact_should_match_example_contact_file() -> Result<(), Box<dyn Error>>
-    {
-        Contacts::load("contacts")?;
+    fn contact_should_match_example_contact_file() {
+        Contacts::load("contacts").unwrap();
 
         // Nothing to check, I think. It's enough that the previous calls don't
         // cause an error.
-
-        Ok(())
     }
 }
