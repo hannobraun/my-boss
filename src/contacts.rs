@@ -62,7 +62,12 @@ impl Contacts {
     /// Iterate over contacts for whom the next communication is due
     pub fn due(&self, date: Date) -> impl Iterator<Item = &Contact> {
         self.0.iter().filter(move |contact| {
-            match contact.communication.next_planned() {
+            let communication = match &contact.communication {
+                Some(communication) => communication,
+                None => return false,
+            };
+
+            match communication.next_planned() {
                 Some(next_planned) => next_planned <= date,
                 None => false,
             }
@@ -91,7 +96,7 @@ pub struct Contact {
     pub links: Vec<Link>,
 
     /// Records of communication with the contact
-    pub communication: Communication,
+    pub communication: Option<Communication>,
 }
 
 impl Contact {
@@ -118,12 +123,15 @@ impl Contact {
     pub fn summary(&self) -> anyhow::Result<impl Display> {
         let mut summary = String::new();
 
-        let latest = &self.communication.latest;
-        write!(
-            summary,
-            "{} (communication to {}; from: {})",
-            self.name, latest.to, latest.from,
-        )?;
+        write!(summary, "{}", self.name)?;
+        if let Some(communication) = &self.communication {
+            let latest = &communication.latest;
+            write!(
+                summary,
+                " (communication to {}; from: {})",
+                latest.to, latest.from,
+            )?;
+        }
 
         Ok(summary)
     }
