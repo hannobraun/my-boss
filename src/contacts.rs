@@ -209,8 +209,7 @@ mod tests {
     #[test]
     fn contact_should_match_example_contact_file() -> Result<(), Box<dyn Error>>
     {
-        let contact = Contact::load("contacts/ex-ample.toml")?;
-        println!("{:#?}", contact);
+        Contact::load("contacts/ex-ample.toml")?;
 
         // Nothing to check, I think. It's enough that the previous calls don't
         // cause an error.
