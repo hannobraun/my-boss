@@ -77,6 +77,7 @@ impl Contacts {
 
 /// A contact
 #[derive(Debug, Default, Deserialize, Serialize)]
+#[serde(default)]
 pub struct Contact {
     /// The contact's name
     pub name: String,
