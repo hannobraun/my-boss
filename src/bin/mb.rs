@@ -18,10 +18,8 @@ fn main() -> anyhow::Result<()> {
             let contacts = Contacts::load(config.contacts)?;
 
             if args.all {
-                // TASK: Print all contacts.
-                return Err(anyhow::Error::msg(
-                    "Printing all contacts is not supported yet.",
-                ));
+                print_contacts(contacts.all())?;
+                return Ok(());
             }
 
             // TASK: Use local time instead. As of this writing, this is blocked
