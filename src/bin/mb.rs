@@ -15,6 +15,7 @@ fn main() -> anyhow::Result<()> {
         }
         Command::Contacts(args) => {
             let config = Config::load()?;
+            let contacts = Contacts::load(config.contacts)?;
 
             if args.all {
                 // TASK: Print all contacts.
@@ -26,7 +27,7 @@ fn main() -> anyhow::Result<()> {
             // TASK: Use local time instead. As of this writing, this is blocked
             //       by this issue: https://github.com/time-rs/time/issues/293
             let today = OffsetDateTime::now_utc().date();
-            for contact in Contacts::load(config.contacts)?.due(today) {
+            for contact in contacts.due(today) {
                 println!("{}", contact.summary()?);
             }
         }
