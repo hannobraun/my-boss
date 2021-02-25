@@ -13,10 +13,10 @@ fn main() -> anyhow::Result<()> {
         Command::Init => {
             Config::init()?;
         }
-        Command::Contacts(contacts) => {
+        Command::Contacts(args) => {
             let config = Config::load()?;
 
-            if contacts.all {
+            if args.all {
                 // TASK: Print all contacts.
                 return Err(anyhow::Error::msg(
                     "Printing all contacts is not supported yet.",
