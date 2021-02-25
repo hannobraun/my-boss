@@ -1,5 +1,3 @@
-use std::error::Error;
-
 use clap::Clap as _;
 use my_boss::{
     args::{Args, Command},
@@ -8,7 +6,7 @@ use my_boss::{
 };
 use time::OffsetDateTime;
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> anyhow::Result<()> {
     let args = Args::parse();
 
     match args.command {
