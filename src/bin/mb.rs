@@ -13,10 +13,15 @@ fn main() -> anyhow::Result<()> {
         Command::Init => {
             Config::init()?;
         }
-        Command::Contacts => {
-            // TASK: Add flag that prints all contacts.
-
+        Command::Contacts(contacts) => {
             let config = Config::load()?;
+
+            if contacts.all {
+                // TASK: Print all contacts.
+                return Err(anyhow::Error::msg(
+                    "Printing all contacts is not supported yet.",
+                ));
+            }
 
             // TASK: Use local time instead. As of this writing, this is blocked
             //       by this issue: https://github.com/time-rs/time/issues/293
