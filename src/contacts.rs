@@ -103,8 +103,8 @@ pub struct Contact {
 impl Contact {
     // TASK: Validate contacts. Return error, if they have unknown keys.
     pub fn load(path: impl AsRef<Path>) -> anyhow::Result<Self> {
-        let contact = TomlFile::open(path)?;
-        let contact = contact.deserialize()?;
+        let file = TomlFile::open(path)?;
+        let contact = file.deserialize()?;
         Ok(contact)
     }
 
