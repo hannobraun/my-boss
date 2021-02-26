@@ -238,7 +238,7 @@ dependencies = [
 [[package]]
 name = "time"
 version = "0.3.0-dev"
-source = "git+https://github.com/time-rs/time.git?branch=main#dfad8454058a4ca9191407b8326cabb156dd9029"
+source = "git+https://github.com/time-rs/time.git?branch=main#9f8442e9ccf7d68c6de3b33a9c0cbe546bec86d7"
 dependencies = [
  "const_fn",
  "itoa",
