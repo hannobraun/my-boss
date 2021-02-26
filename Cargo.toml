@@ -7,8 +7,9 @@ publish = false
 
 
 [dependencies]
-anyhow = "*"
-clap   = "3.0.0-beta.2"
+anyhow   = "*"
+clap     = "3.0.0-beta.2"
+tempfile = "*"
 
 [dependencies.indexmap]
 version  = "*"
@@ -27,7 +28,3 @@ features = ["serde-human-readable"]
 [dependencies.toml]
 version  = "*"
 features = ["preserve_order"]
-
-
-[dev-dependencies]
-tempfile = "*"
