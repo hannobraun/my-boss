@@ -1,7 +1,6 @@
 use std::{
     fmt::{Display, Write as _},
-    fs::{self, File},
-    io::Read,
+    fs,
     path::Path,
 };
 
@@ -9,6 +8,8 @@ use anyhow::Context as _;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use time::Date;
+
+use crate::toml::TomlFile;
 
 /// Collection of all contacts
 #[derive(Debug)]
@@ -102,22 +103,8 @@ pub struct Contact {
 impl Contact {
     // TASK: Validate contacts. Return error, if they have unknown keys.
     pub fn load(path: impl AsRef<Path>) -> anyhow::Result<Self> {
-        let path = path.as_ref();
-
-        let mut contact = Vec::new();
-        File::open(path)
-            .with_context(|| {
-                format!("Failed to open file `{}`", path.display())
-            })?
-            .read_to_end(&mut contact)
-            .with_context(|| {
-                format!("Failed to read file `{}`", path.display())
-            })?;
-
-        let contact = toml::from_slice(&contact).with_context(|| {
-            format!("Failed to deserialize contact `{}`", path.display())
-        })?;
-
+        let contact = TomlFile::open(path)?;
+        let contact = contact.deserialize()?;
         Ok(contact)
     }
 
