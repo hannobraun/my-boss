@@ -58,6 +58,8 @@ impl Contacts {
 
     /// Iterate over contacts for whom the next communication is due
     pub fn due(&self, date: Date) -> impl Iterator<Item = &Contact> {
+        // TASK: Sort contacts by next planned date.
+
         self.0.iter().filter(move |contact| {
             let communication = match &contact.communication {
                 Some(communication) => communication,
@@ -98,6 +100,7 @@ pub struct Contact {
 }
 
 impl Contact {
+    // TASK: Validate contacts. Return error, if they have unknown keys.
     pub fn load(path: impl AsRef<Path>) -> anyhow::Result<Self> {
         let path = path.as_ref();
 
