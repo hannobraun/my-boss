@@ -47,3 +47,35 @@ impl TomlFile {
         Ok(value)
     }
 }
+
+pub trait TomlValueExt {
+    /// Remove empty arrays and tables
+    fn normalize(&mut self);
+}
+
+impl TomlValueExt for toml::Value {
+    fn normalize(&mut self) {
+        if let toml::Value::Table(table) = self {
+            let mut to_remove = Vec::new();
+
+            for (key, value) in table.iter_mut() {
+                if let toml::Value::Array(array) = value {
+                    if array.is_empty() {
+                        to_remove.push(key.clone());
+                    }
+                }
+                if let toml::Value::Table(table) = value {
+                    if table.is_empty() {
+                        to_remove.push(key.clone());
+                    }
+
+                    // TASK: Step into table.
+                }
+            }
+
+            for key in to_remove {
+                table.remove(&key);
+            }
+        }
+    }
+}
