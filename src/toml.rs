@@ -32,6 +32,10 @@ impl TomlFile {
         })
     }
 
+    pub fn path(&self) -> &Path {
+        &self.path
+    }
+
     pub fn deserialize<T>(&self) -> anyhow::Result<T>
     where
         T: DeserializeOwned,
