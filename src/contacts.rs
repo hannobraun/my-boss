@@ -4,12 +4,12 @@ use std::{
     path::Path,
 };
 
-use anyhow::Context as _;
+use anyhow::{bail, Context as _};
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use time::Date;
 
-use crate::toml::TomlFile;
+use crate::toml::{TomlFile, TomlValueExt as _};
 
 /// Collection of all contacts
 #[derive(Debug)]
@@ -106,6 +106,43 @@ impl Contact {
         let file = TomlFile::open(path)?;
         let contact = file.deserialize()?;
         Ok(contact)
+    }
+
+    // TASK: Document.
+    pub fn validate(&self, file: &TomlFile) -> anyhow::Result<()> {
+        let buf = toml::to_vec(self).with_context(|| {
+            format!(
+                "Failed re-serialize `{}` for validation",
+                file.path().display()
+            )
+        })?;
+
+        let mut original: toml::Value =
+            file.deserialize().with_context(|| {
+                format!(
+                    "Failed to deserialize `{}` for validation",
+                    file.path().display()
+                )
+            })?;
+        let mut roundtrip: toml::Value =
+            toml::from_slice(&buf).with_context(|| {
+                format!(
+                    "Failed to roundtrip-deserialize `{}` for validation",
+                    file.path().display()
+                )
+            })?;
+
+        original.normalize();
+        roundtrip.normalize();
+
+        if original != roundtrip {
+            // TASK: Improve error message. Explain what this means and display
+            //       the list of values that are in `original` but not in
+            //       `roundtrip`.
+            bail!("Invalid contact: `{}`", file.path().display());
+        }
+
+        Ok(())
     }
 
     pub fn summary(&self) -> anyhow::Result<impl Display> {
