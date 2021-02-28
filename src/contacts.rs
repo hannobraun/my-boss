@@ -85,6 +85,9 @@ pub struct Contact {
     /// Notes about the contact
     pub notes: Vec<String>,
 
+    /// Links to the contact's website and other online profiles
+    pub links: Vec<Link>,
+
     /// The organizations that the contact is part of
     pub organizations: Vec<Organization>,
 
@@ -92,13 +95,6 @@ pub struct Contact {
     ///
     /// The key is a means of communication, like "email" or "phone".
     pub addresses: IndexMap<String, Vec<Address>>,
-
-    /// Links to the contact's website and other online profiles
-    ///
-    // TASK: Something is wrong with `links`. I'm getting an error message
-    //       when validating the minimal contact (caused by re-serialization).
-    //       That error goes away when removing `links`.
-    pub links: Vec<Link>,
 
     /// Records of communication with the contact
     pub communication: Option<Communication>,
