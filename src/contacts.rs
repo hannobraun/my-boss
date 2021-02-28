@@ -112,27 +112,16 @@ impl Contact {
 
     // TASK: Document.
     pub fn validate(&self, file: &TomlFile) -> anyhow::Result<()> {
-        let buf = toml::to_vec(self).with_context(|| {
-            format!(
-                "Failed re-serialize `{}` for validation",
-                file.path().display()
-            )
-        })?;
+        let buf = toml::to_vec(self)
+            .context("Failed re-serialize contact for validation")?;
 
-        let mut original: toml::Value =
-            file.deserialize().with_context(|| {
-                format!(
-                    "Failed to deserialize `{}` for validation",
-                    file.path().display()
-                )
-            })?;
-        let mut roundtrip: toml::Value =
-            toml::from_slice(&buf).with_context(|| {
-                format!(
-                    "Failed to roundtrip-deserialize `{}` for validation",
-                    file.path().display()
-                )
-            })?;
+        let mut original: toml::Value = file
+            .deserialize()
+            .context("Failed to deserialize contact for validation")?;
+
+        let mut roundtrip: toml::Value = toml::from_slice(&buf).context(
+            "Failed to roundtrip-deserialize contact for validation",
+        )?;
 
         original.normalize();
         roundtrip.normalize();
