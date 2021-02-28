@@ -110,7 +110,10 @@ impl Contact {
         Ok(contact)
     }
 
-    // TASK: Document.
+    /// Validates the provided file against the contact
+    ///
+    /// Makes sure that the provided file doesn't have keys not used by
+    /// `Contact`.
     pub fn validate(&self, file: &TomlFile) -> anyhow::Result<()> {
         let buf = toml::to_vec(self)
             .context("Failed re-serialize contact for validation")?;
