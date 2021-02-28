@@ -138,10 +138,33 @@ impl Contact {
         roundtrip.normalize();
 
         if original != roundtrip {
-            // TASK: Improve error message. Explain what this means and display
-            //       the list of values that are in `original` but not in
-            //       `roundtrip`.
-            bail!("Invalid contact: `{}`", file.path().display());
+            if let (
+                toml::Value::Table(original),
+                toml::Value::Table(roundtrip),
+            ) = (&original, &roundtrip)
+            {
+                let mut error = String::from("Invalid keys:");
+
+                let mut first_error = true;
+                for key in original.keys() {
+                    if !roundtrip.contains_key(key) {
+                        if !first_error {
+                            write!(error, ",")?;
+                        }
+                        first_error = false;
+
+                        write!(error, " {}", key)?;
+                    }
+                }
+
+                bail!(error);
+            }
+
+            bail!(
+                "Expected TOML values to be tables: {:?}, {:?}",
+                original,
+                roundtrip
+            );
         }
 
         Ok(())
