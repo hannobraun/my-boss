@@ -167,12 +167,13 @@ impl Contact {
 
         write!(summary, "{}", self.name)?;
         if let Some(communication) = &self.communication {
-            let latest = &communication.latest;
-            write!(
-                summary,
-                " (communication to {}; from: {})",
-                latest.to, latest.from,
-            )?;
+            if let Some(latest) = &communication.latest {
+                write!(
+                    summary,
+                    " (communication to {}; from: {})",
+                    latest.to, latest.from,
+                )?;
+            }
         }
 
         Ok(summary)
@@ -216,7 +217,7 @@ pub struct Address {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Communication {
     /// The latest communication with the contact
-    pub latest: LatestCommunication,
+    pub latest: Option<LatestCommunication>,
 
     pub planned: Vec<PlannedCommunication>,
 }
