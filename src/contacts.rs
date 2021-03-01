@@ -215,7 +215,7 @@ pub struct Address {
 /// The dates of interaction last and next with the contact
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Communication {
-    /// The latest interaction with the contact
+    /// The latest communication with the contact
     pub latest: LatestCommunication,
 
     pub planned: Vec<PlannedCommunication>,
