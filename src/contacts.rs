@@ -192,7 +192,7 @@ pub struct Organization {
 /// An address (or equivalent concept) related to a means of communication
 ///
 /// Could be an email address, street address, phone number, etc.
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Address {
     /// The address itself
     pub value: String,
