@@ -215,6 +215,7 @@ pub struct Address {
 
 /// The dates of interaction last and next with the contact
 #[derive(Debug, Default, Deserialize, Serialize)]
+#[serde(default)]
 pub struct Communication {
     /// The latest communication with the contact
     pub latest: Option<LatestCommunication>,
