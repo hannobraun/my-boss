@@ -179,6 +179,16 @@ impl Contact {
     }
 }
 
+/// A link to a contact's website or other online profile
+#[derive(Debug, Deserialize, Serialize)]
+pub struct Link {
+    /// The link itself
+    pub value: String,
+
+    /// Notes on this link
+    pub notes: Vec<String>,
+}
+
 /// An organization that a contact is part of
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Organization {
@@ -199,16 +209,6 @@ pub struct Address {
     pub value: String,
 
     /// Notes on this address
-    pub notes: Vec<String>,
-}
-
-/// A link to a contact's website or other online profile
-#[derive(Debug, Deserialize, Serialize)]
-pub struct Link {
-    /// The link itself
-    pub value: String,
-
-    /// Notes on this link
     pub notes: Vec<String>,
 }
 
