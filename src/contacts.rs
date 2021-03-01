@@ -193,6 +193,7 @@ pub struct Organization {
 ///
 /// Could be an email address, street address, phone number, etc.
 #[derive(Debug, Default, Deserialize, Serialize)]
+#[serde(default)]
 pub struct Address {
     /// The address itself
     pub value: String,
