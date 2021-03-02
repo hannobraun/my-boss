@@ -130,33 +130,21 @@ impl Contact {
         roundtrip.normalize();
 
         if original != roundtrip {
-            if let (
-                toml::Value::Table(original),
-                toml::Value::Table(roundtrip),
-            ) = (&original, &roundtrip)
-            {
-                let mut error = String::from("Invalid keys:");
+            let differences = original.differences_to(&roundtrip)?;
 
-                let mut first_error = true;
-                for key in original.keys() {
-                    if !roundtrip.contains_key(key) {
-                        if !first_error {
-                            write!(error, ",")?;
-                        }
-                        first_error = false;
+            let mut error = String::from("Invalid keys:");
 
-                        write!(error, " {}", key)?;
-                    }
+            let mut first_error = true;
+            for key in differences {
+                if !first_error {
+                    write!(error, ",")?;
                 }
+                first_error = false;
 
-                bail!(error);
+                write!(error, " {}", key)?;
             }
 
-            bail!(
-                "Expected TOML values to be tables: {:?}, {:?}",
-                original,
-                roundtrip
-            );
+            bail!(error);
         }
 
         Ok(())

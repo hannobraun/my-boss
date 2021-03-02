@@ -4,7 +4,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use anyhow::Context as _;
+use anyhow::{anyhow, Context as _};
 use serde::de::DeserializeOwned;
 
 pub struct TomlFile {
@@ -51,6 +51,8 @@ impl TomlFile {
 pub trait TomlValueExt {
     /// Remove empty arrays and tables
     fn normalize(&mut self);
+
+    fn differences_to(&self, other: &Self) -> anyhow::Result<Vec<String>>;
 }
 
 impl TomlValueExt for toml::Value {
@@ -58,6 +60,28 @@ impl TomlValueExt for toml::Value {
         if let toml::Value::Table(table) = self {
             normalize_inner(table);
         }
+    }
+
+    fn differences_to(&self, other: &Self) -> anyhow::Result<Vec<String>> {
+        if let (toml::Value::Table(self_), toml::Value::Table(other)) =
+            (self, other)
+        {
+            let mut differences = Vec::new();
+
+            for key in self_.keys() {
+                if !other.contains_key(key) {
+                    differences.push(key.clone());
+                }
+            }
+
+            return Ok(differences);
+        }
+
+        Err(anyhow!(
+            "Expected TOML values to be tables: {:?}, {:?}",
+            self,
+            other
+        ))
     }
 }
 
