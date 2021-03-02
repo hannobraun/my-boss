@@ -56,26 +56,30 @@ pub trait TomlValueExt {
 impl TomlValueExt for toml::Value {
     fn normalize(&mut self) {
         if let toml::Value::Table(table) = self {
-            let mut to_remove = Vec::new();
+            normalize_inner(table);
+        }
+    }
+}
 
-            for (key, value) in table.iter_mut() {
-                if let toml::Value::Array(array) = value {
-                    if array.is_empty() {
-                        to_remove.push(key.clone());
-                    }
-                }
-                if let toml::Value::Table(table) = value {
-                    if table.is_empty() {
-                        to_remove.push(key.clone());
-                    }
+fn normalize_inner(table: &mut toml::value::Table) {
+    let mut to_remove = Vec::new();
 
-                    // TASK: Step into table.
-                }
-            }
-
-            for key in to_remove {
-                table.remove(&key);
+    for (key, value) in table.iter_mut() {
+        if let toml::Value::Array(array) = value {
+            if array.is_empty() {
+                to_remove.push(key.clone());
             }
         }
+        if let toml::Value::Table(table) = value {
+            if table.is_empty() {
+                to_remove.push(key.clone());
+            }
+
+            // TASK: Step into table.
+        }
+    }
+
+    for key in to_remove {
+        table.remove(&key);
     }
 }
