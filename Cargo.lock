@@ -153,9 +153,9 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "libc"
-version = "0.2.86"
+version = "0.2.87"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b7282d924be3275cec7f6756ff4121987bc6481325397dde6ba3e7802b1a8b1c"
+checksum = "265d751d31d6780a3f956bb5b8022feba2d94eeee5a84ba64f4212eedca42213"
 
 [[package]]
 name = "log"
@@ -341,7 +341,7 @@ dependencies = [
 [[package]]
 name = "time"
 version = "0.3.0-dev"
-source = "git+https://github.com/time-rs/time.git?branch=main#c85a3b47be00429b3eac88fe8bf7c7ec2fc7a557"
+source = "git+https://github.com/time-rs/time.git?branch=main#4bd26530c16dd9ac7d8f941123fab5d8abbad6c8"
 dependencies = [
  "const_fn",
  "itoa",
