@@ -116,7 +116,7 @@ impl Contact {
     /// `Contact`.
     pub fn validate(&self, file: &TomlFile) -> anyhow::Result<()> {
         let buf = toml::to_vec(self)
-            .context("Failed re-serialize contact for validation")?;
+            .context("Failed to re-serialize contact for validation")?;
 
         let mut original: toml::Value = file
             .deserialize()
