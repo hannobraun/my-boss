@@ -7,6 +7,8 @@ use my_boss::{
 use time::OffsetDateTime;
 
 fn main() -> anyhow::Result<()> {
+    pretty_env_logger::init();
+
     let args = Args::parse();
 
     match args.command {
