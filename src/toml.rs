@@ -63,25 +63,9 @@ impl TomlValueExt for toml::Value {
     }
 
     fn differences_to(&self, other: &Self) -> anyhow::Result<Vec<String>> {
-        if let (toml::Value::Table(self_), toml::Value::Table(other)) =
-            (self, other)
-        {
-            let mut differences = Vec::new();
-
-            for key in self_.keys() {
-                if !other.contains_key(key) {
-                    differences.push(key.clone());
-                }
-            }
-
-            return Ok(differences);
-        }
-
-        Err(anyhow!(
-            "Expected TOML values to be tables: {:?}, {:?}",
-            self,
-            other
-        ))
+        let mut differences = Vec::new();
+        differences_to_inner(self, other, &mut differences)?;
+        Ok(differences)
     }
 }
 
@@ -106,4 +90,28 @@ fn normalize_inner(table: &mut toml::value::Table) {
     for key in to_remove {
         table.remove(&key);
     }
+}
+
+fn differences_to_inner(
+    self_: &toml::Value,
+    other: &toml::Value,
+    differences: &mut Vec<String>,
+) -> anyhow::Result<()> {
+    if let (toml::Value::Table(self_), toml::Value::Table(other)) =
+        (self_, other)
+    {
+        for key in self_.keys() {
+            if !other.contains_key(key) {
+                differences.push(key.clone());
+            }
+        }
+
+        return Ok(());
+    }
+
+    Err(anyhow!(
+        "Expected TOML values to be tables: {:?}, {:?}",
+        self_,
+        other
+    ))
 }
