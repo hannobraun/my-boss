@@ -103,6 +103,9 @@ fn check_value(
     if let (toml::Value::Table(from), toml::Value::Table(to)) = (from, to) {
         check_table(from, to, invalid);
     }
+    if let (toml::Value::Array(from), toml::Value::Array(to)) = (from, to) {
+        check_array(from, to, invalid);
+    }
 }
 
 fn check_table(
@@ -121,5 +124,17 @@ fn check_table(
                 invalid.push(key.clone());
             }
         }
+    }
+}
+
+fn check_array(
+    from: &toml::value::Array,
+    to: &toml::value::Array,
+    invalid: &mut Vec<String>,
+) {
+    debug!("Checking value:\n\t{:?}\n\t{:?}", from, to);
+
+    for (from_item, to_item) in from.iter().zip(to.iter()) {
+        check_value(from_item, to_item, invalid);
     }
 }
