@@ -65,7 +65,7 @@ impl TomlValueExt for toml::Value {
 
     fn find_invalid(&self, other: &Self) -> anyhow::Result<Vec<String>> {
         let mut invalid = Vec::new();
-        find_invalid_inner(self, other, &mut invalid);
+        check_value(self, other, &mut invalid);
         Ok(invalid)
     }
 }
@@ -93,7 +93,7 @@ fn normalize_inner(table: &mut toml::value::Table) {
     }
 }
 
-fn find_invalid_inner(
+fn check_value(
     from: &toml::Value,
     to: &toml::Value,
     invalid: &mut Vec<String>,
@@ -112,7 +112,7 @@ fn find_invalid_inner(
 
             match to.get(key) {
                 Some(to_value) => {
-                    find_invalid_inner(from_value, to_value, invalid);
+                    check_value(from_value, to_value, invalid);
                 }
                 None => {
                     invalid.push(key.clone());
