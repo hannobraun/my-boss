@@ -5,7 +5,7 @@ use std::{
 };
 
 use anyhow::Context as _;
-use log::debug;
+use log::trace;
 use serde::de::DeserializeOwned;
 
 pub struct TomlFile {
@@ -99,7 +99,7 @@ fn check_value(
     invalid: &mut Vec<String>,
     prefix: String,
 ) {
-    debug!("Checking value:\n\t{:?}\n\t{:?}", from, to);
+    trace!("Checking value:\n\t{:?}\n\t{:?}", from, to);
 
     if let (toml::Value::Table(from), toml::Value::Table(to)) = (from, to) {
         check_table(from, to, invalid, prefix.clone());
@@ -115,7 +115,7 @@ fn check_table(
     invalid: &mut Vec<String>,
     prefix: String,
 ) {
-    debug!("Checking value:\n\t{:?}\n\t{:?}", from, to);
+    trace!("Checking value:\n\t{:?}\n\t{:?}", from, to);
 
     for (key, from_value) in from.iter() {
         let prefix = format!("{}.{}", prefix, key);
@@ -137,7 +137,7 @@ fn check_array(
     invalid: &mut Vec<String>,
     prefix: String,
 ) {
-    debug!("Checking value:\n\t{:?}\n\t{:?}", from, to);
+    trace!("Checking value:\n\t{:?}\n\t{:?}", from, to);
 
     for (from_item, to_item) in from.iter().zip(to.iter()) {
         check_value(from_item, to_item, invalid, prefix.clone());
