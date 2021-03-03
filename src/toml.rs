@@ -96,7 +96,7 @@ fn normalize_inner(table: &mut toml::value::Table) {
 fn find_invalid_inner(
     from: &toml::Value,
     to: &toml::Value,
-    differences: &mut Vec<String>,
+    invalid: &mut Vec<String>,
 ) {
     debug!("Checking differences:\n\t{:?}\n\t{:?}", from, to);
 
@@ -112,10 +112,10 @@ fn find_invalid_inner(
 
             match to.get(key) {
                 Some(to_value) => {
-                    find_invalid_inner(from_value, to_value, differences);
+                    find_invalid_inner(from_value, to_value, invalid);
                 }
                 None => {
-                    differences.push(key.clone());
+                    invalid.push(key.clone());
                 }
             }
         }
