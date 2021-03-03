@@ -107,16 +107,24 @@ fn check_value(
     }
 
     for (from, to) in to_check {
-        for (key, from_value) in from.iter() {
-            trace!("Checking \"{}\"", key);
+        check_table(from, to, invalid);
+    }
+}
 
-            match to.get(key) {
-                Some(to_value) => {
-                    check_value(from_value, to_value, invalid);
-                }
-                None => {
-                    invalid.push(key.clone());
-                }
+fn check_table(
+    from: &toml::value::Table,
+    to: &toml::value::Table,
+    invalid: &mut Vec<String>,
+) {
+    for (key, from_value) in from.iter() {
+        trace!("Checking \"{}\"", key);
+
+        match to.get(key) {
+            Some(to_value) => {
+                check_value(from_value, to_value, invalid);
+            }
+            None => {
+                invalid.push(key.clone());
             }
         }
     }
