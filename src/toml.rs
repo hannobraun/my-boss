@@ -100,13 +100,7 @@ fn check_value(
 ) {
     debug!("Checking differences:\n\t{:?}\n\t{:?}", from, to);
 
-    let mut to_check = Vec::new();
-
     if let (toml::Value::Table(from), toml::Value::Table(to)) = (from, to) {
-        to_check.push((from, to));
-    }
-
-    for (from, to) in to_check {
         check_table(from, to, invalid);
     }
 }
