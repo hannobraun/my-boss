@@ -107,11 +107,16 @@ fn differences_to_inner(
     }
 
     for (from, to) in to_check {
-        for key in from.keys() {
+        for (key, from_value) in from.iter() {
             trace!("Checking \"{}\"", key);
 
-            if !to.contains_key(key) {
-                differences.push(key.clone());
+            match to.get(key) {
+                Some(to_value) => {
+                    differences_to_inner(from_value, to_value, differences);
+                }
+                None => {
+                    differences.push(key.clone());
+                }
             }
         }
     }
