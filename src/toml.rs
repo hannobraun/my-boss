@@ -100,9 +100,15 @@ fn differences_to_inner(
 ) {
     debug!("Checking differences:\n\t{:?}\n\t{:?}", self_, other);
 
+    let mut to_check = Vec::new();
+
     if let (toml::Value::Table(self_), toml::Value::Table(other)) =
         (self_, other)
     {
+        to_check.push((self_, other));
+    }
+
+    for (self_, other) in to_check {
         for key in self_.keys() {
             trace!("Checking \"{}\"", key);
 
