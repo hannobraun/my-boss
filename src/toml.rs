@@ -98,7 +98,7 @@ fn check_value(
     to: &toml::Value,
     invalid: &mut Vec<String>,
 ) {
-    debug!("Checking differences:\n\t{:?}\n\t{:?}", from, to);
+    debug!("Checking value:\n\t{:?}\n\t{:?}", from, to);
 
     if let (toml::Value::Table(from), toml::Value::Table(to)) = (from, to) {
         check_table(from, to, invalid);
