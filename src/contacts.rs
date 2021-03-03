@@ -6,6 +6,7 @@ use std::{
 
 use anyhow::{bail, Context as _};
 use indexmap::IndexMap;
+use log::debug;
 use serde::{Deserialize, Serialize};
 use time::Date;
 
@@ -130,6 +131,11 @@ impl Contact {
         roundtrip.normalize();
 
         if original != roundtrip {
+            debug!(
+                "Failed validation.\n\t Original: {:?}\n\tRoundtrip: {:?}",
+                original, roundtrip
+            );
+
             let differences = original.find_invalid(&roundtrip)?;
 
             let mut error = String::from("Invalid keys:");
