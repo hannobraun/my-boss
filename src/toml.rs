@@ -102,8 +102,8 @@ fn differences_to_inner(
 
     let mut to_check = Vec::new();
 
-    if let (toml::Value::Table(self_), toml::Value::Table(other)) = (from, to) {
-        to_check.push((self_, other));
+    if let (toml::Value::Table(from), toml::Value::Table(other)) = (from, to) {
+        to_check.push((from, other));
     }
 
     for (self_, other) in to_check {
