@@ -136,12 +136,12 @@ impl Contact {
                 original, roundtrip
             );
 
-            let differences = original.find_invalid(&roundtrip)?;
+            let invalid = original.find_invalid(&roundtrip)?;
 
             let mut error = String::from("Invalid keys:");
 
             let mut first_error = true;
-            for key in differences {
+            for key in invalid {
                 if !first_error {
                     write!(error, ",")?;
                 }
