@@ -64,9 +64,9 @@ impl TomlValueExt for toml::Value {
     }
 
     fn find_invalid(&self, other: &Self) -> anyhow::Result<Vec<String>> {
-        let mut differences = Vec::new();
-        find_invalid_inner(self, other, &mut differences);
-        Ok(differences)
+        let mut invalid = Vec::new();
+        find_invalid_inner(self, other, &mut invalid);
+        Ok(invalid)
     }
 }
 
