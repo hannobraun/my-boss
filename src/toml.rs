@@ -106,8 +106,8 @@ fn differences_to_inner(
         to_check.push((from, to));
     }
 
-    for (self_, other) in to_check {
-        for key in self_.keys() {
+    for (from, other) in to_check {
+        for key in from.keys() {
             trace!("Checking \"{}\"", key);
 
             if !other.contains_key(key) {
