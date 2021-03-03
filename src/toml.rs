@@ -5,7 +5,7 @@ use std::{
 };
 
 use anyhow::Context as _;
-use log::{debug, trace};
+use log::debug;
 use serde::de::DeserializeOwned;
 
 pub struct TomlFile {
@@ -110,9 +110,9 @@ fn check_table(
     to: &toml::value::Table,
     invalid: &mut Vec<String>,
 ) {
-    for (key, from_value) in from.iter() {
-        trace!("Checking \"{}\"", key);
+    debug!("Checking value:\n\t{:?}\n\t{:?}", from, to);
 
+    for (key, from_value) in from.iter() {
         match to.get(key) {
             Some(to_value) => {
                 check_value(from_value, to_value, invalid);
