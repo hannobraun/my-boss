@@ -5,6 +5,7 @@ use std::{
 };
 
 use anyhow::Context as _;
+use log::{debug, trace};
 use serde::de::DeserializeOwned;
 
 pub struct TomlFile {
@@ -97,10 +98,14 @@ fn differences_to_inner(
     other: &toml::Value,
     differences: &mut Vec<String>,
 ) {
+    debug!("Checking differences:\n\t{:?}\n\t{:?}", self_, other);
+
     if let (toml::Value::Table(self_), toml::Value::Table(other)) =
         (self_, other)
     {
         for key in self_.keys() {
+            trace!("Checking \"{}\"", key);
+
             if !other.contains_key(key) {
                 differences.push(key.clone());
             }
