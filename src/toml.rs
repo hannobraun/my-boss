@@ -95,16 +95,14 @@ fn normalize_inner(table: &mut toml::value::Table) {
 
 fn differences_to_inner(
     from: &toml::Value,
-    other: &toml::Value,
+    to: &toml::Value,
     differences: &mut Vec<String>,
 ) {
-    debug!("Checking differences:\n\t{:?}\n\t{:?}", from, other);
+    debug!("Checking differences:\n\t{:?}\n\t{:?}", from, to);
 
     let mut to_check = Vec::new();
 
-    if let (toml::Value::Table(self_), toml::Value::Table(other)) =
-        (from, other)
-    {
+    if let (toml::Value::Table(self_), toml::Value::Table(other)) = (from, to) {
         to_check.push((self_, other));
     }
 
