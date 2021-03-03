@@ -53,7 +53,7 @@ pub trait TomlValueExt {
     /// Remove empty arrays and tables
     fn normalize(&mut self);
 
-    fn differences_to(&self, other: &Self) -> anyhow::Result<Vec<String>>;
+    fn find_invalid(&self, other: &Self) -> anyhow::Result<Vec<String>>;
 }
 
 impl TomlValueExt for toml::Value {
@@ -63,7 +63,7 @@ impl TomlValueExt for toml::Value {
         }
     }
 
-    fn differences_to(&self, other: &Self) -> anyhow::Result<Vec<String>> {
+    fn find_invalid(&self, other: &Self) -> anyhow::Result<Vec<String>> {
         let mut differences = Vec::new();
         differences_to_inner(self, other, &mut differences);
         Ok(differences)

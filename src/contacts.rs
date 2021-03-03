@@ -130,7 +130,7 @@ impl Contact {
         roundtrip.normalize();
 
         if original != roundtrip {
-            let differences = original.differences_to(&roundtrip)?;
+            let differences = original.find_invalid(&roundtrip)?;
 
             let mut error = String::from("Invalid keys:");
 
