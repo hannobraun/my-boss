@@ -19,6 +19,12 @@ pub fn remove(value: &mut toml::Value) {
         }
     }
     if let toml::Value::Array(array) = value {
+        // Before we check which values should be retained, remove empty values
+        // recursively.
+        for value in array.iter_mut() {
+            remove(value);
+        }
+
         array.retain(|value| should_retain(value));
     }
 }
@@ -100,5 +106,23 @@ mod tests {
 
         let empty_table = toml::Value::Table(toml::value::Table::new());
         assert_eq!(value, empty_table);
+    }
+
+    #[test]
+    fn remove_should_remove_empty_value_nested_in_array() {
+        let mut inner = toml::value::Table::new();
+        inner.insert(
+            String::from("key"),
+            toml::Value::Table(toml::value::Table::new()),
+        );
+
+        let mut outer = toml::value::Array::new();
+        outer.push(toml::Value::Table(inner));
+
+        let mut value = toml::Value::Array(outer);
+        remove(&mut value);
+
+        let empty_array = toml::Value::Array(toml::value::Array::new());
+        assert_eq!(value, empty_array);
     }
 }
