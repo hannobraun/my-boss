@@ -15,7 +15,7 @@ pub fn remove(value: &mut toml::Value) {
         }
     }
     if let toml::Value::Array(array) = value {
-        array.retain(|item| should_retain(item));
+        array.retain(|value| should_retain(value));
     }
 }
 
