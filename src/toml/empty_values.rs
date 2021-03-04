@@ -22,3 +22,38 @@ pub fn remove(value: &mut toml::Value) {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::remove;
+
+    #[test]
+    fn remove_should_remove_empty_arrays() {
+        let mut table = toml::value::Table::new();
+        table.insert(
+            String::from("key"),
+            toml::Value::Array(toml::value::Array::new()),
+        );
+
+        let mut value = toml::Value::Table(table);
+        remove(&mut value);
+
+        let empty_table = toml::Value::Table(toml::value::Table::new());
+        assert_eq!(value, empty_table);
+    }
+
+    #[test]
+    fn remove_should_remove_empty_tables() {
+        let mut table = toml::value::Table::new();
+        table.insert(
+            String::from("key"),
+            toml::Value::Table(toml::value::Table::new()),
+        );
+
+        let mut value = toml::Value::Table(table);
+        remove(&mut value);
+
+        let empty_table = toml::Value::Table(toml::value::Table::new());
+        assert_eq!(value, empty_table);
+    }
+}
