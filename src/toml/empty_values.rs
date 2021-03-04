@@ -21,6 +21,17 @@ pub fn remove(value: &mut toml::Value) {
             table.remove(&key);
         }
     }
+    if let toml::Value::Array(array) = value {
+        array.retain(|item| {
+            if let toml::Value::Table(table) = item {
+                if table.is_empty() {
+                    return false;
+                }
+            }
+
+            true
+        })
+    }
 }
 
 #[cfg(test)]
@@ -55,5 +66,16 @@ mod tests {
 
         let empty_table = toml::Value::Table(toml::value::Table::new());
         assert_eq!(value, empty_table);
+    }
+    #[test]
+    fn remove_should_remove_empty_table_from_array() {
+        let mut array = toml::value::Array::new();
+        array.push(toml::Value::Table(toml::value::Table::new()));
+
+        let mut value = toml::Value::Array(array);
+        remove(&mut value);
+
+        let empty_array = toml::Value::Array(toml::value::Array::new());
+        assert_eq!(value, empty_array);
     }
 }
