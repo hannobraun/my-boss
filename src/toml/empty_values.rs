@@ -4,7 +4,11 @@ pub fn remove(value: &mut toml::Value) {
 
         let mut to_remove = Vec::new();
 
-        for (key, value) in table.iter() {
+        for (key, value) in table.iter_mut() {
+            // Before we check if the value should be retained, remove empty
+            // values from it recursively.
+            remove(value);
+
             if !should_retain(value) {
                 to_remove.push(key.clone());
             }
@@ -78,5 +82,23 @@ mod tests {
 
         let empty_array = toml::Value::Array(toml::value::Array::new());
         assert_eq!(value, empty_array);
+    }
+
+    #[test]
+    fn remove_should_empty_value_nested_in_table() {
+        let mut inner = toml::value::Table::new();
+        inner.insert(
+            String::from("key"),
+            toml::Value::Table(toml::value::Table::new()),
+        );
+
+        let mut outer = toml::value::Table::new();
+        outer.insert(String::from("inner"), toml::Value::Table(inner));
+
+        let mut value = toml::Value::Table(outer);
+        remove(&mut value);
+
+        let empty_table = toml::Value::Table(toml::value::Table::new());
+        assert_eq!(value, empty_table);
     }
 }
