@@ -61,7 +61,7 @@ pub trait TomlValueExt {
 impl TomlValueExt for toml::Value {
     fn normalize(&mut self) {
         if let toml::Value::Table(table) = self {
-            empty_values::normalize_inner(table);
+            empty_values::remove(table);
         }
     }
 

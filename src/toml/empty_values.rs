@@ -1,4 +1,4 @@
-pub fn normalize_inner(table: &mut toml::value::Table) {
+pub fn remove(table: &mut toml::value::Table) {
     let mut to_remove = Vec::new();
 
     for (key, value) in table.iter_mut() {
