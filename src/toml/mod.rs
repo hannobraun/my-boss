@@ -60,9 +60,7 @@ pub trait TomlValueExt {
 
 impl TomlValueExt for toml::Value {
     fn normalize(&mut self) {
-        if let toml::Value::Table(table) = self {
-            empty_values::remove(table);
-        }
+        empty_values::remove(self);
     }
 
     fn find_invalid(&self, other: &Self) -> anyhow::Result<Vec<String>> {
