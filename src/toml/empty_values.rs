@@ -1,17 +1,12 @@
 pub fn remove(value: &mut toml::Value) {
     if let toml::Value::Table(table) = value {
+        // TASK: Implement `retain` for `toml::map::Map`, use it here.
+
         let mut to_remove = Vec::new();
 
-        for (key, value) in table.iter_mut() {
-            if let toml::Value::Table(table) = value {
-                if table.is_empty() {
-                    to_remove.push(key.clone());
-                }
-            }
-            if let toml::Value::Array(array) = value {
-                if array.is_empty() {
-                    to_remove.push(key.clone());
-                }
+        for (key, value) in table.iter() {
+            if !should_retain(value) {
+                to_remove.push(key.clone());
             }
         }
 
@@ -27,6 +22,11 @@ pub fn remove(value: &mut toml::Value) {
 fn should_retain(value: &toml::Value) -> bool {
     if let toml::Value::Table(table) = value {
         if table.is_empty() {
+            return false;
+        }
+    }
+    if let toml::Value::Array(array) = value {
+        if array.is_empty() {
             return false;
         }
     }
