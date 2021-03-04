@@ -7,8 +7,6 @@ pub fn remove(value: &mut toml::Value) {
                 if table.is_empty() {
                     to_remove.push(key.clone());
                 }
-
-                // TASK: Step into table.
             }
             if let toml::Value::Array(array) = value {
                 if array.is_empty() {
