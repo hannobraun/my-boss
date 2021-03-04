@@ -1,3 +1,4 @@
+pub mod empty_values;
 pub mod invalid_keys;
 
 use std::{
@@ -60,7 +61,7 @@ pub trait TomlValueExt {
 impl TomlValueExt for toml::Value {
     fn normalize(&mut self) {
         if let toml::Value::Table(table) = self {
-            normalize_inner(table);
+            empty_values::normalize_inner(table);
         }
     }
 
@@ -73,28 +74,5 @@ impl TomlValueExt for toml::Value {
             String::from("contact"),
         );
         Ok(invalid)
-    }
-}
-
-fn normalize_inner(table: &mut toml::value::Table) {
-    let mut to_remove = Vec::new();
-
-    for (key, value) in table.iter_mut() {
-        if let toml::Value::Array(array) = value {
-            if array.is_empty() {
-                to_remove.push(key.clone());
-            }
-        }
-        if let toml::Value::Table(table) = value {
-            if table.is_empty() {
-                to_remove.push(key.clone());
-            }
-
-            // TASK: Step into table.
-        }
-    }
-
-    for key in to_remove {
-        table.remove(&key);
     }
 }
