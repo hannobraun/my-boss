@@ -85,7 +85,7 @@ mod tests {
     }
 
     #[test]
-    fn remove_should_empty_value_nested_in_table() {
+    fn remove_should_remove_empty_value_nested_in_table() {
         let mut inner = toml::value::Table::new();
         inner.insert(
             String::from("key"),
