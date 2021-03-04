@@ -22,16 +22,18 @@ pub fn remove(value: &mut toml::Value) {
         }
     }
     if let toml::Value::Array(array) = value {
-        array.retain(|item| {
-            if let toml::Value::Table(table) = item {
-                if table.is_empty() {
-                    return false;
-                }
-            }
-
-            true
-        })
+        array.retain(|item| should_retain(item))
     }
+}
+
+fn should_retain(value: &toml::Value) -> bool {
+    if let toml::Value::Table(table) = value {
+        if table.is_empty() {
+            return false;
+        }
+    }
+
+    true
 }
 
 #[cfg(test)]
