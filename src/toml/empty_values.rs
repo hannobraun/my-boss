@@ -67,6 +67,7 @@ mod tests {
         let empty_table = toml::Value::Table(toml::value::Table::new());
         assert_eq!(value, empty_table);
     }
+
     #[test]
     fn remove_should_remove_empty_table_from_array() {
         let mut array = toml::value::Array::new();
