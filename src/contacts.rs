@@ -211,10 +211,10 @@ pub struct Address {
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(default)]
 pub struct Communication {
+    pub planned: Vec<PlannedCommunication>,
+
     /// The latest communication with the contact
     pub latest: Option<LatestCommunication>,
-
-    pub planned: Vec<PlannedCommunication>,
 }
 
 impl Communication {
