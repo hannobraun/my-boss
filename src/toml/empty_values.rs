@@ -28,7 +28,7 @@ mod tests {
     use super::remove;
 
     #[test]
-    fn remove_should_remove_empty_arrays() {
+    fn remove_should_remove_empty_array_from_table() {
         let mut table = toml::value::Table::new();
         table.insert(
             String::from("key"),
@@ -43,7 +43,7 @@ mod tests {
     }
 
     #[test]
-    fn remove_should_remove_empty_tables() {
+    fn remove_should_remove_empty_table_from_table() {
         let mut table = toml::value::Table::new();
         table.insert(
             String::from("key"),
