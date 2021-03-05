@@ -54,14 +54,9 @@ impl Contacts {
         Ok(Self(contacts))
     }
 
-    /// Iterate over all contacts
-    pub fn all(&self) -> impl Iterator<Item = Contact> {
-        self.0.clone().into_iter()
-    }
-
-    /// Iterate over contacts for whom the next communication is due
-    pub fn due(&self, date: Date) -> impl Iterator<Item = Contact> {
+    pub fn sorted(&self) -> Vec<Contact> {
         let mut contacts = self.0.clone();
+
         contacts.sort_by(|a, b| {
             let a_next_planned = a.next_planned_communication();
             let b_next_planned = b.next_planned_communication();
@@ -74,7 +69,17 @@ impl Contacts {
             }
         });
 
-        contacts.into_iter().filter(move |contact| {
+        contacts
+    }
+
+    /// Iterate over all contacts
+    pub fn all(&self) -> impl Iterator<Item = Contact> {
+        self.0.clone().into_iter()
+    }
+
+    /// Iterate over contacts for whom the next communication is due
+    pub fn due(&self, date: Date) -> impl Iterator<Item = Contact> {
+        self.sorted().into_iter().filter(move |contact| {
             let communication = match &contact.communication {
                 Some(communication) => communication,
                 None => return false,
