@@ -74,7 +74,7 @@ impl Contacts {
 
     /// Iterate over all contacts
     pub fn all(&self) -> impl Iterator<Item = Contact> {
-        self.0.clone().into_iter()
+        self.sorted().into_iter()
     }
 
     /// Iterate over contacts for whom the next communication is due
