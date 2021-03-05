@@ -54,15 +54,15 @@ impl Contacts {
     }
 
     /// Iterate over all contacts
-    pub fn all(&self) -> impl Iterator<Item = &Contact> {
-        self.0.iter()
+    pub fn all(&self) -> impl Iterator<Item = Contact> {
+        self.0.clone().into_iter()
     }
 
     /// Iterate over contacts for whom the next communication is due
-    pub fn due(&self, date: Date) -> impl Iterator<Item = &Contact> {
+    pub fn due(&self, date: Date) -> impl Iterator<Item = Contact> {
         // TASK: Sort contacts by next planned date.
 
-        self.0.iter().filter(move |contact| {
+        self.0.clone().into_iter().filter(move |contact| {
             let communication = match &contact.communication {
                 Some(communication) => communication,
                 None => return false,
