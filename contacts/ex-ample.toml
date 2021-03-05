@@ -1,8 +1,7 @@
 name = "Ex Ample"
-
 notes = [
-    "he's completely fictional, therefore we never met",
-    "I'm using him as an example contact to demonstrate the file format",
+    "a note about this contact",
+    "another note",
 ]
 
 
@@ -16,25 +15,25 @@ notes = ["GitHub profile"]
 
 
 [[organizations]]
-name = "Ex Ample's Employer"
+name = "Employer"
 role = "CTO"
 
 [[organizations]]
-name = "Open Source Project"
+name = "Project"
 role = "Maintainer"
 
 
 [[addresses.email]]
 value = "mail@example.com"
-notes = ["personal email"]
+notes = ["note about this email address"]
 
 [[addresses.phone]]
 value = "+99 9999 999999"
-notes = ["work phone"]
+notes = ["note about this phone number"]
 
 [[addresses.matrix]]
 value = "@matrix:example.com"
-notes = ["best way to reach him quickly"]
+notes = ["note about this Matrix ID"]
 
 
 [communication.latest]
@@ -44,8 +43,8 @@ from = "2021-02-13"
 
 [[communication.planned]]
 date = "2021-02-20"
-notes = ["weekly call"]
+notes = ["note about this planned communication"]
 
 [[communication.planned]]
 date = "2021-03-13"
-notes = ["ask how that thing went"]
+notes = ["note about this planned communication"]
