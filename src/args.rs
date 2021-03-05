@@ -18,7 +18,13 @@ pub enum Command {
 
 #[derive(Clap)]
 pub enum ContactsCmd {
+    Generate(GenerateContact),
     List(ListContacts),
+}
+
+#[derive(Clap)]
+pub struct GenerateContact {
+    pub name: String,
 }
 
 #[derive(Clap)]
