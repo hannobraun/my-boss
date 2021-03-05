@@ -161,12 +161,25 @@ impl Contact {
 
         write!(summary, "{}", self.name)?;
         if let Some(communication) = &self.communication {
+            let mut wrote_something = false;
+
             if let Some(latest) = &communication.latest {
-                write!(
-                    summary,
-                    " (communication to {}; from: {})",
-                    latest.to, latest.from,
-                )?;
+                write!(summary, " (latest communication: {}", latest.to)?;
+                wrote_something = true;
+            }
+            if let Some(planned) = communication.next_planned() {
+                if wrote_something {
+                    write!(summary, "; next planned: ")?;
+                } else {
+                    write!(summary, " (next planned communication: ")?;
+                    wrote_something = true;
+                }
+
+                write!(summary, "{}", planned)?;
+            }
+
+            if wrote_something {
+                write!(summary, ")")?;
             }
         }
 
