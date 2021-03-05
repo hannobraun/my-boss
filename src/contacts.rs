@@ -1,4 +1,5 @@
 use std::{
+    cmp::Ordering,
     fmt::{Display, Write as _},
     fs,
     path::Path,
@@ -60,9 +61,20 @@ impl Contacts {
 
     /// Iterate over contacts for whom the next communication is due
     pub fn due(&self, date: Date) -> impl Iterator<Item = Contact> {
-        // TASK: Sort contacts by next planned date.
+        let mut contacts = self.0.clone();
+        contacts.sort_by(|a, b| {
+            let a_next_planned = a.next_planned_communication();
+            let b_next_planned = b.next_planned_communication();
 
-        self.0.clone().into_iter().filter(move |contact| {
+            match (a_next_planned, b_next_planned) {
+                (Some(a), Some(b)) => a.cmp(&b),
+                (Some(_), None) => Ordering::Greater,
+                (None, Some(_)) => Ordering::Less,
+                (None, None) => a.name.cmp(&b.name),
+            }
+        });
+
+        contacts.into_iter().filter(move |contact| {
             let communication = match &contact.communication {
                 Some(communication) => communication,
                 None => return false,
@@ -184,6 +196,11 @@ impl Contact {
         }
 
         Ok(summary)
+    }
+
+    pub fn next_planned_communication(&self) -> Option<Date> {
+        let communication = self.communication.as_ref()?;
+        communication.next_planned()
     }
 }
 
