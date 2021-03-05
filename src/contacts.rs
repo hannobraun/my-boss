@@ -1,8 +1,9 @@
 use std::{
     cmp::Ordering,
     fmt::{Display, Write as _},
-    fs,
-    path::Path,
+    fs::{self, File},
+    io::Write,
+    path::{Path, PathBuf},
 };
 
 use anyhow::{bail, Context as _};
@@ -126,6 +127,27 @@ impl Contact {
         contact.validate(&file)?;
 
         Ok(contact)
+    }
+
+    pub fn generate(
+        name: String,
+        path: impl AsRef<Path>,
+    ) -> anyhow::Result<PathBuf> {
+        let mut contact = Contact::default();
+        contact.name = name;
+
+        let name = contact.name.to_lowercase();
+        let name = name.replace(" ", "-");
+        let name = format!("{}.toml", name);
+
+        let contact = toml::to_vec(&contact)?;
+
+        let path = path.as_ref().join(name).to_path_buf();
+
+        let mut file = File::create(&path)?;
+        file.write_all(&contact)?;
+
+        Ok(path)
     }
 
     /// Validates the provided file against the contact

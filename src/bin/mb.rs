@@ -16,7 +16,9 @@ fn main() -> anyhow::Result<()> {
             Config::init()?;
         }
         Command::Contacts(ContactsCmd::Generate(args)) => {
-            println!("generate \"{}\": not implemented", args.name);
+            let config = Config::load()?;
+            let path = Contact::generate(args.name, config.contacts)?;
+            println!("Generated {}", path.display());
         }
         Command::Contacts(ContactsCmd::List(args)) => {
             let config = Config::load()?;
