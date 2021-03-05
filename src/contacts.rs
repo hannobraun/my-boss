@@ -249,6 +249,7 @@ pub struct PlannedCommunication {
     pub date: Date,
 
     /// Notes about the planned communication
+    #[serde(default)]
     pub notes: Vec<String>,
 }
 
