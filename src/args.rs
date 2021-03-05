@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use clap::Clap;
 
 #[derive(Clap)]
@@ -25,7 +27,9 @@ pub enum ContactsCmd {
 #[derive(Clap)]
 pub struct GenerateContact {
     pub name: String,
-    // TASK: Add argument to override path.
+
+    #[clap(short, long)]
+    pub path: Option<PathBuf>,
 }
 
 #[derive(Clap)]
