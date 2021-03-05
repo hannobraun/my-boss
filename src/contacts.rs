@@ -133,7 +133,7 @@ impl Contact {
         name: String,
         path: impl AsRef<Path>,
     ) -> anyhow::Result<PathBuf> {
-        let mut contact = Contact::default();
+        let mut contact = Contact::example()?;
         contact.name = name;
 
         let name = contact.name.to_lowercase();
@@ -148,6 +148,12 @@ impl Contact {
         file.write_all(&contact)?;
 
         Ok(path)
+    }
+
+    pub fn example() -> anyhow::Result<Self> {
+        let example = include_bytes!("../contacts/ex-ample.toml");
+        let example = toml::from_slice(example)?;
+        Ok(example)
     }
 
     /// Validates the provided file against the contact
