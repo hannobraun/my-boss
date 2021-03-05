@@ -63,8 +63,8 @@ impl Contacts {
 
             match (a_next_planned, b_next_planned) {
                 (Some(a), Some(b)) => a.cmp(&b),
-                (Some(_), None) => Ordering::Greater,
-                (None, Some(_)) => Ordering::Less,
+                (Some(_), None) => Ordering::Less,
+                (None, Some(_)) => Ordering::Greater,
                 (None, None) => a.name.cmp(&b.name),
             }
         });
