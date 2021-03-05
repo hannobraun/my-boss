@@ -13,11 +13,16 @@ pub enum Command {
     Init,
 
     /// Manage contacts
-    Contacts(Contacts),
+    Contacts(ContactsCmd),
 }
 
 #[derive(Clap)]
-pub struct Contacts {
+pub enum ContactsCmd {
+    List(ListContacts),
+}
+
+#[derive(Clap)]
+pub struct ListContacts {
     #[clap(short, long)]
     pub all: bool,
 }
