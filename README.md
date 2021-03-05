@@ -8,7 +8,16 @@ My Boss is a command-line application that stores its data in local files. It's 
 
 ## Status
 
-At the time of writing, literally nothing but this README exists.
+Contact management (primitive CRM functionality) has been implemented. As of this writing, no other features are available.
+
+## Usage
+
+Run the following from the repository root, to install My Boss:
+```
+cargo install --path .
+```
+
+After that run `mb --help` (also works for subcommand, like `mb contacts --help`) to figure out how to use My Boss.
 
 ## License
 
