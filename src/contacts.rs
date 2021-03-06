@@ -202,6 +202,9 @@ impl Contact {
     }
 
     pub fn summary(&self) -> anyhow::Result<impl Display> {
+        // TASK: Update summary format, leading with next planned communication:
+        //       2021-03-06: Ex. Ample (latest communication: 2021-02-06)
+
         let mut summary = String::new();
 
         write!(summary, "{}", self.name)?;
