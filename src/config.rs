@@ -36,6 +36,7 @@ impl Config {
         Ok(())
     }
 
+    // TASK: Search for configuration file in parent directories.
     pub fn load() -> anyhow::Result<Self> {
         let mut config = Vec::new();
         File::open(PATH)
