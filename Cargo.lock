@@ -336,7 +336,8 @@ dependencies = [
 [[package]]
 name = "time"
 version = "0.3.0-alpha-2"
-source = "git+https://github.com/time-rs/time.git?branch=main#ff9bb6b090b0f9ab7c7a10477994a6470184983b"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0f906d7af3f9c93ef57452c3c7d577f0dcfa1700516dcd15c7ba75ede4f0ed08"
 dependencies = [
  "const_fn",
  "itoa",
