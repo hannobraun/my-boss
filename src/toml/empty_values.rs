@@ -1,7 +1,5 @@
 pub fn remove(value: &mut toml::Value) {
     if let toml::Value::Table(table) = value {
-        // TASK: Implement `retain` for `toml::map::Map`, use it here.
-
         let mut to_remove = Vec::new();
 
         for (key, value) in table.iter_mut() {
