@@ -13,10 +13,15 @@ where
 {
     let path = path.as_ref();
 
-    let file = TomlFile::open(path)?;
-    let value: T = deserialize(&file.buf, path)?;
+    let mut buf = Vec::new();
+    File::open(path)
+        .with_context(|| format!("Failed to open file `{}`", path.display()))?
+        .read_to_end(&mut buf)
+        .with_context(|| format!("Failed to read file `{}`", path.display()))?;
 
-    validate(&value, &file.buf, path)?;
+    let value: T = deserialize(&buf, path)?;
+
+    validate(&value, &buf, path)?;
 
     Ok(value)
 }
@@ -75,27 +80,6 @@ where
     })?;
 
     Ok(value)
-}
-
-pub struct TomlFile {
-    buf: Vec<u8>,
-}
-
-impl TomlFile {
-    pub fn open(path: &Path) -> anyhow::Result<Self> {
-        let mut buf = Vec::new();
-
-        File::open(path)
-            .with_context(|| {
-                format!("Failed to open file `{}`", path.display())
-            })?
-            .read_to_end(&mut buf)
-            .with_context(|| {
-                format!("Failed to read file `{}`", path.display())
-            })?;
-
-        Ok(Self { buf })
-    }
 }
 
 pub trait TomlValueExt {
