@@ -49,7 +49,7 @@ where
             original, roundtrip
         );
 
-        let invalid = original.find_invalid(&roundtrip)?;
+        let invalid = find_invalid(&original, &roundtrip)?;
 
         let mut error = String::from("Invalid keys:");
 
@@ -85,14 +85,11 @@ fn normalize(value: &mut toml::Value) {
     empty_values::remove(value);
 }
 
-pub trait TomlValueExt {
-    fn find_invalid(&self, other: &Self) -> anyhow::Result<Vec<String>>;
-}
-
-impl TomlValueExt for toml::Value {
-    fn find_invalid(&self, other: &Self) -> anyhow::Result<Vec<String>> {
-        let mut invalid = Vec::new();
-        invalid_keys::check_value(self, other, &mut invalid, String::new());
-        Ok(invalid)
-    }
+fn find_invalid(
+    a: &toml::Value,
+    b: &toml::Value,
+) -> anyhow::Result<Vec<String>> {
+    let mut invalid = Vec::new();
+    invalid_keys::check_value(a, b, &mut invalid, String::new());
+    Ok(invalid)
 }
