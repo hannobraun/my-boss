@@ -12,7 +12,7 @@ use log::debug;
 use serde::{Deserialize, Serialize};
 use time::Date;
 
-use crate::toml::{TomlFile, TomlValueExt as _};
+use crate::util::toml::{TomlFile, TomlValueExt as _};
 
 /// Collection of all contacts
 #[derive(Debug)]
