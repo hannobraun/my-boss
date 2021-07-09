@@ -92,7 +92,7 @@ impl TomlFile {
         T: DeserializeOwned,
     {
         let value = toml::from_slice(&self.buf).with_context(|| {
-            format!("Failed to deserialize contact `{}`", self.path.display())
+            format!("Failed to deserialize `{}`", self.path.display())
         })?;
 
         Ok(value)
