@@ -1,0 +1,8 @@
+date = "2021-07-09"
+description = "Example transaction on 2021-07-09"
+
+[accounts]
+"VR-Business" = -12345
+
+[budgets]
+"Upkeep" = -12345
