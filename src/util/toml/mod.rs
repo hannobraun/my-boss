@@ -27,7 +27,7 @@ where
 /// Validates the provided value against the file
 ///
 /// Makes sure that the provided file doesn't have keys not used by the value.
-pub fn validate<T>(value: &T, file: &TomlFile) -> anyhow::Result<()>
+fn validate<T>(value: &T, file: &TomlFile) -> anyhow::Result<()>
 where
     T: Serialize,
 {
