@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 use time::Date;
 use walkdir::WalkDir;
 
-use crate::util::toml::{validate, TomlFile};
+use crate::util::toml::load;
 
 /// Collection of all contacts
 #[derive(Debug)]
@@ -108,12 +108,7 @@ pub struct Contact {
 
 impl Contact {
     pub fn load(path: impl AsRef<Path>) -> anyhow::Result<Self> {
-        let file = TomlFile::open(path)?;
-        let contact: Self = file.deserialize()?;
-
-        validate(&contact, &file)?;
-
-        Ok(contact)
+        load(path)
     }
 
     pub fn generate(

@@ -12,6 +12,18 @@ use anyhow::{bail, Context as _};
 use log::debug;
 use serde::{de::DeserializeOwned, Serialize};
 
+pub fn load<T>(path: impl AsRef<Path>) -> anyhow::Result<T>
+where
+    T: DeserializeOwned + Serialize,
+{
+    let file = TomlFile::open(path)?;
+    let value: T = file.deserialize()?;
+
+    validate(&value, &file)?;
+
+    Ok(value)
+}
+
 /// Validates the provided value against the file
 ///
 /// Makes sure that the provided file doesn't have keys not used by the value.
