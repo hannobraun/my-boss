@@ -113,12 +113,7 @@ impl TomlValueExt for toml::Value {
 
     fn find_invalid(&self, other: &Self) -> anyhow::Result<Vec<String>> {
         let mut invalid = Vec::new();
-        invalid_keys::check_value(
-            self,
-            other,
-            &mut invalid,
-            String::from("contact"),
-        );
+        invalid_keys::check_value(self, other, &mut invalid, String::new());
         Ok(invalid)
     }
 }
