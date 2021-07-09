@@ -37,7 +37,6 @@ where
 
     let mut original: toml::Value = deserialize(file, path)
         .context("Failed to deserialize for validation")?;
-
     let mut roundtrip: toml::Value = toml::from_slice(&buf)
         .context("Failed to roundtrip-deserialize for validation")?;
 
