@@ -17,7 +17,7 @@ where
     T: DeserializeOwned + Serialize,
 {
     let file = TomlFile::open(path)?;
-    let value: T = file.deserialize()?;
+    let value: T = deserialize(&file.buf, &file.path)?;
 
     validate(&value, &file)?;
 
@@ -34,8 +34,7 @@ where
     let buf =
         toml::to_vec(value).context("Failed to re-serialize for validation")?;
 
-    let mut original: toml::Value = file
-        .deserialize()
+    let mut original: toml::Value = deserialize(&file.buf, &file.path)
         .context("Failed to deserialize for validation")?;
 
     let mut roundtrip: toml::Value = toml::from_slice(&buf)
@@ -70,6 +69,17 @@ where
     Ok(())
 }
 
+fn deserialize<T>(buf: &[u8], path: &Path) -> anyhow::Result<T>
+where
+    T: DeserializeOwned,
+{
+    let value = toml::from_slice(buf).with_context(|| {
+        format!("Failed to deserialize `{}`", path.display())
+    })?;
+
+    Ok(value)
+}
+
 pub struct TomlFile {
     path: PathBuf,
     buf: Vec<u8>,
@@ -97,17 +107,6 @@ impl TomlFile {
 
     pub fn path(&self) -> &Path {
         &self.path
-    }
-
-    pub fn deserialize<T>(&self) -> anyhow::Result<T>
-    where
-        T: DeserializeOwned,
-    {
-        let value = toml::from_slice(&self.buf).with_context(|| {
-            format!("Failed to deserialize `{}`", self.path.display())
-        })?;
-
-        Ok(value)
     }
 }
 
