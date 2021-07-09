@@ -41,8 +41,8 @@ where
     let mut roundtrip: toml::Value = toml::from_slice(&buf)
         .context("Failed to roundtrip-deserialize for validation")?;
 
-    original.normalize();
-    roundtrip.normalize();
+    normalize(&mut original);
+    normalize(&mut roundtrip);
 
     if original != roundtrip {
         debug!(
@@ -81,18 +81,16 @@ where
     Ok(value)
 }
 
-pub trait TomlValueExt {
-    /// Remove empty arrays and tables
-    fn normalize(&mut self);
+/// Remove empty arrays and tables
+fn normalize(value: &mut toml::Value) {
+    empty_values::remove(value);
+}
 
+pub trait TomlValueExt {
     fn find_invalid(&self, other: &Self) -> anyhow::Result<Vec<String>>;
 }
 
 impl TomlValueExt for toml::Value {
-    fn normalize(&mut self) {
-        empty_values::remove(self);
-    }
-
     fn find_invalid(&self, other: &Self) -> anyhow::Result<Vec<String>> {
         let mut invalid = Vec::new();
         invalid_keys::check_value(self, other, &mut invalid, String::new());
