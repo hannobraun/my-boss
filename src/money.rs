@@ -1,6 +1,8 @@
 use indexmap::IndexMap;
+use serde::{Deserialize, Serialize};
 use time::Date;
 
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Transaction {
     /// The date the transaction occurred
     pub date: Date,
