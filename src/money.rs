@@ -53,6 +53,7 @@ pub struct Transaction {
 }
 
 impl Transaction {
+    /// Load a transaction
     pub fn load(path: impl AsRef<Path>) -> anyhow::Result<Self> {
         load(path)
     }
