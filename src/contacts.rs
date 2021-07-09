@@ -6,14 +6,13 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use anyhow::{bail, Context as _};
+use anyhow::Context as _;
 use indexmap::IndexMap;
-use log::debug;
 use serde::{Deserialize, Serialize};
 use time::Date;
 use walkdir::WalkDir;
 
-use crate::util::toml::{TomlFile, TomlValueExt as _};
+use crate::util::toml::{validate, TomlFile};
 
 /// Collection of all contacts
 #[derive(Debug)]
@@ -112,7 +111,7 @@ impl Contact {
         let file = TomlFile::open(path)?;
         let contact: Self = file.deserialize()?;
 
-        contact.validate(&file)?;
+        validate(&contact, &file)?;
 
         Ok(contact)
     }
@@ -142,50 +141,6 @@ impl Contact {
         let example = include_bytes!("../contacts/ex-ample.toml");
         let example = toml::from_slice(example)?;
         Ok(example)
-    }
-
-    /// Validates the provided file against the contact
-    ///
-    /// Makes sure that the provided file doesn't have keys not used by
-    /// `Contact`.
-    pub fn validate(&self, file: &TomlFile) -> anyhow::Result<()> {
-        let buf = toml::to_vec(self)
-            .context("Failed to re-serialize for validation")?;
-
-        let mut original: toml::Value = file
-            .deserialize()
-            .context("Failed to deserialize for validation")?;
-
-        let mut roundtrip: toml::Value = toml::from_slice(&buf)
-            .context("Failed to roundtrip-deserialize for validation")?;
-
-        original.normalize();
-        roundtrip.normalize();
-
-        if original != roundtrip {
-            debug!(
-                "Failed validation.\n\t Original: {:?}\n\tRoundtrip: {:?}",
-                original, roundtrip
-            );
-
-            let invalid = original.find_invalid(&roundtrip)?;
-
-            let mut error = String::from("Invalid keys:");
-
-            let mut first_error = true;
-            for key in invalid {
-                if !first_error {
-                    write!(error, ",")?;
-                }
-                first_error = false;
-
-                write!(error, " {}", key)?;
-            }
-
-            bail!(error);
-        }
-
-        Ok(())
     }
 
     pub fn summary(&self) -> anyhow::Result<impl Display> {
