@@ -16,7 +16,7 @@ where
     let file = TomlFile::open(path)?;
     let value: T = deserialize(&file.buf, path)?;
 
-    validate(&value, &file, path)?;
+    validate(&value, &file.buf, path)?;
 
     Ok(value)
 }
@@ -24,14 +24,14 @@ where
 /// Validates the provided value against the file
 ///
 /// Makes sure that the provided file doesn't have keys not used by the value.
-fn validate<T>(value: &T, file: &TomlFile, path: &Path) -> anyhow::Result<()>
+fn validate<T>(value: &T, file: &[u8], path: &Path) -> anyhow::Result<()>
 where
     T: Serialize,
 {
     let buf =
         toml::to_vec(value).context("Failed to re-serialize for validation")?;
 
-    let mut original: toml::Value = deserialize(&file.buf, path)
+    let mut original: toml::Value = deserialize(file, path)
         .context("Failed to deserialize for validation")?;
 
     let mut roundtrip: toml::Value = toml::from_slice(&buf)
