@@ -104,10 +104,6 @@ impl TomlFile {
             buf,
         })
     }
-
-    pub fn path(&self) -> &Path {
-        &self.path
-    }
 }
 
 pub trait TomlValueExt {
