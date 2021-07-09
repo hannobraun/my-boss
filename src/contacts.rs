@@ -321,7 +321,7 @@ mod tests {
     use super::Contacts;
 
     #[test]
-    fn contacts_should_match_example_contact_file() {
+    fn contacts_should_match_example_files() {
         Contacts::load("contacts").unwrap();
 
         // Nothing to check, I think. It's enough that the previous call doesn't
