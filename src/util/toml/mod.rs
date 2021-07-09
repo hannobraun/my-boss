@@ -1,12 +1,7 @@
 pub mod empty_values;
 pub mod invalid_keys;
 
-use std::{
-    fmt::Write as _,
-    fs::File,
-    io::prelude::*,
-    path::{Path, PathBuf},
-};
+use std::{fmt::Write as _, fs::File, io::prelude::*, path::Path};
 
 use anyhow::{bail, Context as _};
 use log::debug;
@@ -19,7 +14,7 @@ where
     let path = path.as_ref();
 
     let file = TomlFile::open(path)?;
-    let value: T = deserialize(&file.buf, &file.path)?;
+    let value: T = deserialize(&file.buf, path)?;
 
     validate(&value, &file, path)?;
 
@@ -83,7 +78,6 @@ where
 }
 
 pub struct TomlFile {
-    path: PathBuf,
     buf: Vec<u8>,
 }
 
@@ -100,10 +94,7 @@ impl TomlFile {
                 format!("Failed to read file `{}`", path.display())
             })?;
 
-        Ok(Self {
-            path: path.to_path_buf(),
-            buf,
-        })
+        Ok(Self { buf })
     }
 }
 
