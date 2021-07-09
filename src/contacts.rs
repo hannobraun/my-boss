@@ -324,7 +324,7 @@ mod tests {
     fn contacts_should_match_example_contact_file() {
         Contacts::load("contacts").unwrap();
 
-        // Nothing to check, I think. It's enough that the previous calls don't
+        // Nothing to check, I think. It's enough that the previous call doesn't
         // cause an error.
     }
 }
