@@ -16,6 +16,8 @@ pub fn load<T>(path: impl AsRef<Path>) -> anyhow::Result<T>
 where
     T: DeserializeOwned + Serialize,
 {
+    let path = path.as_ref();
+
     let file = TomlFile::open(path)?;
     let value: T = deserialize(&file.buf, &file.path)?;
 
@@ -86,8 +88,7 @@ pub struct TomlFile {
 }
 
 impl TomlFile {
-    pub fn open(path: impl AsRef<Path>) -> anyhow::Result<Self> {
-        let path = path.as_ref();
+    pub fn open(path: &Path) -> anyhow::Result<Self> {
         let mut buf = Vec::new();
 
         File::open(path)
