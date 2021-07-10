@@ -90,14 +90,14 @@ impl Money {
             for account in &accounts {
                 if let Some(amount) = transaction.accounts.get(account.as_str())
                 {
-                    write!(writer, "{}", amount)?;
+                    write!(writer, "{}", amount.0)?;
                 }
                 write!(writer, "\t")?;
             }
             for account in &accounts {
                 if let Some(amount) = transaction.accounts.get(account.as_str())
                 {
-                    write!(writer, "{}", amount)?;
+                    write!(writer, "{}", amount.0)?;
                 }
                 write!(writer, "\t")?;
             }
@@ -119,10 +119,10 @@ pub struct Transaction {
     pub description: String,
 
     /// The accounts the transaction affected
-    pub accounts: IndexMap<String, i64>,
+    pub accounts: IndexMap<String, Amount>,
 
     /// The budgets the transaction affected
-    pub budgets: IndexMap<String, i64>,
+    pub budgets: IndexMap<String, Amount>,
 }
 
 impl Transaction {
@@ -144,3 +144,6 @@ mod tests {
         // cause an error.
     }
 }
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct Amount(i64);
