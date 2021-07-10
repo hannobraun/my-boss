@@ -129,9 +129,9 @@ impl Transaction {
 pub struct Account(IndexMap<String, Amount>);
 
 impl Account {
-    fn collect_names_into(&self, collection: &mut IndexSet<String>) {
+    fn collect_names_into(&self, names: &mut IndexSet<String>) {
         for name in self.0.keys() {
-            collection.insert(name.clone());
+            names.insert(name.clone());
         }
     }
 
