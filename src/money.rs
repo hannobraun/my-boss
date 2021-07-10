@@ -75,21 +75,8 @@ impl Money {
                 "{}\t{}\t",
                 transaction.date, transaction.description
             )?;
-            for account in &accounts.0 {
-                if let Some(amount) =
-                    transaction.accounts.0.get(account.as_str())
-                {
-                    write!(writer, "{}", amount.0)?;
-                }
-                write!(writer, "\t")?;
-            }
-            for budget in &budgets.0 {
-                if let Some(amount) = transaction.budgets.0.get(budget.as_str())
-                {
-                    write!(writer, "{}", amount.0)?;
-                }
-                write!(writer, "\t")?;
-            }
+            transaction.accounts.write(&accounts, &mut writer)?;
+            transaction.budgets.write(&budgets, &mut writer)?;
             writeln!(writer)?;
         }
 
@@ -129,6 +116,21 @@ impl Account {
         for name in self.0.keys() {
             names.0.insert(name.clone());
         }
+    }
+
+    fn write(
+        &self,
+        names: &AccountNames,
+        mut writer: impl io::Write,
+    ) -> anyhow::Result<()> {
+        for name in &names.0 {
+            if let Some(amount) = self.0.get(name.as_str()) {
+                write!(writer, "{}", amount.0)?;
+            }
+            write!(writer, "\t")?;
+        }
+
+        Ok(())
     }
 }
 
