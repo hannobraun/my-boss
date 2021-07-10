@@ -1,6 +1,6 @@
 use clap::Clap as _;
 use my_boss::{
-    args::{Args, Command, ContactsCmd},
+    args::{contacts, Args, Command},
     config::Config,
     contacts::{Contact, Contacts},
 };
@@ -15,13 +15,13 @@ fn main() -> anyhow::Result<()> {
         Command::Init => {
             Config::init()?;
         }
-        Command::Contacts(ContactsCmd::Generate(args)) => {
+        Command::Contacts(contacts::ContactsCmd::Generate(args)) => {
             let config = Config::load()?;
             let path = args.path.unwrap_or(config.contacts);
             let path = Contact::generate(args.name, path)?;
             println!("Generated {}", path.display());
         }
-        Command::Contacts(ContactsCmd::List(args)) => {
+        Command::Contacts(contacts::ContactsCmd::List(args)) => {
             let config = Config::load()?;
             let contacts = Contacts::load(config.contacts)?;
 
