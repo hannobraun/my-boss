@@ -65,12 +65,8 @@ impl Money {
 
         // Write sub-header
         write!(writer, "\t\t")?;
-        for account in &accounts.0 {
-            write!(writer, "{}\t", account)?;
-        }
-        for budget in &budgets.0 {
-            write!(writer, "{}\t", budget)?;
-        }
+        accounts.write_header(&mut writer)?;
+        budgets.write_header(&mut writer)?;
         writeln!(writer)?;
 
         for transaction in &self.0 {
@@ -153,6 +149,14 @@ impl AccountNames {
         for _ in 0..self.0.len() {
             write!(writer, "\t")?;
         }
+        Ok(())
+    }
+
+    fn write_header(&self, mut writer: impl io::Write) -> anyhow::Result<()> {
+        for name in &self.0 {
+            write!(writer, "{}\t", name)?;
+        }
+
         Ok(())
     }
 }
