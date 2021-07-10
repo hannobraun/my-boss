@@ -35,6 +35,12 @@ impl Money {
 
         Ok(Self(transactions))
     }
+
+    /// Iterate over transactions
+    pub fn transactions(&self) -> impl Iterator<Item = Transaction> + '_ {
+        // TASK: Sort transactions by date.
+        self.0.iter().cloned()
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
