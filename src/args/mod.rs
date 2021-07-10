@@ -1,4 +1,5 @@
 pub mod contacts;
+pub mod money;
 
 use clap::Clap;
 
@@ -16,4 +17,7 @@ pub enum Command {
 
     /// Manage contacts
     Contacts(contacts::Command),
+
+    /// Manage money
+    Money(money::Command),
 }

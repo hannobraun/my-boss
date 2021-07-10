@@ -1,6 +1,6 @@
 use clap::Clap as _;
 use my_boss::{
-    args::{contacts, Args, Command},
+    args::{contacts, money, Args, Command},
     config::Config,
     contacts::{Contact, Contacts},
 };
@@ -34,6 +34,10 @@ fn main() -> anyhow::Result<()> {
             //       by this issue: https://github.com/time-rs/time/issues/293
             let today = OffsetDateTime::now_utc().date();
             print_contacts(contacts.due(today))?;
+        }
+        Command::Money(money::Command::Report(_)) => {
+            // TASK: Implement
+            todo!()
         }
     }
 
