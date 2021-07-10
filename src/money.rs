@@ -131,6 +131,9 @@ impl Transaction {
     }
 }
 
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct Amount(i64);
+
 #[cfg(test)]
 mod tests {
     use super::Money;
@@ -143,6 +146,3 @@ mod tests {
         // cause an error.
     }
 }
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct Amount(i64);
