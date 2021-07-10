@@ -52,10 +52,10 @@ impl Money {
         let mut budgets = IndexSet::new();
 
         for transaction in &self.0 {
-            for account in transaction.accounts.keys() {
+            for account in transaction.accounts.0.keys() {
                 accounts.insert(account);
             }
-            for budget in transaction.budgets.keys() {
+            for budget in transaction.budgets.0.keys() {
                 budgets.insert(budget);
             }
         }
@@ -88,14 +88,16 @@ impl Money {
                 transaction.date, transaction.description
             )?;
             for account in &accounts {
-                if let Some(amount) = transaction.accounts.get(account.as_str())
+                if let Some(amount) =
+                    transaction.accounts.0.get(account.as_str())
                 {
                     write!(writer, "{}", amount.0)?;
                 }
                 write!(writer, "\t")?;
             }
             for budget in &budgets {
-                if let Some(amount) = transaction.budgets.get(budget.as_str()) {
+                if let Some(amount) = transaction.budgets.0.get(budget.as_str())
+                {
                     write!(writer, "{}", amount.0)?;
                 }
                 write!(writer, "\t")?;
@@ -118,10 +120,10 @@ pub struct Transaction {
     pub description: String,
 
     /// The accounts the transaction affected
-    pub accounts: IndexMap<String, Amount>,
+    pub accounts: Account,
 
     /// The budgets the transaction affected
-    pub budgets: IndexMap<String, Amount>,
+    pub budgets: Account,
 }
 
 impl Transaction {
@@ -130,6 +132,9 @@ impl Transaction {
         load(path)
     }
 }
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct Account(IndexMap<String, Amount>);
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Amount(i64);
