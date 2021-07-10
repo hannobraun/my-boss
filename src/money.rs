@@ -48,27 +48,27 @@ impl Money {
 
         let mut writer = TabWriter::new(writer);
 
-        let mut accounts = IndexSet::new();
-        let mut budgets = IndexSet::new();
+        let mut accounts = AccountNames::new();
+        let mut budgets = AccountNames::new();
 
         for transaction in &self.0 {
-            transaction.accounts.collect_names_into(&mut accounts);
-            transaction.budgets.collect_names_into(&mut budgets);
+            transaction.accounts.collect_names_into(&mut accounts.0);
+            transaction.budgets.collect_names_into(&mut budgets.0);
         }
 
         // Write header
         write!(writer, "Date\tDescription\tAccounts")?;
-        Account::reserve_header_space(&mut writer, &accounts)?;
+        Account::reserve_header_space(&mut writer, &accounts.0)?;
         write!(writer, "Budgets")?;
-        Account::reserve_header_space(&mut writer, &budgets)?;
+        Account::reserve_header_space(&mut writer, &budgets.0)?;
         writeln!(writer)?;
 
         // Write sub-header
         write!(writer, "\t\t")?;
-        for account in &accounts {
+        for account in &accounts.0 {
             write!(writer, "{}\t", account)?;
         }
-        for budget in &budgets {
+        for budget in &budgets.0 {
             write!(writer, "{}\t", budget)?;
         }
         writeln!(writer)?;
@@ -79,7 +79,7 @@ impl Money {
                 "{}\t{}\t",
                 transaction.date, transaction.description
             )?;
-            for account in &accounts {
+            for account in &accounts.0 {
                 if let Some(amount) =
                     transaction.accounts.0.get(account.as_str())
                 {
@@ -87,7 +87,7 @@ impl Money {
                 }
                 write!(writer, "\t")?;
             }
-            for budget in &budgets {
+            for budget in &budgets.0 {
                 if let Some(amount) = transaction.budgets.0.get(budget.as_str())
                 {
                     write!(writer, "{}", amount.0)?;
@@ -148,6 +148,14 @@ impl Account {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Amount(i64);
+
+struct AccountNames(IndexSet<String>);
+
+impl AccountNames {
+    fn new() -> Self {
+        Self(IndexSet::new())
+    }
+}
 
 #[cfg(test)]
 mod tests {
