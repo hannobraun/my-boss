@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use clap::Clap;
 
 #[derive(Clap)]
-pub enum ContactsCmd {
+pub enum Command {
     /// Generate a new contact
     Generate(GenerateContact),
 

@@ -15,5 +15,5 @@ pub enum Command {
     Init,
 
     /// Manage contacts
-    Contacts(contacts::ContactsCmd),
+    Contacts(contacts::Command),
 }

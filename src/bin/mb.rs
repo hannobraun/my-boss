@@ -15,13 +15,13 @@ fn main() -> anyhow::Result<()> {
         Command::Init => {
             Config::init()?;
         }
-        Command::Contacts(contacts::ContactsCmd::Generate(args)) => {
+        Command::Contacts(contacts::Command::Generate(args)) => {
             let config = Config::load()?;
             let path = args.path.unwrap_or(config.contacts);
             let path = Contact::generate(args.name, path)?;
             println!("Generated {}", path.display());
         }
-        Command::Contacts(contacts::ContactsCmd::List(args)) => {
+        Command::Contacts(contacts::Command::List(args)) => {
             let config = Config::load()?;
             let contacts = Contacts::load(config.contacts)?;
 
