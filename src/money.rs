@@ -52,12 +52,8 @@ impl Money {
         let mut budgets = IndexSet::new();
 
         for transaction in &self.0 {
-            for account in transaction.accounts.0.keys() {
-                accounts.insert(account);
-            }
-            for budget in transaction.budgets.0.keys() {
-                budgets.insert(budget);
-            }
+            transaction.accounts.collect_names_into(&mut accounts);
+            transaction.budgets.collect_names_into(&mut budgets);
         }
 
         // Write header
@@ -135,6 +131,14 @@ impl Transaction {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Account(IndexMap<String, Amount>);
+
+impl Account {
+    fn collect_names_into(&self, collection: &mut IndexSet<String>) {
+        for name in self.0.keys() {
+            collection.insert(name.clone());
+        }
+    }
+}
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Amount(i64);
