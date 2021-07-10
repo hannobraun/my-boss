@@ -149,6 +149,7 @@ impl AccountNames {
         for _ in 0..self.0.len() {
             write!(writer, "\t")?;
         }
+
         Ok(())
     }
 
