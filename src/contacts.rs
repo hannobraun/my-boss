@@ -1,6 +1,6 @@
 use std::{
     cmp::Ordering,
-    fmt::{Display, Write as _},
+    fmt::{self, Write as _},
     fs::File,
     io::Write,
     path::{Path, PathBuf},
@@ -138,7 +138,7 @@ impl Contact {
         Ok(example)
     }
 
-    pub fn summary(&self) -> anyhow::Result<impl Display> {
+    pub fn summary(&self) -> anyhow::Result<impl fmt::Display> {
         let mut summary = String::new();
 
         write!(summary, "{}", self.name)?;
