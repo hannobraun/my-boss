@@ -42,7 +42,6 @@ impl Money {
 
     /// Print a report to stout
     pub fn report(&self, writer: impl io::Write) -> anyhow::Result<()> {
-        // TASK: Format money amounts correctly.
         // TASK: Improve formatting of headers and sub-headers (make them bold,
         //       for example).
 
@@ -119,6 +118,7 @@ impl Account {
         }
     }
 
+    // TASK: Format money amounts correctly.
     fn write(
         &self,
         names: &AccountNames,
