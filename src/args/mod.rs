@@ -2,7 +2,7 @@ pub mod contacts;
 
 use clap::Clap;
 
-pub use self::contacts::ContactsCmd;
+use self::contacts::ContactsCmd;
 
 #[derive(Clap)]
 #[clap(name = "My Boss")]
