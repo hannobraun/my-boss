@@ -69,6 +69,7 @@ impl Money {
         budgets.write_header(&mut writer)?;
         writeln!(writer)?;
 
+        // Write transactions
         for transaction in &self.0 {
             write!(
                 writer,
