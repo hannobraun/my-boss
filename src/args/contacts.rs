@@ -9,7 +9,7 @@ pub enum Command {
 
     /// List contacts. By default, only contacts where communication is due are
     /// listed.
-    List(ListContacts),
+    List(List),
 }
 
 #[derive(Clap)]
@@ -24,7 +24,7 @@ pub struct Generate {
 }
 
 #[derive(Clap)]
-pub struct ListContacts {
+pub struct List {
     /// List all contacts, not just those where communication is due.
     #[clap(short, long)]
     pub all: bool,
