@@ -1,5 +1,5 @@
 date = "2021-07-10"
-description = "Example transaction on 2021-07-10"
+description = "Example 2"
 
 [accounts]
 "Credit Card" = -23456
