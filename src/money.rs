@@ -94,9 +94,8 @@ impl Money {
                 }
                 write!(writer, "\t")?;
             }
-            for account in &accounts {
-                if let Some(amount) = transaction.accounts.get(account.as_str())
-                {
+            for budget in &budgets {
+                if let Some(amount) = transaction.budgets.get(budget.as_str()) {
                     write!(writer, "{}", amount.0)?;
                 }
                 write!(writer, "\t")?;
