@@ -1,8 +1,12 @@
-use std::path::Path;
+use std::{
+    io::{self, Write as _},
+    path::Path,
+};
 
 use anyhow::Context as _;
-use indexmap::IndexMap;
+use indexmap::{IndexMap, IndexSet};
 use serde::{Deserialize, Serialize};
+use tabwriter::TabWriter;
 use time::Date;
 use walkdir::WalkDir;
 
@@ -40,6 +44,75 @@ impl Money {
     pub fn transactions(&self) -> impl Iterator<Item = Transaction> + '_ {
         // TASK: Sort transactions by date.
         self.0.iter().cloned()
+    }
+
+    /// Print a report to stout
+    pub fn report(&self, writer: impl io::Write) -> anyhow::Result<()> {
+        // TASK: Format money amounts correctly.
+        // TASK: Improve formatting of headers and sub-headers (make them bold,
+        //       for example).
+
+        let mut writer = TabWriter::new(writer);
+
+        let mut accounts = IndexSet::new();
+        let mut budgets = IndexSet::new();
+
+        for transaction in &self.0 {
+            for account in transaction.accounts.keys() {
+                accounts.insert(account);
+            }
+            for budget in transaction.budgets.keys() {
+                budgets.insert(budget);
+            }
+        }
+
+        // Write header
+        write!(writer, "Date\tDescription\tAccounts")?;
+        for _ in 0..accounts.len() {
+            write!(writer, "\t")?;
+        }
+        write!(writer, "Budgets")?;
+        for _ in 0..budgets.len() {
+            write!(writer, "\t")?;
+        }
+        writeln!(writer)?;
+
+        // Write sub-header
+        write!(writer, "\t\t")?;
+        for account in &accounts {
+            write!(writer, "{}\t", account)?;
+        }
+        for budget in &budgets {
+            write!(writer, "{}\t", budget)?;
+        }
+        writeln!(writer)?;
+
+        for transaction in &self.0 {
+            write!(
+                writer,
+                "{}\t{}\t",
+                transaction.date, transaction.description
+            )?;
+            for account in &accounts {
+                if let Some(amount) = transaction.accounts.get(account.as_str())
+                {
+                    write!(writer, "{}", amount)?;
+                }
+                write!(writer, "\t")?;
+            }
+            for account in &accounts {
+                if let Some(amount) = transaction.accounts.get(account.as_str())
+                {
+                    write!(writer, "{}", amount)?;
+                }
+                write!(writer, "\t")?;
+            }
+            writeln!(writer)?;
+        }
+
+        writer.flush()?;
+
+        Ok(())
     }
 }
 
