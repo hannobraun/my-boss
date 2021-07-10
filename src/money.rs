@@ -9,9 +9,9 @@ use walkdir::WalkDir;
 use crate::util::toml::load;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct Transactions(pub Vec<Transaction>);
+pub struct Money(pub Vec<Transaction>);
 
-impl Transactions {
+impl Money {
     /// Load all transactions in a directory
     pub fn load(path: impl AsRef<Path>) -> anyhow::Result<Self> {
         let mut transactions = Vec::new();
@@ -61,11 +61,11 @@ impl Transaction {
 
 #[cfg(test)]
 mod tests {
-    use super::Transactions;
+    use super::Money;
 
     #[test]
     fn transactions_should_match_example_files() {
-        Transactions::load("money").unwrap();
+        Money::load("money").unwrap();
 
         // Nothing to check, I think. It's enough that the previous call doesn't
         // cause an error.
