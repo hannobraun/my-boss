@@ -1,8 +1,11 @@
+use std::io;
+
 use clap::Clap as _;
 use my_boss::{
     args::{contacts, money, Args, Command},
     config::Config,
     contacts::{Contact, Contacts},
+    money::Money,
 };
 use time::OffsetDateTime;
 
@@ -36,8 +39,10 @@ fn main() -> anyhow::Result<()> {
             print_contacts(contacts.due(today))?;
         }
         Command::Money(money::Command::Report(_)) => {
-            // TASK: Implement
-            todo!()
+            let config = Config::load()?;
+            let money = Money::load(config.money)?;
+
+            money.report(io::stdout())?;
         }
     }
 
