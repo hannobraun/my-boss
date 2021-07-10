@@ -2,8 +2,6 @@ pub mod contacts;
 
 use clap::Clap;
 
-use self::contacts::ContactsCmd;
-
 #[derive(Clap)]
 #[clap(name = "My Boss")]
 pub struct Args {
@@ -17,5 +15,5 @@ pub enum Command {
     Init,
 
     /// Manage contacts
-    Contacts(ContactsCmd),
+    Contacts(contacts::ContactsCmd),
 }
