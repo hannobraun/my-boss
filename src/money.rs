@@ -58,9 +58,9 @@ impl Money {
 
         // Write header
         write!(writer, "Date\tDescription\tAccounts")?;
-        Account::reserve_header_space(&mut writer, &accounts.0)?;
+        accounts.reserve_header_space(&mut writer)?;
         write!(writer, "Budgets")?;
-        Account::reserve_header_space(&mut writer, &budgets.0)?;
+        budgets.reserve_header_space(&mut writer)?;
         writeln!(writer)?;
 
         // Write sub-header
@@ -134,16 +134,6 @@ impl Account {
             names.insert(name.clone());
         }
     }
-
-    fn reserve_header_space(
-        mut writer: impl io::Write,
-        names: &IndexSet<String>,
-    ) -> anyhow::Result<()> {
-        for _ in 0..names.len() {
-            write!(writer, "\t")?;
-        }
-        Ok(())
-    }
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -154,6 +144,16 @@ struct AccountNames(IndexSet<String>);
 impl AccountNames {
     fn new() -> Self {
         Self(IndexSet::new())
+    }
+
+    fn reserve_header_space(
+        &self,
+        mut writer: impl io::Write,
+    ) -> anyhow::Result<()> {
+        for _ in 0..self.0.len() {
+            write!(writer, "\t")?;
+        }
+        Ok(())
     }
 }
 
