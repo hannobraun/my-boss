@@ -40,12 +40,6 @@ impl Money {
         Ok(Self(transactions))
     }
 
-    /// Iterate over transactions
-    pub fn transactions(&self) -> impl Iterator<Item = Transaction> + '_ {
-        // TASK: Sort transactions by date.
-        self.0.iter().cloned()
-    }
-
     /// Print a report to stout
     pub fn report(&self, writer: impl io::Write) -> anyhow::Result<()> {
         // TASK: Format money amounts correctly.
