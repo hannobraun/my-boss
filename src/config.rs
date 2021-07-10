@@ -12,6 +12,7 @@ const PATH: &str = "my-boss.toml";
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Config {
     pub contacts: PathBuf,
+    pub money: PathBuf,
 }
 
 impl Config {
@@ -60,6 +61,7 @@ impl Default for Config {
     fn default() -> Self {
         Self {
             contacts: PathBuf::from("contacts"),
+            money: PathBuf::from("money"),
         }
     }
 }
