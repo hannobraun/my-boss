@@ -68,6 +68,7 @@ impl Money {
 
         // Write sub-header
         writer.attr(term::Attr::Bold)?;
+        writer.fg(term::color::BRIGHT_WHITE)?;
         write!(writer, "\t\t")?;
         accounts.write_header(&mut writer)?;
         budgets.write_header(&mut writer)?;
