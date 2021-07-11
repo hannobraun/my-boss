@@ -218,6 +218,7 @@ dependencies = [
  "serde",
  "tabwriter",
  "term",
+ "termcolor",
  "time",
  "toml",
  "walkdir",
