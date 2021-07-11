@@ -4,11 +4,11 @@ use std::{
     path::Path,
 };
 
-use anyhow::{anyhow, Context as _};
+use anyhow::Context as _;
 use indexmap::{IndexMap, IndexSet};
 use serde::{Deserialize, Serialize};
 use tabwriter::TabWriter;
-use term::{Terminal as _, TerminfoTerminal};
+use termcolor::{Ansi, Color, ColorSpec, WriteColor};
 use time::Date;
 use walkdir::WalkDir;
 
@@ -45,8 +45,7 @@ impl Money {
     /// Print a report to stout
     pub fn report(&self, writer: impl io::Write) -> anyhow::Result<()> {
         let writer = TabWriter::new(writer);
-        let mut writer = TerminfoTerminal::new(writer)
-            .ok_or_else(|| anyhow!("Failed to initialize terminfo terminal"))?;
+        let mut writer = Ansi::new(writer);
 
         let mut accounts = AccountNames::new();
         let mut budgets = AccountNames::new();
@@ -57,8 +56,12 @@ impl Money {
         }
 
         // Write header
-        writer.attr(term::Attr::Bold)?;
-        writer.fg(term::color::BRIGHT_WHITE)?;
+        writer.set_color(
+            ColorSpec::new()
+                .set_fg(Some(Color::White))
+                .set_intense(true)
+                .set_bold(true),
+        )?;
         write!(writer, "Date\tDescription\tAccounts")?;
         accounts.reserve_header_space(&mut writer)?;
         write!(writer, "Budgets")?;
@@ -67,8 +70,12 @@ impl Money {
         writeln!(writer)?;
 
         // Write sub-header
-        writer.attr(term::Attr::Bold)?;
-        writer.fg(term::color::BRIGHT_WHITE)?;
+        writer.set_color(
+            ColorSpec::new()
+                .set_fg(Some(Color::White))
+                .set_intense(true)
+                .set_bold(true),
+        )?;
         write!(writer, "\t\t")?;
         accounts.write_header(&mut writer)?;
         budgets.write_header(&mut writer)?;
@@ -131,7 +138,7 @@ impl Account {
     fn write(
         &self,
         names: &AccountNames,
-        writer: &mut TerminfoTerminal<impl io::Write>,
+        writer: &mut Ansi<impl io::Write>,
     ) -> anyhow::Result<()> {
         for name in &names.0 {
             if let Some(amount) = self.0.get(name.as_str()) {
@@ -148,17 +155,14 @@ impl Account {
 pub struct Amount(i64);
 
 impl Amount {
-    fn write(
-        &self,
-        writer: &mut TerminfoTerminal<impl io::Write>,
-    ) -> anyhow::Result<()> {
+    fn write(&self, writer: &mut Ansi<impl io::Write>) -> anyhow::Result<()> {
         let color = if self.0.is_negative() {
-            term::color::RED
+            Color::Red
         } else {
-            term::color::GREEN
+            Color::Green
         };
 
-        writer.fg(color)?;
+        writer.set_color(ColorSpec::new().set_fg(Some(color)))?;
         write!(writer, "{}", self)?;
 
         Ok(())
