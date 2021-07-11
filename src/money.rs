@@ -152,12 +152,13 @@ impl Amount {
         &self,
         writer: &mut TerminfoTerminal<impl io::Write>,
     ) -> anyhow::Result<()> {
-        if self.0.is_negative() {
-            writer.fg(term::color::RED)?;
+        let color = if self.0.is_negative() {
+            term::color::RED
         } else {
-            writer.fg(term::color::GREEN)?;
-        }
+            term::color::GREEN
+        };
 
+        writer.fg(color)?;
         write!(writer, "{}", self)?;
 
         Ok(())
