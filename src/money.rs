@@ -4,10 +4,11 @@ use std::{
     path::Path,
 };
 
-use anyhow::Context as _;
+use anyhow::{anyhow, Context as _};
 use indexmap::{IndexMap, IndexSet};
 use serde::{Deserialize, Serialize};
 use tabwriter::TabWriter;
+use term::{Terminal as _, TerminfoTerminal};
 use time::Date;
 use walkdir::WalkDir;
 
@@ -43,10 +44,9 @@ impl Money {
 
     /// Print a report to stout
     pub fn report(&self, writer: impl io::Write) -> anyhow::Result<()> {
-        // TASK: Improve formatting of headers and sub-headers (make them bold,
-        //       for example).
-
-        let mut writer = TabWriter::new(writer);
+        let writer = TabWriter::new(writer);
+        let mut writer = TerminfoTerminal::new(writer)
+            .ok_or_else(|| anyhow!("Failed to initialize terminfo terminal"))?;
 
         let mut accounts = AccountNames::new();
         let mut budgets = AccountNames::new();
@@ -57,16 +57,21 @@ impl Money {
         }
 
         // Write header
+        writer.attr(term::Attr::Bold)?;
+        writer.fg(term::color::BRIGHT_WHITE)?;
         write!(writer, "Date\tDescription\tAccounts")?;
         accounts.reserve_header_space(&mut writer)?;
         write!(writer, "Budgets")?;
         budgets.reserve_header_space(&mut writer)?;
+        writer.reset()?;
         writeln!(writer)?;
 
         // Write sub-header
+        writer.attr(term::Attr::Bold)?;
         write!(writer, "\t\t")?;
         accounts.write_header(&mut writer)?;
         budgets.write_header(&mut writer)?;
+        writer.reset()?;
         writeln!(writer)?;
 
         // Write transactions
