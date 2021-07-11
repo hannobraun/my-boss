@@ -112,10 +112,10 @@ pub struct Transaction {
     pub description: String,
 
     /// The accounts the transaction affected
-    pub accounts: Account,
+    pub accounts: Accounts,
 
     /// The budgets the transaction affected
-    pub budgets: Account,
+    pub budgets: Accounts,
 }
 
 impl Transaction {
@@ -126,9 +126,9 @@ impl Transaction {
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct Account(IndexMap<String, Amount>);
+pub struct Accounts(IndexMap<String, Amount>);
 
-impl Account {
+impl Accounts {
     fn collect_names_into(&self, names: &mut AccountNames) {
         for name in self.0.keys() {
             names.0.insert(name.clone());
