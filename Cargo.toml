@@ -12,6 +12,7 @@ clap              = "3.0.0-beta.2"
 log               = "*"
 pretty_env_logger = "*"
 tabwriter         = "*"
+term              = "*"
 walkdir           = "*"
 
 [dependencies.indexmap]
