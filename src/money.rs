@@ -1,4 +1,5 @@
 use std::{
+    fmt,
     io::{self, Write as _},
     path::Path,
 };
@@ -118,7 +119,6 @@ impl Account {
         }
     }
 
-    // TASK: Format money amounts correctly.
     fn write(
         &self,
         names: &AccountNames,
@@ -126,7 +126,7 @@ impl Account {
     ) -> anyhow::Result<()> {
         for name in &names.0 {
             if let Some(amount) = self.0.get(name.as_str()) {
-                write!(writer, "{}", amount.0)?;
+                write!(writer, "{}", amount)?;
             }
             write!(writer, "\t")?;
         }
@@ -137,6 +137,12 @@ impl Account {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Amount(i64);
+
+impl fmt::Display for Amount {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}.{}€", self.0 / 100, self.0.abs() % 100)
+    }
+}
 
 struct AccountNames(IndexSet<String>);
 
