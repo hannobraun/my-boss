@@ -87,6 +87,8 @@ impl Money {
             writeln!(writer)?;
         }
 
+        // TASK: Write last line with totals.
+
         writer.flush()?;
 
         Ok(())
@@ -141,6 +143,7 @@ impl Account {
     }
 }
 
+// TASK: Write positive amounts in green, negative ones in red.
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Amount(i64);
 
