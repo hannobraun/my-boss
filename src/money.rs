@@ -84,6 +84,7 @@ impl Money {
             )?;
             transaction.accounts.write(&accounts, &mut writer)?;
             transaction.budgets.write(&budgets, &mut writer)?;
+            writer.reset()?;
             writeln!(writer)?;
         }
 
@@ -130,11 +131,11 @@ impl Account {
     fn write(
         &self,
         names: &AccountNames,
-        mut writer: impl io::Write,
+        writer: &mut TerminfoTerminal<impl io::Write>,
     ) -> anyhow::Result<()> {
         for name in &names.0 {
             if let Some(amount) = self.0.get(name.as_str()) {
-                write!(writer, "{}", amount)?;
+                amount.write(writer)?;
             }
             write!(writer, "\t")?;
         }
@@ -143,9 +144,25 @@ impl Account {
     }
 }
 
-// TASK: Write positive amounts in green, negative ones in red.
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Amount(i64);
+
+impl Amount {
+    fn write(
+        &self,
+        writer: &mut TerminfoTerminal<impl io::Write>,
+    ) -> anyhow::Result<()> {
+        if self.0.is_negative() {
+            writer.fg(term::color::RED)?;
+        } else {
+            writer.fg(term::color::GREEN)?;
+        }
+
+        write!(writer, "{}", self)?;
+
+        Ok(())
+    }
+}
 
 impl fmt::Display for Amount {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
