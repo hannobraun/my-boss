@@ -44,63 +44,7 @@ impl Money {
 
     /// Print a report to stdout
     pub fn report(&self, writer: impl io::Write) -> anyhow::Result<()> {
-        let writer = TabWriter::new(writer);
-        let mut writer = Ansi::new(writer);
-
-        let mut accounts = AccountNames::new();
-        let mut budgets = AccountNames::new();
-
-        for transaction in &self.0 {
-            transaction.accounts.collect_names_into(&mut accounts);
-            transaction.budgets.collect_names_into(&mut budgets);
-        }
-
-        // Write header
-        writer.set_color(
-            ColorSpec::new()
-                .set_fg(Some(Color::White))
-                .set_intense(true)
-                .set_bold(true),
-        )?;
-        write!(writer, "Date\tDescription\tAccounts")?;
-        accounts.reserve_header_space(&mut writer)?;
-        write!(writer, "Budgets")?;
-        budgets.reserve_header_space(&mut writer)?;
-        writer.reset()?;
-        writeln!(writer)?;
-
-        // Write sub-header
-        writer.set_color(
-            ColorSpec::new()
-                .set_fg(Some(Color::White))
-                .set_intense(true)
-                .set_bold(true),
-        )?;
-        write!(writer, "\t\t")?;
-        accounts.write_header(&mut writer)?;
-        budgets.write_header(&mut writer)?;
-        writer.reset()?;
-        writeln!(writer)?;
-
-        // Write transactions
-        // TASK: Print transactions sorted by date.
-        for transaction in &self.0 {
-            write!(
-                writer,
-                "{}\t{}\t",
-                transaction.date, transaction.description
-            )?;
-            transaction.accounts.write(&accounts, &mut writer)?;
-            transaction.budgets.write(&budgets, &mut writer)?;
-            writer.reset()?;
-            writeln!(writer)?;
-        }
-
-        // TASK: Write last line with totals.
-
-        writer.flush()?;
-
-        Ok(())
+        write_report(&self.0, writer)
     }
 }
 
@@ -165,6 +109,69 @@ impl fmt::Display for Amount {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}.{}€", self.0 / 100, self.0.abs() % 100)
     }
+}
+
+fn write_report(
+    transactions: &[Transaction],
+    writer: impl io::Write,
+) -> anyhow::Result<()> {
+    let writer = TabWriter::new(writer);
+    let mut writer = Ansi::new(writer);
+
+    let mut accounts = AccountNames::new();
+    let mut budgets = AccountNames::new();
+
+    for transaction in transactions.clone().into_iter() {
+        transaction.accounts.collect_names_into(&mut accounts);
+        transaction.budgets.collect_names_into(&mut budgets);
+    }
+
+    // Write header
+    writer.set_color(
+        ColorSpec::new()
+            .set_fg(Some(Color::White))
+            .set_intense(true)
+            .set_bold(true),
+    )?;
+    write!(writer, "Date\tDescription\tAccounts")?;
+    accounts.reserve_header_space(&mut writer)?;
+    write!(writer, "Budgets")?;
+    budgets.reserve_header_space(&mut writer)?;
+    writer.reset()?;
+    writeln!(writer)?;
+
+    // Write sub-header
+    writer.set_color(
+        ColorSpec::new()
+            .set_fg(Some(Color::White))
+            .set_intense(true)
+            .set_bold(true),
+    )?;
+    write!(writer, "\t\t")?;
+    accounts.write_header(&mut writer)?;
+    budgets.write_header(&mut writer)?;
+    writer.reset()?;
+    writeln!(writer)?;
+
+    // Write transactions
+    // TASK: Print transactions sorted by date.
+    for transaction in transactions.into_iter() {
+        write!(
+            writer,
+            "{}\t{}\t",
+            transaction.date, transaction.description
+        )?;
+        transaction.accounts.write(&accounts, &mut writer)?;
+        transaction.budgets.write(&budgets, &mut writer)?;
+        writer.reset()?;
+        writeln!(writer)?;
+    }
+
+    // TASK: Write last line with totals.
+
+    writer.flush()?;
+
+    Ok(())
 }
 
 fn write_amount(
