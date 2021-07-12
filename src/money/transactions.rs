@@ -12,6 +12,8 @@ impl<'r> Transactions<'r> {
     pub fn new(transactions: &'r [Transaction]) -> Self {
         Self(transactions)
     }
+
+    // TASK: Add methods that return account totals for accounts and budgets.
 }
 
 impl<'r> IntoIterator for &'r Transactions<'r> {
