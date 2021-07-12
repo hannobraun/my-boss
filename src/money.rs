@@ -138,8 +138,10 @@ fn write_report(
             "{}\t{}\t",
             transaction.date, transaction.description
         )?;
+
         write_accounts(&transaction.accounts, &accounts, &mut writer)?;
         write_accounts(&transaction.budgets, &budgets, &mut writer)?;
+
         writer.reset()?;
         writeln!(writer)?;
     }
