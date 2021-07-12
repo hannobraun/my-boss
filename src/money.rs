@@ -73,23 +73,6 @@ impl Transaction {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Accounts(IndexMap<String, Amount>);
 
-impl Accounts {
-    fn write(
-        &self,
-        names: &AccountNames,
-        writer: &mut Ansi<impl io::Write>,
-    ) -> anyhow::Result<()> {
-        for name in &names.0 {
-            if let Some(amount) = self.0.get(name.as_str()) {
-                write_amount(amount, writer)?;
-            }
-            write!(writer, "\t")?;
-        }
-
-        Ok(())
-    }
-}
-
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Amount(i64);
 
@@ -155,8 +138,8 @@ fn write_report(
             "{}\t{}\t",
             transaction.date, transaction.description
         )?;
-        transaction.accounts.write(&accounts, &mut writer)?;
-        transaction.budgets.write(&budgets, &mut writer)?;
+        write_accounts(&transaction.accounts, &accounts, &mut writer)?;
+        write_accounts(&transaction.budgets, &budgets, &mut writer)?;
         writer.reset()?;
         writeln!(writer)?;
     }
@@ -186,6 +169,21 @@ fn write_amount(
 
     writer.set_color(ColorSpec::new().set_fg(Some(color)))?;
     write!(writer, "{}", amount)?;
+
+    Ok(())
+}
+
+fn write_accounts(
+    accounts: &Accounts,
+    names: &AccountNames,
+    writer: &mut Ansi<impl io::Write>,
+) -> anyhow::Result<()> {
+    for name in &names.0 {
+        if let Some(amount) = accounts.0.get(name.as_str()) {
+            write_amount(amount, writer)?;
+        }
+        write!(writer, "\t")?;
+    }
 
     Ok(())
 }
