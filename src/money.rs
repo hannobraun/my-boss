@@ -42,7 +42,7 @@ impl Money {
         Ok(Self(transactions))
     }
 
-    /// Print a report to stout
+    /// Print a report to stdout
     pub fn report(&self, writer: impl io::Write) -> anyhow::Result<()> {
         let writer = TabWriter::new(writer);
         let mut writer = Ansi::new(writer);
