@@ -105,8 +105,8 @@ fn write_report(
     let mut budgets = AccountNames::new();
 
     for transaction in transactions.clone().into_iter() {
-        collect_account_names_into(&transaction.accounts, &mut accounts);
-        collect_account_names_into(&transaction.budgets, &mut budgets);
+        accounts.collect_names(&transaction.accounts);
+        budgets.collect_names(&transaction.budgets);
     }
 
     // Write header
@@ -159,12 +159,6 @@ fn write_report(
     Ok(())
 }
 
-fn collect_account_names_into(accounts: &Accounts, names: &mut AccountNames) {
-    for name in accounts.names() {
-        names.0.insert(name.clone());
-    }
-}
-
 fn write_amount(
     amount: &Amount,
     writer: &mut Ansi<impl io::Write>,
@@ -201,6 +195,12 @@ struct AccountNames(IndexSet<String>);
 impl AccountNames {
     fn new() -> Self {
         Self(IndexSet::new())
+    }
+
+    fn collect_names(&mut self, accounts: &Accounts) {
+        for name in accounts.names() {
+            self.0.insert(name.clone());
+        }
     }
 
     fn reserve_header_space(
