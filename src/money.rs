@@ -143,7 +143,7 @@ impl Accounts {
     ) -> anyhow::Result<()> {
         for name in &names.0 {
             if let Some(amount) = self.0.get(name.as_str()) {
-                amount.write(writer)?;
+                write_amount(amount, writer)?;
             }
             write!(writer, "\t")?;
         }
@@ -155,25 +155,26 @@ impl Accounts {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Amount(i64);
 
-impl Amount {
-    fn write(&self, writer: &mut Ansi<impl io::Write>) -> anyhow::Result<()> {
-        let color = if self.0.is_negative() {
-            Color::Red
-        } else {
-            Color::Green
-        };
-
-        writer.set_color(ColorSpec::new().set_fg(Some(color)))?;
-        write!(writer, "{}", self)?;
-
-        Ok(())
-    }
-}
-
 impl fmt::Display for Amount {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}.{}€", self.0 / 100, self.0.abs() % 100)
     }
+}
+
+fn write_amount(
+    amount: &Amount,
+    writer: &mut Ansi<impl io::Write>,
+) -> anyhow::Result<()> {
+    let color = if amount.0.is_negative() {
+        Color::Red
+    } else {
+        Color::Green
+    };
+
+    writer.set_color(ColorSpec::new().set_fg(Some(color)))?;
+    write!(writer, "{}", amount)?;
+
+    Ok(())
 }
 
 struct AccountNames(IndexSet<String>);
