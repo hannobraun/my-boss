@@ -155,6 +155,12 @@ impl Accounts {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Amount(i64);
 
+impl Amount {
+    pub fn is_negative(&self) -> bool {
+        self.0.is_negative()
+    }
+}
+
 impl fmt::Display for Amount {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}.{}€", self.0 / 100, self.0.abs() % 100)
@@ -165,7 +171,7 @@ fn write_amount(
     amount: &Amount,
     writer: &mut Ansi<impl io::Write>,
 ) -> anyhow::Result<()> {
-    let color = if amount.0.is_negative() {
+    let color = if amount.is_negative() {
         Color::Red
     } else {
         Color::Green
