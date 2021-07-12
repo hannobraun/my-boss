@@ -16,7 +16,7 @@ pub fn write_report(
     let mut accounts = AccountNames::new();
     let mut budgets = AccountNames::new();
 
-    for transaction in transactions.clone().into_iter() {
+    for transaction in transactions {
         accounts.collect_names(&transaction.accounts);
         budgets.collect_names(&transaction.budgets);
     }
@@ -49,7 +49,7 @@ pub fn write_report(
     writeln!(writer)?;
 
     // Write transactions
-    for transaction in transactions.into_iter() {
+    for transaction in transactions {
         write!(
             writer,
             "{}\t{}\t",
