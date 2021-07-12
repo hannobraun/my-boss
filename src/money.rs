@@ -77,6 +77,10 @@ impl Accounts {
     pub fn names(&self) -> impl Iterator<Item = &String> {
         self.0.keys()
     }
+
+    pub fn amount_for(&self, name: impl AsRef<str>) -> Option<Amount> {
+        self.0.get(name.as_ref()).copied()
+    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
@@ -181,8 +185,8 @@ fn write_accounts(
     writer: &mut Ansi<impl io::Write>,
 ) -> anyhow::Result<()> {
     for name in &names.0 {
-        if let Some(amount) = accounts.0.get(name.as_str()) {
-            write_amount(amount, writer)?;
+        if let Some(amount) = accounts.amount_for(name) {
+            write_amount(&amount, writer)?;
         }
         write!(writer, "\t")?;
     }
