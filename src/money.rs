@@ -79,7 +79,7 @@ impl Accounts {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 pub struct Amount(i64);
 
 impl Amount {
