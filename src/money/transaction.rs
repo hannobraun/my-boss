@@ -4,7 +4,7 @@ use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use time::Date;
 
-use crate::util::toml::load;
+use crate::util::toml;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Transaction {
@@ -24,7 +24,7 @@ pub struct Transaction {
 impl Transaction {
     /// Load a transaction
     pub fn load(path: impl AsRef<Path>) -> anyhow::Result<Self> {
-        load(path)
+        toml::load(path)
     }
 }
 
