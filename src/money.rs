@@ -83,6 +83,7 @@ impl Money {
         writeln!(writer)?;
 
         // Write transactions
+        // TASK: Print transactions sorted by date.
         for transaction in &self.0 {
             write!(
                 writer,
