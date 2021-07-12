@@ -49,7 +49,6 @@ pub fn write_report(
     writeln!(writer)?;
 
     // Write transactions
-    // TASK: Print transactions sorted by date.
     for transaction in transactions.into_iter() {
         write!(
             writer,

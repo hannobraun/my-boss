@@ -34,6 +34,8 @@ impl Money {
             transactions.push(contact);
         }
 
+        transactions.sort_by(|a, b| a.date.cmp(&b.date));
+
         Ok(Self(transactions))
     }
 
