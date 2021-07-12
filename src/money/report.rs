@@ -56,8 +56,8 @@ pub fn write_report(
             transaction.date, transaction.description
         )?;
 
-        write_accounts(&transaction.accounts, &accounts, &mut writer)?;
-        write_accounts(&transaction.budgets, &budgets, &mut writer)?;
+        write_amounts(&transaction.accounts, &accounts, &mut writer)?;
+        write_amounts(&transaction.budgets, &budgets, &mut writer)?;
 
         writer.reset()?;
         writeln!(writer)?;
@@ -86,7 +86,7 @@ fn write_amount(
     Ok(())
 }
 
-fn write_accounts(
+fn write_amounts(
     accounts: &Accounts,
     names: &AccountNames,
     writer: &mut Ansi<impl io::Write>,
