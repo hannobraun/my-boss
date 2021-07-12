@@ -1,10 +1,21 @@
-use std::{fmt, path::Path};
+use std::{fmt, path::Path, slice};
 
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use time::Date;
 
 use crate::util::toml;
+
+pub struct Transactions<'r>(pub &'r [Transaction]);
+
+impl<'r> IntoIterator for &'r Transactions<'r> {
+    type Item = &'r Transaction;
+    type IntoIter = slice::Iter<'r, Transaction>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.iter()
+    }
+}
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Transaction {

@@ -4,10 +4,10 @@ use indexmap::IndexSet;
 use tabwriter::TabWriter;
 use termcolor::{Ansi, Color, ColorSpec, WriteColor as _};
 
-use super::transactions::{Accounts, Amount, Transaction};
+use super::transactions::{Accounts, Amount, Transactions};
 
 pub fn write_report(
-    transactions: &[Transaction],
+    transactions: Transactions,
     writer: impl io::Write,
 ) -> anyhow::Result<()> {
     let writer = TabWriter::new(writer);
@@ -16,7 +16,7 @@ pub fn write_report(
     let mut accounts = AccountNames::new();
     let mut budgets = AccountNames::new();
 
-    for transaction in transactions {
+    for transaction in &transactions {
         accounts.collect_names(&transaction.accounts);
         budgets.collect_names(&transaction.budgets);
     }
@@ -49,7 +49,7 @@ pub fn write_report(
     writeln!(writer)?;
 
     // Write transactions
-    for transaction in transactions {
+    for transaction in &transactions {
         write!(
             writer,
             "{}\t{}\t",

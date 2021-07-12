@@ -7,7 +7,7 @@ use anyhow::Context as _;
 use serde::{Deserialize, Serialize};
 use walkdir::WalkDir;
 
-use self::transactions::Transaction;
+use self::transactions::{Transaction, Transactions};
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Money(pub Vec<Transaction>);
@@ -41,7 +41,7 @@ impl Money {
 
     /// Print a report to stdout
     pub fn report(&self, writer: impl io::Write) -> anyhow::Result<()> {
-        report::write_report(&self.0, writer)
+        report::write_report(Transactions(&self.0), writer)
     }
 }
 
