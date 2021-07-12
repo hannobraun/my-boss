@@ -73,6 +73,12 @@ impl Transaction {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Accounts(IndexMap<String, Amount>);
 
+impl Accounts {
+    pub fn names(&self) -> impl Iterator<Item = &String> {
+        self.0.keys()
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Amount(i64);
 
@@ -154,7 +160,7 @@ fn write_report(
 }
 
 fn collect_account_names_into(accounts: &Accounts, names: &mut AccountNames) {
-    for name in accounts.0.keys() {
+    for name in accounts.names() {
         names.0.insert(name.clone());
     }
 }
