@@ -1,5 +1,5 @@
 mod report;
-mod transaction;
+mod transactions;
 
 use std::{io, path::Path};
 
@@ -7,7 +7,7 @@ use anyhow::Context as _;
 use serde::{Deserialize, Serialize};
 use walkdir::WalkDir;
 
-use self::transaction::Transaction;
+use self::transactions::Transaction;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Money(pub Vec<Transaction>);

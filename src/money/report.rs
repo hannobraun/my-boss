@@ -4,7 +4,7 @@ use indexmap::IndexSet;
 use tabwriter::TabWriter;
 use termcolor::{Ansi, Color, ColorSpec, WriteColor as _};
 
-use super::transaction::{Accounts, Amount, Transaction};
+use super::transactions::{Accounts, Amount, Transaction};
 
 pub fn write_report(
     transactions: &[Transaction],
