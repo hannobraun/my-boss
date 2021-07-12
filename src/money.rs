@@ -41,7 +41,7 @@ impl Money {
 
     /// Print a report to stdout
     pub fn report(&self, writer: impl io::Write) -> anyhow::Result<()> {
-        report::write_report(Transactions(&self.0), writer)
+        report::write_report(Transactions::new(&self.0), writer)
     }
 }
 

@@ -8,6 +8,12 @@ use crate::util::toml;
 
 pub struct Transactions<'r>(pub &'r [Transaction]);
 
+impl<'r> Transactions<'r> {
+    pub fn new(transactions: &'r [Transaction]) -> Self {
+        Self(transactions)
+    }
+}
+
 impl<'r> IntoIterator for &'r Transactions<'r> {
     type Item = &'r Transaction;
     type IntoIter = slice::Iter<'r, Transaction>;
