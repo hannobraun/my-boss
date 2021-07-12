@@ -6,7 +6,7 @@ use time::Date;
 
 use crate::util::toml;
 
-pub struct Transactions<'r>(pub &'r [Transaction]);
+pub struct Transactions<'r>(&'r [Transaction]);
 
 impl<'r> Transactions<'r> {
     pub fn new(transactions: &'r [Transaction]) -> Self {
