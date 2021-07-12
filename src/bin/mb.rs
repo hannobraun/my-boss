@@ -49,8 +49,8 @@ fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn print_contacts(
-    contacts: impl Iterator<Item = Contact>,
+fn print_contacts<'r>(
+    contacts: impl Iterator<Item = &'r Contact>,
 ) -> anyhow::Result<()> {
     for contact in contacts {
         println!("{}", contact.summary()?);
