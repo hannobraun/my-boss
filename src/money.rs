@@ -74,12 +74,6 @@ impl Transaction {
 pub struct Accounts(IndexMap<String, Amount>);
 
 impl Accounts {
-    fn collect_names_into(&self, names: &mut AccountNames) {
-        for name in self.0.keys() {
-            names.0.insert(name.clone());
-        }
-    }
-
     fn write(
         &self,
         names: &AccountNames,
@@ -122,8 +116,8 @@ fn write_report(
     let mut budgets = AccountNames::new();
 
     for transaction in transactions.clone().into_iter() {
-        transaction.accounts.collect_names_into(&mut accounts);
-        transaction.budgets.collect_names_into(&mut budgets);
+        collect_account_names_into(&transaction.accounts, &mut accounts);
+        collect_account_names_into(&transaction.budgets, &mut budgets);
     }
 
     // Write header
@@ -172,6 +166,12 @@ fn write_report(
     writer.flush()?;
 
     Ok(())
+}
+
+fn collect_account_names_into(accounts: &Accounts, names: &mut AccountNames) {
+    for name in accounts.0.keys() {
+        names.0.insert(name.clone());
+    }
 }
 
 fn write_amount(
