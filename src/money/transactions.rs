@@ -64,6 +64,11 @@ impl Accounts {
 pub struct Amount(i64);
 
 impl Amount {
+    /// Construct a new amount with the value of zero
+    pub fn zero() -> Self {
+        Self(0)
+    }
+
     pub fn is_negative(&self) -> bool {
         self.0.is_negative()
     }
