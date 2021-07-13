@@ -13,7 +13,29 @@ impl<'r> Transactions<'r> {
         Self(transactions)
     }
 
-    // TASK: Add methods that return account totals for accounts and budgets.
+    pub fn accounts_total(&self, name: &str) -> Amount {
+        let mut total = Amount::zero();
+
+        for transaction in self.0 {
+            if let Some(amount) = transaction.accounts.amount_for(name) {
+                total += amount;
+            }
+        }
+
+        total
+    }
+
+    pub fn budgets_total(&self, name: &str) -> Amount {
+        let mut total = Amount::zero();
+
+        for transaction in self.0 {
+            if let Some(amount) = transaction.budgets.amount_for(name) {
+                total += amount;
+            }
+        }
+
+        total
+    }
 }
 
 impl<'r> IntoIterator for &'r Transactions<'r> {
