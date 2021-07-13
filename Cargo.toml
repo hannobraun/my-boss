@@ -9,6 +9,7 @@ publish = false
 [dependencies]
 anyhow            = "*"
 clap              = "3.0.0-beta.2"
+csv               = "*"
 log               = "*"
 pretty_env_logger = "*"
 termcolor         = "*"
