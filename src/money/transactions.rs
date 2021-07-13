@@ -17,21 +17,18 @@ impl<'r> Transactions<'r> {
         let mut total = Amount::zero();
 
         for transaction in self.0 {
+            let mut num_amounts = 0;
+
             if let Some(amount) = transaction.accounts.amount_for(name) {
                 total += amount;
+                num_amounts += 1;
             }
-        }
-
-        total
-    }
-
-    pub fn budgets_total(&self, name: &str) -> Amount {
-        let mut total = Amount::zero();
-
-        for transaction in self.0 {
             if let Some(amount) = transaction.budgets.amount_for(name) {
                 total += amount;
+                num_amounts += 1;
             }
+
+            assert!(num_amounts <= 1);
         }
 
         total
