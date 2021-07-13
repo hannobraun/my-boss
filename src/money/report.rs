@@ -81,6 +81,21 @@ pub fn write_report(
     Ok(())
 }
 
+fn write_amounts(
+    accounts: &Accounts,
+    names: &AccountNames,
+    writer: &mut Ansi<impl io::Write>,
+) -> anyhow::Result<()> {
+    for name in &names.0 {
+        if let Some(amount) = accounts.amount_for(name) {
+            write_amount(&amount, writer)?;
+        }
+        write!(writer, "\t")?;
+    }
+
+    Ok(())
+}
+
 fn write_amount(
     amount: &Amount,
     writer: &mut Ansi<impl io::Write>,
@@ -93,21 +108,6 @@ fn write_amount(
 
     writer.set_color(ColorSpec::new().set_fg(Some(color)))?;
     write!(writer, "{}", amount)?;
-
-    Ok(())
-}
-
-fn write_amounts(
-    accounts: &Accounts,
-    names: &AccountNames,
-    writer: &mut Ansi<impl io::Write>,
-) -> anyhow::Result<()> {
-    for name in &names.0 {
-        if let Some(amount) = accounts.amount_for(name) {
-            write_amount(&amount, writer)?;
-        }
-        write!(writer, "\t")?;
-    }
 
     Ok(())
 }
