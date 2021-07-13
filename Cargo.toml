@@ -10,6 +10,7 @@ publish = false
 anyhow            = "*"
 clap              = "3.0.0-beta.2"
 csv               = "*"
+encoding          = "*"
 log               = "*"
 pretty_env_logger = "*"
 termcolor         = "*"
