@@ -63,7 +63,18 @@ pub fn write_report(
         writeln!(writer)?;
     }
 
-    // TASK: Write last line with totals.
+    // Write totals
+    writer.set_color(
+        ColorSpec::new()
+            .set_fg(Some(Color::White))
+            .set_intense(true)
+            .set_bold(true),
+    )?;
+    write!(writer, "\tTotals\t")?;
+    accounts.write_totals(&transactions, &mut writer)?;
+    budgets.write_totals(&transactions, &mut writer)?;
+    writer.reset()?;
+    writeln!(writer)?;
 
     writer.flush()?;
 
@@ -128,6 +139,21 @@ impl AccountNames {
     fn write_header(&self, mut writer: impl io::Write) -> anyhow::Result<()> {
         for name in &self.0 {
             write!(writer, "{}\t", name)?;
+        }
+
+        Ok(())
+    }
+
+    fn write_totals(
+        &self,
+        transactions: &Transactions,
+        writer: &mut Ansi<impl io::Write>,
+    ) -> anyhow::Result<()> {
+        for name in &self.0 {
+            let amount = transactions.account_total(name);
+            write_amount(&amount, writer)?;
+
+            write!(writer, "\t")?;
         }
 
         Ok(())
