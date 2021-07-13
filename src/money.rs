@@ -1,3 +1,4 @@
+mod import;
 mod report;
 mod transactions;
 
@@ -13,6 +14,13 @@ use self::transactions::{Transaction, Transactions};
 pub struct Money(pub Vec<Transaction>);
 
 impl Money {
+    pub fn import(
+        input: impl AsRef<Path>,
+        output: impl AsRef<Path>,
+    ) -> anyhow::Result<()> {
+        import::from_csv(input, output)
+    }
+
     /// Load all transactions in a directory
     pub fn load(path: impl AsRef<Path>) -> anyhow::Result<Self> {
         let mut transactions = Vec::new();
