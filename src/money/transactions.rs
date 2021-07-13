@@ -1,4 +1,4 @@
-use std::{fmt, path::Path, slice};
+use std::{fmt, ops, path::Path, slice};
 
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
@@ -77,5 +77,11 @@ impl Amount {
 impl fmt::Display for Amount {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}.{}€", self.0 / 100, self.0.abs() % 100)
+    }
+}
+
+impl ops::AddAssign for Amount {
+    fn add_assign(&mut self, rhs: Self) {
+        self.0 += rhs.0;
     }
 }
