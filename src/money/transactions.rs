@@ -13,7 +13,7 @@ impl<'r> Transactions<'r> {
         Self(transactions)
     }
 
-    pub fn accounts_total(&self, name: &str) -> Amount {
+    pub fn account_total(&self, name: &str) -> Amount {
         let mut total = Amount::zero();
 
         for transaction in self.0 {
