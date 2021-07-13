@@ -38,9 +38,9 @@ fn main() -> anyhow::Result<()> {
             let today = OffsetDateTime::now_utc().date();
             print_contacts(contacts.due(today))?;
         }
-        Command::Money(money::Command::Import(_)) => {
-            // TASK: Implement
-            todo!()
+        Command::Money(money::Command::Import(args)) => {
+            let config = Config::load()?;
+            Money::import(args.file, config.money)?;
         }
         Command::Money(money::Command::Report(_)) => {
             let config = Config::load()?;
