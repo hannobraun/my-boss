@@ -88,7 +88,7 @@ fn write_amounts(
 ) -> anyhow::Result<()> {
     for name in &names.0 {
         if let Some(amount) = accounts.amount_for(name) {
-            write_amount(&amount, writer)?;
+            write_amount(&amount, false, writer)?;
         }
         write!(writer, "\t")?;
     }
@@ -98,6 +98,7 @@ fn write_amounts(
 
 fn write_amount(
     amount: &Amount,
+    highlight: bool,
     writer: &mut Ansi<impl io::Write>,
 ) -> anyhow::Result<()> {
     let color = if amount.is_negative() {
@@ -106,7 +107,12 @@ fn write_amount(
         Color::Green
     };
 
-    writer.set_color(ColorSpec::new().set_fg(Some(color)))?;
+    writer.set_color(
+        ColorSpec::new()
+            .set_fg(Some(color))
+            .set_intense(highlight)
+            .set_bold(highlight),
+    )?;
     write!(writer, "{}", amount)?;
 
     Ok(())
@@ -151,7 +157,7 @@ impl AccountNames {
     ) -> anyhow::Result<()> {
         for name in &self.0 {
             let amount = transactions.account_total(name);
-            write_amount(&amount, writer)?;
+            write_amount(&amount, true, writer)?;
 
             write!(writer, "\t")?;
         }
