@@ -283,6 +283,7 @@ dependencies = [
  "indexmap",
  "log",
  "pretty_env_logger",
+ "regex",
  "serde",
  "tabwriter",
  "termcolor",

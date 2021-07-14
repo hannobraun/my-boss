@@ -13,6 +13,7 @@ csv               = "*"
 encoding          = "*"
 log               = "*"
 pretty_env_logger = "*"
+regex             = "*"
 termcolor         = "*"
 walkdir           = "*"
 
