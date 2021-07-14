@@ -52,10 +52,10 @@ pub fn from_csv(
             .ok_or_else(|| anyhow!("Could not read description"))?;
         let amount = record
             .get(11)
-            .ok_or_else(|| anyhow!("Could not read description"))?;
+            .ok_or_else(|| anyhow!("Could not read amount"))?;
         let credit_or_debit = record
             .get(12)
-            .ok_or_else(|| anyhow!("Could not read description"))?;
+            .ok_or_else(|| anyhow!("Could not read credit/debit"))?;
 
         dbg!((date, description, amount, credit_or_debit));
 
