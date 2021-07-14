@@ -13,22 +13,23 @@ impl<'r> Transactions<'r> {
         Self(transactions)
     }
 
+    pub fn total(&self) -> Amount {
+        let mut total = Amount::zero();
+
+        for transaction in self.0 {
+            total += transaction.amount;
+        }
+
+        total
+    }
+
     pub fn account_total(&self, name: &str) -> Amount {
         let mut total = Amount::zero();
 
         for transaction in self.0 {
-            let mut num_amounts = 0;
-
-            if let Some(amount) = transaction.accounts.amount_for(name) {
-                total += amount;
-                num_amounts += 1;
-            }
             if let Some(amount) = transaction.budgets.amount_for(name) {
                 total += amount;
-                num_amounts += 1;
             }
-
-            assert!(num_amounts <= 1);
         }
 
         total
@@ -52,8 +53,8 @@ pub struct Transaction {
     /// Description of the transaction
     pub description: String,
 
-    /// The accounts the transaction affected
-    pub accounts: Accounts,
+    /// The total amount of the transaction
+    pub amount: Amount,
 
     /// The budgets the transaction affected
     pub budgets: Accounts,

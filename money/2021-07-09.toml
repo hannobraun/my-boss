@@ -1,8 +1,6 @@
 date = "2021-07-09"
 description = "Example 1"
-
-[accounts]
-"Checking Account" = 12345
+amount = 12345
 
 [budgets]
 "Upkeep" = 12345

@@ -13,11 +13,9 @@ pub fn write_report(
     let writer = TabWriter::new(writer);
     let mut writer = Ansi::new(writer);
 
-    let mut accounts = AccountNames::new();
     let mut budgets = AccountNames::new();
 
     for transaction in &transactions {
-        accounts.collect_names(&transaction.accounts);
         budgets.collect_names(&transaction.budgets);
     }
 
@@ -28,9 +26,7 @@ pub fn write_report(
             .set_intense(true)
             .set_bold(true),
     )?;
-    write!(writer, "Date\tDescription\tAccounts")?;
-    accounts.reserve_header_space(&mut writer)?;
-    write!(writer, "Budgets")?;
+    write!(writer, "Date\tDescription\tAmount\tBudgets")?;
     budgets.reserve_header_space(&mut writer)?;
     writer.reset()?;
     writeln!(writer)?;
@@ -42,8 +38,7 @@ pub fn write_report(
             .set_intense(true)
             .set_bold(true),
     )?;
-    write!(writer, "\t\t")?;
-    accounts.write_header(&mut writer)?;
+    write!(writer, "\t\t\t")?;
     budgets.write_header(&mut writer)?;
     writer.reset()?;
     writeln!(writer)?;
@@ -56,7 +51,8 @@ pub fn write_report(
             transaction.date, transaction.description
         )?;
 
-        write_amounts(&transaction.accounts, &accounts, &mut writer)?;
+        write_amount(&transaction.amount, false, &mut writer)?;
+        write!(writer, "\t")?;
         write_amounts(&transaction.budgets, &budgets, &mut writer)?;
 
         writer.reset()?;
@@ -71,7 +67,8 @@ pub fn write_report(
             .set_bold(true),
     )?;
     write!(writer, "\tTotals\t")?;
-    accounts.write_totals(&transactions, &mut writer)?;
+    write_amount(&transactions.total(), true, &mut writer)?;
+    write!(writer, "\t")?;
     budgets.write_totals(&transactions, &mut writer)?;
     writer.reset()?;
     writeln!(writer)?;
