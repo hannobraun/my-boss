@@ -57,6 +57,10 @@ pub fn from_csv(
             .get(12)
             .ok_or_else(|| anyhow!("Could not read credit/debit"))?;
 
+        // TASK: Use regular expression to parse amount.
+        // TASK: Match on `credit_or_debit`, make sure it's valid, and negate
+        //       amount, if appropriate.
+
         dbg!((date, description, amount, credit_or_debit));
 
         // TASK: Create `Transaction`.
