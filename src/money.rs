@@ -8,6 +8,8 @@ use anyhow::Context as _;
 use serde::{Deserialize, Serialize};
 use walkdir::WalkDir;
 
+use crate::config;
+
 use self::transactions::{Transaction, Transactions};
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -16,9 +18,9 @@ pub struct Money(pub Vec<Transaction>);
 impl Money {
     pub fn import(
         input: impl AsRef<Path>,
-        output: impl AsRef<Path>,
+        config: config::Money,
     ) -> anyhow::Result<()> {
-        import::from_csv(input, output)
+        import::from_csv(input, config)
     }
 
     /// Load all transactions in a directory

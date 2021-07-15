@@ -9,11 +9,14 @@ use encoding::{all::ISO_8859_1, decode, DecoderTrap};
 use regex::Regex;
 use time::{macros::format_description, Date};
 
-use crate::money::transactions::{Accounts, Amount, Transaction};
+use crate::{
+    config,
+    money::transactions::{Accounts, Amount, Transaction},
+};
 
 pub fn from_csv(
     input: impl AsRef<Path>,
-    output: impl AsRef<Path>,
+    config: config::Money,
 ) -> anyhow::Result<()> {
     let mut buf = Vec::new();
     File::open(input)?.read_to_end(&mut buf)?;
@@ -81,7 +84,7 @@ pub fn from_csv(
         let mut i = 0;
         loop {
             let file_name = format!("{}_{}.toml", date, i);
-            let path = output.as_ref().join(&file_name);
+            let path = config.path.join(&file_name);
 
             if path.exists() {
                 i += 1;
