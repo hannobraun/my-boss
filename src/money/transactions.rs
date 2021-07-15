@@ -75,6 +75,10 @@ impl Accounts {
         Self(IndexMap::new())
     }
 
+    pub fn insert(&mut self, name: impl Into<String>, amount: Amount) {
+        self.0.insert(name.into(), amount);
+    }
+
     pub fn names(&self) -> impl Iterator<Item = &String> {
         self.0.keys()
     }
