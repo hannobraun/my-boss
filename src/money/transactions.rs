@@ -109,3 +109,11 @@ impl ops::AddAssign for Amount {
         self.0 += rhs.0;
     }
 }
+
+impl ops::Neg for Amount {
+    type Output = Self;
+
+    fn neg(self) -> Self::Output {
+        Self(-self.0)
+    }
+}
