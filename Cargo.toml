@@ -31,7 +31,7 @@ features = ["ansi_formatting"]
 
 [dependencies.time]
 version  = "0.3.0-alpha-2"
-features = ["serde-human-readable"]
+features = ["macros", "serde-human-readable"]
 
 [dependencies.toml]
 version  = "*"
