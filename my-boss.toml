@@ -1,2 +1,4 @@
 contacts = "contacts"
-money = "money"
+
+[money]
+path = "money"
