@@ -65,6 +65,7 @@ pub fn from_csv(
         let description = description.to_owned();
         let amount = parse_amount(amount, credit_or_debit)?;
 
+        // TASK: Make budget configurable.
         let mut budgets = Accounts::new();
         budgets.insert("Unallocated", amount);
 
