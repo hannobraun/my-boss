@@ -9,7 +9,7 @@ use encoding::{all::ISO_8859_1, decode, DecoderTrap};
 use regex::Regex;
 use time::{macros::format_description, Date};
 
-use crate::money::transactions::Amount;
+use crate::money::transactions::{Accounts, Amount, Transaction};
 
 pub fn from_csv(
     input: impl AsRef<Path>,
@@ -62,11 +62,21 @@ pub fn from_csv(
             .ok_or_else(|| anyhow!("Could not read credit/debit"))?;
 
         let date = parse_date(date)?;
+        let description = description.to_owned();
         let amount = parse_amount(amount, credit_or_debit)?;
 
-        dbg!((date, description, amount, credit_or_debit));
+        let mut budgets = Accounts::new();
+        budgets.insert("Unallocated", amount);
 
-        // TASK: Create `Transaction`.
+        let transaction = Transaction {
+            date,
+            description,
+            amount,
+            budgets,
+        };
+
+        dbg!(transaction);
+
         // TASK: Store `Transaction` in file.
     }
 
