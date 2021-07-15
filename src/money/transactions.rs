@@ -84,6 +84,10 @@ impl Accounts {
 pub struct Amount(i64);
 
 impl Amount {
+    pub fn from_int_and_frac(int: i64, frac: i64) -> Self {
+        Self(int * 100 + frac)
+    }
+
     /// Construct a new amount with the value of zero
     pub fn zero() -> Self {
         Self(0)
