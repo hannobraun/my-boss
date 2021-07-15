@@ -7,6 +7,7 @@ use std::{
 use anyhow::{anyhow, bail};
 use encoding::{all::ISO_8859_1, decode, DecoderTrap};
 use regex::Regex;
+use time::{macros::format_description, Date};
 
 use crate::money::transactions::Amount;
 
@@ -60,6 +61,7 @@ pub fn from_csv(
             .get(12)
             .ok_or_else(|| anyhow!("Could not read credit/debit"))?;
 
+        let date = parse_date(date)?;
         let amount = parse_amount(amount, credit_or_debit)?;
 
         dbg!((date, description, amount, credit_or_debit));
@@ -69,6 +71,12 @@ pub fn from_csv(
     }
 
     Ok(())
+}
+
+fn parse_date(date: &str) -> anyhow::Result<Date> {
+    let format = format_description!("[day].[month].[year]");
+    let date = Date::parse(date, &format)?;
+    Ok(date)
 }
 
 fn parse_amount(amount: &str, credit_or_debit: &str) -> anyhow::Result<Amount> {
