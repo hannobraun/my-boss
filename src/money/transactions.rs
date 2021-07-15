@@ -71,6 +71,10 @@ impl Transaction {
 pub struct Accounts(IndexMap<String, Amount>);
 
 impl Accounts {
+    pub fn new() -> Self {
+        Self(IndexMap::new())
+    }
+
     pub fn names(&self) -> impl Iterator<Item = &String> {
         self.0.keys()
     }
