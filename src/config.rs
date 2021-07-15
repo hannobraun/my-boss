@@ -69,12 +69,14 @@ impl Default for Config {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Money {
     pub path: PathBuf,
+    pub default_budget: String,
 }
 
 impl Default for Money {
     fn default() -> Self {
         Self {
             path: PathBuf::from("money"),
+            default_budget: String::from("Unallocated"),
         }
     }
 }
