@@ -76,9 +76,23 @@ pub fn from_csv(
             budgets,
         };
 
-        dbg!(transaction);
+        let date = date.format(&format_description!("[year]-[month]-[day]"))?;
 
-        // TASK: Store `Transaction` in file.
+        let mut i = 0;
+        loop {
+            // TASK: Take directory from configuration.
+            let file_name = format!("money/{}_{}.toml", date, i);
+            let path = Path::new(&file_name);
+
+            if path.exists() {
+                i += 1;
+                continue;
+            }
+
+            let transaction = toml::to_vec(&transaction)?;
+            File::create(path)?.write_all(&transaction)?;
+            break;
+        }
     }
 
     Ok(())
