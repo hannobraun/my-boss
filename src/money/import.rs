@@ -4,8 +4,11 @@ use std::{
     path::Path,
 };
 
-use anyhow::anyhow;
+use anyhow::{anyhow, bail};
 use encoding::{all::ISO_8859_1, decode, DecoderTrap};
+use regex::Regex;
+
+use crate::money::transactions::Amount;
 
 pub fn from_csv(
     input: impl AsRef<Path>,
@@ -57,9 +60,7 @@ pub fn from_csv(
             .get(12)
             .ok_or_else(|| anyhow!("Could not read credit/debit"))?;
 
-        // TASK: Use regular expression to parse amount.
-        // TASK: Match on `credit_or_debit`, make sure it's valid, and negate
-        //       amount, if appropriate.
+        let amount = parse_amount(amount, credit_or_debit)?;
 
         dbg!((date, description, amount, credit_or_debit));
 
@@ -68,4 +69,25 @@ pub fn from_csv(
     }
 
     Ok(())
+}
+
+fn parse_amount(amount: &str, credit_or_debit: &str) -> anyhow::Result<Amount> {
+    let regex = Regex::new(r"(\d+),(\d{2})")?;
+    let captures = regex
+        .captures(amount)
+        .ok_or_else(|| anyhow!("Couldn't parse amount"))?;
+
+    let amount_int = captures[1].parse()?;
+    let amount_frac = captures[2].parse()?;
+
+    let amount = Amount::from_int_and_frac(amount_int, amount_frac);
+    let amount = match credit_or_debit {
+        "H" => amount,
+        "S" => -amount,
+        credit_or_debit => {
+            bail!("Failed to parse credit/debit: {}", credit_or_debit)
+        }
+    };
+
+    Ok(amount)
 }
