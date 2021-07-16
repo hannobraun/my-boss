@@ -83,13 +83,13 @@ impl Default for Money {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Budgets {
-    pub default_budget: String,
+    pub unallocated: String,
 }
 
 impl Default for Budgets {
     fn default() -> Self {
         Self {
-            default_budget: String::from("Unallocated"),
+            unallocated: String::from("Unallocated"),
         }
     }
 }

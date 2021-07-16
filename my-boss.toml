@@ -4,4 +4,4 @@ contacts = "contacts"
 path = "money"
 
 [money.budgets]
-default_budget = "Unallocated"
+unallocated = "Unallocated"
