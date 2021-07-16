@@ -9,6 +9,9 @@ pub enum Command {
 
     /// Show report
     Report(Report),
+
+    /// Allocate budgets
+    Allocate(Allocate),
 }
 
 #[derive(Clap)]
@@ -19,3 +22,6 @@ pub struct Import {
 
 #[derive(Clap)]
 pub struct Report;
+
+#[derive(Clap)]
+pub struct Allocate;
