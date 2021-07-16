@@ -69,7 +69,7 @@ pub fn from_csv(
         let amount = parse_amount(amount, credit_or_debit)?;
 
         let mut budgets = Accounts::new();
-        budgets.insert(config.default_budget.clone(), amount);
+        budgets.insert(config.budgets.default_budget.clone(), amount);
 
         let transaction = Transaction {
             date,

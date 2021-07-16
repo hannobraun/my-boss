@@ -2,4 +2,6 @@ contacts = "contacts"
 
 [money]
 path = "money"
+
+[money.budgets]
 default_budget = "Unallocated"
