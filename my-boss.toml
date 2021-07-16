@@ -5,3 +5,15 @@ path = "money"
 
 [money.budgets]
 unallocated = "Unallocated"
+
+[[money.budgets.targets]]
+name = "Upkeep"
+monthly = 500_00
+
+[[money.budgets.targets]]
+name = "Marketing"
+monthly = 500_00
+
+[[money.budgets.targets]]
+name = "Salary"
+monthly = 5000_00

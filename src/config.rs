@@ -84,12 +84,20 @@ impl Default for Money {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Budgets {
     pub unallocated: String,
+    pub targets: Vec<Budget>,
 }
 
 impl Default for Budgets {
     fn default() -> Self {
         Self {
             unallocated: String::from("Unallocated"),
+            targets: Vec::new(),
         }
     }
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct Budget {
+    pub name: String,
+    pub monthly: i64,
 }
