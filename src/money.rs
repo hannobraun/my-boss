@@ -1,15 +1,11 @@
 mod import;
 mod report;
+mod store;
 mod transactions;
 
-use std::{
-    fs::File,
-    io::{self, prelude::*},
-    path::Path,
-};
+use std::{io, path::Path};
 
 use anyhow::Context as _;
-use time::macros::format_description;
 use walkdir::WalkDir;
 
 use crate::config;
@@ -26,28 +22,7 @@ impl Money {
         config: config::Money,
     ) -> anyhow::Result<()> {
         let transactions = import::from_csv(input, config.clone())?;
-
-        for transaction in &transactions {
-            let date = transaction
-                .date
-                .format(&format_description!("[year]-[month]-[day]"))?;
-
-            let mut i = 0;
-            loop {
-                let file_name = format!("{}_{}.toml", date, i);
-                let path = config.path.join(&file_name);
-
-                if path.exists() {
-                    i += 1;
-                    continue;
-                }
-
-                let transaction = toml::to_vec(&transaction)?;
-                File::create(path)?.write_all(&transaction)?;
-                break;
-            }
-        }
-
+        store::to_toml(&transactions, config.path)?;
         Ok(())
     }
 
