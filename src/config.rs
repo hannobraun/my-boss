@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 
 const PATH: &str = "my-boss.toml";
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Config {
     pub contacts: PathBuf,
     pub money: Money,
@@ -66,7 +66,7 @@ impl Default for Config {
     }
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Money {
     pub path: PathBuf,
     pub budgets: Budgets,
@@ -81,7 +81,7 @@ impl Default for Money {
     }
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Budgets {
     pub unallocated: String,
     pub targets: Vec<Budget>,
@@ -96,7 +96,7 @@ impl Default for Budgets {
     }
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Budget {
     pub name: String,
     pub monthly: i64,
