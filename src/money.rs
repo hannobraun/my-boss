@@ -12,7 +12,7 @@ use crate::config;
 use self::transactions::{Transaction, Transactions};
 
 #[derive(Clone, Debug)]
-pub struct Money(Vec<Transaction>);
+pub struct Money(Transactions);
 
 impl Money {
     pub fn import(
@@ -45,12 +45,12 @@ impl Money {
 
         transactions.sort_by(|a, b| a.date.cmp(&b.date));
 
-        Ok(Self(transactions))
+        Ok(Self(Transactions::new(transactions)))
     }
 
     /// Print a report to stdout
     pub fn report(&self, writer: impl io::Write) -> anyhow::Result<()> {
-        report::write_report(Transactions::new(self.0.clone()), writer)
+        report::write_report(self.0.clone(), writer)
     }
 }
 
