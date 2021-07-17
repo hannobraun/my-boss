@@ -5,14 +5,13 @@ mod transactions;
 use std::{io, path::Path};
 
 use anyhow::Context as _;
-use serde::{Deserialize, Serialize};
 use walkdir::WalkDir;
 
 use crate::config;
 
 use self::transactions::{Transaction, Transactions};
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug)]
 pub struct Money(Vec<Transaction>);
 
 impl Money {
