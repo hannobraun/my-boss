@@ -6,6 +6,7 @@ use time::Date;
 
 use crate::util::toml;
 
+#[derive(Clone, Debug)]
 pub struct Transactions(Vec<Transaction>);
 
 impl Transactions {
