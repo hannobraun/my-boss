@@ -74,7 +74,7 @@ impl Money {
 
         transactions.sort_by(|a, b| a.date.cmp(&b.date));
 
-        Ok(Self(Transactions::new(transactions)))
+        Ok(Self(transactions.into()))
     }
 
     /// Print a report to stdout
