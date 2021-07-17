@@ -13,7 +13,7 @@ use crate::config;
 use self::transactions::{Transaction, Transactions};
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct Money(pub Vec<Transaction>);
+pub struct Money(Vec<Transaction>);
 
 impl Money {
     pub fn import(
