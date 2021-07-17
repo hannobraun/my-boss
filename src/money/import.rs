@@ -78,7 +78,9 @@ pub fn from_csv(
             budgets,
         };
 
-        let date = date.format(&format_description!("[year]-[month]-[day]"))?;
+        let date = transaction
+            .date
+            .format(&format_description!("[year]-[month]-[day]"))?;
 
         let mut i = 0;
         loop {
