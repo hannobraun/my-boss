@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use clap::Clap;
 
-#[derive(Clap)]
+#[derive(Clap, Clone)]
 pub enum Command {
     /// Generate a new contact
     Generate(Generate),
@@ -12,7 +12,7 @@ pub enum Command {
     List(List),
 }
 
-#[derive(Clap)]
+#[derive(Clap, Clone)]
 pub struct Generate {
     /// The name of the new contact
     pub name: String,
@@ -23,7 +23,7 @@ pub struct Generate {
     pub path: Option<PathBuf>,
 }
 
-#[derive(Clap)]
+#[derive(Clap, Clone)]
 pub struct List {
     /// List all contacts, not just those where communication is due.
     #[clap(short, long)]
