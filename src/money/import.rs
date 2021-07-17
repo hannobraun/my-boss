@@ -81,7 +81,7 @@ pub fn from_csv(
         });
     }
 
-    Ok(Transactions::new(transactions))
+    Ok(transactions.into())
 }
 
 fn parse_date(date: &str) -> anyhow::Result<Date> {
