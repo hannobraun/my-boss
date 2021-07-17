@@ -20,10 +20,9 @@ impl Money {
     pub fn import(
         input: impl AsRef<Path>,
         config: config::Money,
-    ) -> anyhow::Result<()> {
+    ) -> anyhow::Result<Self> {
         let transactions = import::from_csv(input, config.budgets)?;
-        store::to_toml(&transactions, config.path)?;
-        Ok(())
+        Ok(Self(transactions.into()))
     }
 
     /// Load all transactions in a directory
@@ -55,6 +54,11 @@ impl Money {
     /// Print a report to stdout
     pub fn report(&self, writer: impl io::Write) -> anyhow::Result<()> {
         report::write_report(&self.0, writer)
+    }
+
+    /// Store transactions to TOML files
+    pub fn store(&self, path: impl AsRef<Path>) -> anyhow::Result<()> {
+        store::to_toml(&self.0, path)
     }
 }
 
