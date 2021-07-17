@@ -16,7 +16,7 @@ use crate::{
 
 pub fn from_csv(
     input: impl AsRef<Path>,
-    config: config::Money,
+    config: config::Budgets,
 ) -> anyhow::Result<Transactions> {
     let mut buf = Vec::new();
     File::open(input)?.read_to_end(&mut buf)?;
@@ -71,7 +71,7 @@ pub fn from_csv(
         let amount = parse_amount(amount, credit_or_debit)?;
 
         let mut budgets = Accounts::new();
-        budgets.insert(config.budgets.unallocated.clone(), amount);
+        budgets.insert(config.unallocated.clone(), amount);
 
         transactions.push(Transaction {
             date,

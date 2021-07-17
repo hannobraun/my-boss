@@ -21,7 +21,7 @@ impl Money {
         input: impl AsRef<Path>,
         config: config::Money,
     ) -> anyhow::Result<()> {
-        let transactions = import::from_csv(input, config.clone())?;
+        let transactions = import::from_csv(input, config.budgets)?;
         store::to_toml(&transactions, config.path)?;
         Ok(())
     }
