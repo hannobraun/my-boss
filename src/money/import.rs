@@ -15,11 +15,11 @@ use crate::{
 };
 
 pub fn from_csv(
-    input: impl AsRef<Path>,
+    path: impl AsRef<Path>,
     config: config::Budgets,
 ) -> anyhow::Result<Transactions> {
     let mut buf = Vec::new();
-    File::open(input)?.read_to_end(&mut buf)?;
+    File::open(path)?.read_to_end(&mut buf)?;
 
     let input = decode(&buf, DecoderTrap::Strict, ISO_8859_1)
         .0
