@@ -37,6 +37,12 @@ impl Transactions {
     }
 }
 
+impl From<Vec<Transaction>> for Transactions {
+    fn from(inner: Vec<Transaction>) -> Self {
+        Self::new(inner)
+    }
+}
+
 impl<'r> IntoIterator for &'r Transactions {
     type Item = &'r Transaction;
     type IntoIter = slice::Iter<'r, Transaction>;
