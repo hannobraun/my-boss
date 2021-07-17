@@ -15,6 +15,7 @@ use self::transactions::{Transaction, Transactions};
 pub struct Money(Transactions);
 
 impl Money {
+    /// Import transactions from CSV file
     pub fn import(
         input: impl AsRef<Path>,
         config: config::Money,
