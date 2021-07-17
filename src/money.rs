@@ -1,3 +1,4 @@
+mod budgets;
 mod import;
 mod report;
 mod store;
@@ -54,6 +55,11 @@ impl Money {
     /// Print a report to stdout
     pub fn report(&self, writer: impl io::Write) -> anyhow::Result<()> {
         report::write_report(&self.0, writer)
+    }
+
+    /// Allocate money to budgets
+    pub fn allocate(&mut self, config: config::Budgets) -> anyhow::Result<()> {
+        budgets::allocate(&mut self.0, config)
     }
 
     /// Store transactions to TOML files
