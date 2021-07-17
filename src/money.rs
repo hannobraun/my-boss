@@ -18,10 +18,10 @@ pub struct Money(Transactions);
 impl Money {
     /// Import transactions from CSV file
     pub fn import(
-        input: impl AsRef<Path>,
+        path: impl AsRef<Path>,
         config: config::Budgets,
     ) -> anyhow::Result<Self> {
-        let transactions = import::from_csv(input, config)?;
+        let transactions = import::from_csv(path, config)?;
         Ok(Self(transactions.into()))
     }
 
