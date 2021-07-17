@@ -50,10 +50,6 @@ fn main() -> anyhow::Result<()> {
 
             money.report(io::stdout())?;
         }
-        Command::Money(money::Command::Allocate(_)) => {
-            // TASK: Implement
-            todo!()
-        }
     }
 
     Ok(())
