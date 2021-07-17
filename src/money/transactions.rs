@@ -6,17 +6,17 @@ use time::Date;
 
 use crate::util::toml;
 
-pub struct Transactions<'r>(&'r [Transaction]);
+pub struct Transactions(Vec<Transaction>);
 
-impl<'r> Transactions<'r> {
-    pub fn new(transactions: &'r [Transaction]) -> Self {
+impl Transactions {
+    pub fn new(transactions: Vec<Transaction>) -> Self {
         Self(transactions)
     }
 
     pub fn total(&self) -> Amount {
         let mut total = Amount::zero();
 
-        for transaction in self.0 {
+        for transaction in &self.0 {
             total += transaction.amount;
         }
 
@@ -26,7 +26,7 @@ impl<'r> Transactions<'r> {
     pub fn account_total(&self, name: &str) -> Amount {
         let mut total = Amount::zero();
 
-        for transaction in self.0 {
+        for transaction in &self.0 {
             if let Some(amount) = transaction.budgets.amount_for(name) {
                 total += amount;
             }
@@ -36,7 +36,7 @@ impl<'r> Transactions<'r> {
     }
 }
 
-impl<'r> IntoIterator for &'r Transactions<'r> {
+impl<'r> IntoIterator for &'r Transactions {
     type Item = &'r Transaction;
     type IntoIter = slice::Iter<'r, Transaction>;
 
