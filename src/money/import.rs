@@ -11,13 +11,13 @@ use time::{macros::format_description, Date};
 
 use crate::{
     config,
-    money::transactions::{Accounts, Amount, Transaction},
+    money::transactions::{Accounts, Amount, Transaction, Transactions},
 };
 
 pub fn from_csv(
     input: impl AsRef<Path>,
     config: config::Money,
-) -> anyhow::Result<()> {
+) -> anyhow::Result<Transactions> {
     let mut buf = Vec::new();
     File::open(input)?.read_to_end(&mut buf)?;
 
@@ -47,6 +47,8 @@ pub fn from_csv(
         .flexible(true)
         .from_reader(Cursor::new(input));
 
+    let mut transactions = Vec::new();
+
     for record in reader.records() {
         let record = record?;
 
@@ -71,34 +73,15 @@ pub fn from_csv(
         let mut budgets = Accounts::new();
         budgets.insert(config.budgets.unallocated.clone(), amount);
 
-        let transaction = Transaction {
+        transactions.push(Transaction {
             date,
             description,
             amount,
             budgets,
-        };
-
-        let date = transaction
-            .date
-            .format(&format_description!("[year]-[month]-[day]"))?;
-
-        let mut i = 0;
-        loop {
-            let file_name = format!("{}_{}.toml", date, i);
-            let path = config.path.join(&file_name);
-
-            if path.exists() {
-                i += 1;
-                continue;
-            }
-
-            let transaction = toml::to_vec(&transaction)?;
-            File::create(path)?.write_all(&transaction)?;
-            break;
-        }
+        });
     }
 
-    Ok(())
+    Ok(Transactions::new(transactions))
 }
 
 fn parse_date(date: &str) -> anyhow::Result<Date> {
