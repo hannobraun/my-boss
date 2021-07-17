@@ -40,14 +40,14 @@ fn main() -> anyhow::Result<()> {
         }
         Command::Money(money::Command::Import(args)) => {
             let config = Config::load()?;
-            let money = Money::import(args.file, config.money.budgets)?;
 
+            let money = Money::import(args.file, config.money.budgets)?;
             money.store(config.money.path)?;
         }
         Command::Money(money::Command::Report(_)) => {
             let config = Config::load()?;
-            let money = Money::load(config.money.path)?;
 
+            let money = Money::load(config.money.path)?;
             money.report(io::stdout())?;
         }
     }
