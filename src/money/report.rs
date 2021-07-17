@@ -7,7 +7,7 @@ use termcolor::{Ansi, Color, ColorSpec, WriteColor as _};
 use super::transactions::{Accounts, Amount, Transactions};
 
 pub fn write_report(
-    transactions: Transactions,
+    transactions: &Transactions,
     writer: impl io::Write,
 ) -> anyhow::Result<()> {
     let writer = TabWriter::new(writer);
@@ -15,7 +15,7 @@ pub fn write_report(
 
     let mut budgets = AccountNames::new();
 
-    for transaction in &transactions {
+    for transaction in transactions {
         budgets.collect_names(&transaction.budgets);
     }
 
@@ -44,7 +44,7 @@ pub fn write_report(
     writeln!(writer)?;
 
     // Write transactions
-    for transaction in &transactions {
+    for transaction in transactions {
         write!(
             writer,
             "{}\t{}\t",
