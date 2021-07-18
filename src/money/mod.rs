@@ -1,5 +1,5 @@
-mod budgets;
 mod import;
+mod income;
 mod report;
 mod store;
 mod transactions;
@@ -59,7 +59,7 @@ impl Money {
 
     /// Allocate money to budgets
     pub fn allocate(&mut self, config: config::Budgets) -> anyhow::Result<()> {
-        budgets::allocate(&mut self.0, config)
+        income::allocate(&mut self.0, config)
     }
 
     /// Store transactions to TOML files
