@@ -52,6 +52,15 @@ impl<'r> IntoIterator for &'r Transactions {
     }
 }
 
+impl<'r> IntoIterator for &'r mut Transactions {
+    type Item = &'r mut Transaction;
+    type IntoIter = slice::IterMut<'r, Transaction>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.iter_mut()
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Transaction {
     /// The date the transaction occurred
