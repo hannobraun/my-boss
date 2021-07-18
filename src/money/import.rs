@@ -70,8 +70,8 @@ pub fn from_csv(
         let description = description.to_owned();
         let amount = parse_amount(amount, credit_or_debit)?;
 
-        let mut budgets = Accounts::new();
-        budgets.insert(config.unallocated.clone(), amount);
+        let budgets =
+            Accounts::new().insert(config.unallocated.clone(), amount);
 
         transactions.push(Transaction {
             date,
