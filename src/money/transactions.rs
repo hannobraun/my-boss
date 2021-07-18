@@ -123,6 +123,12 @@ impl Amount {
     }
 }
 
+impl From<i64> for Amount {
+    fn from(inner: i64) -> Self {
+        Self(inner)
+    }
+}
+
 impl fmt::Display for Amount {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}.{}€", self.0 / 100, self.0.abs() % 100)
