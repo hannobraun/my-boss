@@ -141,6 +141,14 @@ impl ops::AddAssign for Amount {
     }
 }
 
+impl ops::Div for Amount {
+    type Output = f64;
+
+    fn div(self, rhs: Self) -> Self::Output {
+        self.0 as f64 / rhs.0 as f64
+    }
+}
+
 impl ops::Neg for Amount {
     type Output = Self;
 
