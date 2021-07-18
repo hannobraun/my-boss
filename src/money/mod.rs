@@ -57,7 +57,7 @@ impl Money {
         report::write_report(&self.0, writer)
     }
 
-    /// Allocate money to budgets
+    /// Allocate income to budgets
     pub fn allocate_income(
         &mut self,
         config: config::Budgets,
