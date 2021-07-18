@@ -58,7 +58,10 @@ impl Money {
     }
 
     /// Allocate money to budgets
-    pub fn allocate(&mut self, config: config::Budgets) -> anyhow::Result<()> {
+    pub fn allocate_income(
+        &mut self,
+        config: config::Budgets,
+    ) -> anyhow::Result<()> {
         income::allocate(&mut self.0, config)
     }
 
