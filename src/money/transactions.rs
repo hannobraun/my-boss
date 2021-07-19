@@ -166,3 +166,11 @@ impl ops::Neg for Amount {
         Self(-self.0)
     }
 }
+
+impl ops::Sub for Amount {
+    type Output = Self;
+
+    fn sub(self, rhs: Self) -> Self::Output {
+        Self(self.0 - rhs.0)
+    }
+}
