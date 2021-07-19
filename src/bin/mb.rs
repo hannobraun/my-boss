@@ -22,7 +22,7 @@ fn main() -> anyhow::Result<()> {
             let config = Config::load()?;
             let path = args.path.unwrap_or(config.contacts);
             let path = Contact::create(args.name, path)?;
-            println!("Generated {}", path.display());
+            println!("Created {}", path.display());
         }
         Command::Contacts(contacts::Command::List(args)) => {
             let config = Config::load()?;
