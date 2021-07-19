@@ -103,6 +103,11 @@ impl Accounts {
     pub fn amount_for(&self, name: impl AsRef<str>) -> Option<Amount> {
         self.0.get(name.as_ref()).copied()
     }
+
+    pub fn transfer(&mut self, amount: Amount, from: &str, to: String) {
+        self.0[from] -= amount;
+        *self.0.entry(to).or_insert(Amount::zero()) += amount;
+    }
 }
 
 #[derive(
