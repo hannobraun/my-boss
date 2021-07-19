@@ -105,7 +105,7 @@ impl Contact {
         load(path)
     }
 
-    pub fn generate(
+    pub fn create(
         name: String,
         path: impl AsRef<Path>,
     ) -> anyhow::Result<PathBuf> {
