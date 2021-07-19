@@ -85,11 +85,11 @@ pub struct Contact {
     /// Notes about the contact
     pub notes: Vec<String>,
 
-    /// Links to the contact's website and other online profiles
-    pub links: Vec<Link>,
-
     /// The organizations that the contact is part of
     pub organizations: Vec<Organization>,
+
+    /// Links to the contact's website and other online profiles
+    pub links: Vec<Link>,
 
     /// Means of communication with the contact
     ///
