@@ -174,3 +174,9 @@ impl ops::Sub for Amount {
         Self(self.0 - rhs.0)
     }
 }
+
+impl ops::SubAssign for Amount {
+    fn sub_assign(&mut self, rhs: Self) {
+        self.0 -= rhs.0;
+    }
+}
