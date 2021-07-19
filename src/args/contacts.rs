@@ -5,7 +5,7 @@ use clap::Clap;
 #[derive(Clap, Clone)]
 pub enum Command {
     /// Generate a new contact
-    Generate(Create),
+    Create(Create),
 
     /// List contacts. By default, only contacts where communication is due are
     /// listed.

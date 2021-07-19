@@ -18,7 +18,7 @@ fn main() -> anyhow::Result<()> {
         Command::Init => {
             Config::init()?;
         }
-        Command::Contacts(contacts::Command::Generate(args)) => {
+        Command::Contacts(contacts::Command::Create(args)) => {
             let config = Config::load()?;
             let path = args.path.unwrap_or(config.contacts);
             let path = Contact::create(args.name, path)?;
