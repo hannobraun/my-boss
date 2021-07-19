@@ -1,5 +1,148 @@
-use crate::{config, money::transactions::Transactions};
+use std::cmp;
 
-pub fn allocate(_transactions: &mut Transactions, _config: config::Budgets) {
-    // TASK: Implement
+use indexmap::IndexMap;
+
+use crate::{
+    config,
+    money::transactions::{Amount, Transactions},
+};
+
+pub fn allocate(transactions: &mut Transactions, config: config::Budgets) {
+    let mut monthly_budgets = IndexMap::new();
+
+    for budget in config.targets {
+        let existing_entry =
+            monthly_budgets.insert(budget.name, Amount::from(budget.monthly));
+        assert!(existing_entry.is_none());
+    }
+
+    // TASK: If there are no budgets configured, it makes no sense to continue
+    //       here. Plus, the following code assumes that there is at least one
+    //       budget configured.
+
+    let mut budget_totals = IndexMap::new();
+
+    // TASK: We make the assumption here that the transactions have no budgets,
+    //       except for the unallocated one. Since this is not a safe
+    //       assumption, we have to fill `budget_totals` with the actual totals
+    //       here.
+
+    'outer: for transaction in transactions {
+        loop {
+            let unallocated_budget =
+                transaction.budgets.amount_for(&config.unallocated);
+
+            let unallocated_budget = match unallocated_budget {
+                Some(unallocated_budget) => unallocated_budget,
+                None => {
+                    // If there is no unallocated budget, we're done with this
+                    // transaction.
+                    continue 'outer;
+                }
+            };
+
+            if unallocated_budget <= Amount::zero() {
+                continue 'outer;
+            }
+
+            let mut budget_totals_in_months = IndexMap::new();
+
+            for (name, &amount) in &monthly_budgets {
+                let budget_total =
+                    *budget_totals.entry(name).or_insert(Amount::zero());
+                let budget_total_in_months = budget_total / amount;
+
+                budget_totals_in_months.insert(name, budget_total_in_months);
+            }
+
+            let mut min_budget_in_months = budget_totals_in_months
+                .first()
+                .map(|(&name, &total_in_months)| (name, total_in_months))
+                .unwrap();
+
+            for (name, &total_in_months) in &budget_totals_in_months {
+                if total_in_months < min_budget_in_months.1 {
+                    min_budget_in_months = (name, total_in_months);
+                }
+            }
+
+            let min_budget_name = min_budget_in_months.0;
+            let min_budget_in_months = min_budget_in_months.1;
+
+            let monthly_budget = monthly_budgets[min_budget_name];
+            let total = budget_totals[min_budget_name];
+
+            let target_total =
+                monthly_budget * (min_budget_in_months + 1.0).floor();
+            let missing = target_total - total;
+
+            let transfer_amount = cmp::min(missing, unallocated_budget);
+
+            transaction.budgets.transfer(
+                transfer_amount,
+                &config.unallocated,
+                min_budget_name.into(),
+            );
+            budget_totals[min_budget_name] += transfer_amount;
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use time::macros::date;
+
+    use crate::{
+        config,
+        money::transactions::{Accounts, Amount, Transaction, Transactions},
+    };
+
+    use super::allocate;
+
+    #[test]
+    fn allocate_should_allocate_budgets_according_to_priority() {
+        let config = config::Budgets {
+            unallocated: "Unallocated".into(),
+            targets: vec![
+                config::Budget {
+                    name: "A".into(),
+                    monthly: 100_00,
+                },
+                config::Budget {
+                    name: "B".into(),
+                    monthly: 50_00,
+                },
+            ],
+        };
+
+        let amount = Amount::from(100_00);
+
+        let mut transactions = Transactions::from(vec![
+            Transaction {
+                amount,
+                budgets: Accounts::new().insert(&config.unallocated, amount),
+                ..transaction()
+            },
+            Transaction {
+                amount,
+                budgets: Accounts::new().insert(&config.unallocated, amount),
+                ..transaction()
+            },
+        ]);
+
+        allocate(&mut transactions, config);
+
+        assert_eq!(transactions.account_total("A"), Amount::from(150_00));
+        assert_eq!(transactions.account_total("B"), Amount::from(50_00));
+    }
+
+    fn transaction() -> Transaction {
+        Transaction {
+            #[rustfmt::skip]
+            date: date!(2021-07-18),
+            description: "A transaction".into(),
+            amount: Amount::zero(),
+            budgets: Accounts::new(),
+        }
+    }
 }
