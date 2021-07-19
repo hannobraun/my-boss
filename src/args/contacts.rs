@@ -17,7 +17,7 @@ pub struct Create {
     /// The name of the new contact
     pub name: String,
 
-    /// The path to the directory where the contact will be generated. If not
+    /// The path to the directory where the contact will be created. If not
     /// specified, the path will be taken from My Boss's configuration file.
     #[clap(short, long)]
     pub path: Option<PathBuf>,
