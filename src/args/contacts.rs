@@ -5,7 +5,7 @@ use clap::Clap;
 #[derive(Clap, Clone)]
 pub enum Command {
     /// Generate a new contact
-    Generate(Generate),
+    Generate(Create),
 
     /// List contacts. By default, only contacts where communication is due are
     /// listed.
@@ -13,7 +13,7 @@ pub enum Command {
 }
 
 #[derive(Clap, Clone)]
-pub struct Generate {
+pub struct Create {
     /// The name of the new contact
     pub name: String,
 
