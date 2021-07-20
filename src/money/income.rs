@@ -18,15 +18,15 @@ pub fn allocate(transactions: &mut Transactions, config: config::Budgets) {
     let mut budget_totals = IndexMap::new();
 
     for budget in config.targets {
-        let existing_entry =
-            monthly_budgets.insert(budget.name, Amount::from(budget.monthly));
+        let existing_entry = monthly_budgets
+            .insert(budget.name.clone(), Amount::from(budget.monthly));
         assert!(existing_entry.is_none());
-    }
 
-    // TASK: We make the assumption here that the transactions have no budgets,
-    //       except for the unallocated one. Since this is not a safe
-    //       assumption, we have to fill `budget_totals` with the actual totals
-    //       here.
+        *budget_totals
+            .entry(budget.name.clone())
+            .or_insert(Amount::zero()) +=
+            transactions.account_total(budget.name);
+    }
 
     'outer: for transaction in transactions {
         loop {
@@ -49,8 +49,9 @@ pub fn allocate(transactions: &mut Transactions, config: config::Budgets) {
             let mut budget_totals_in_months = IndexMap::new();
 
             for (name, &amount) in &monthly_budgets {
-                let budget_total =
-                    *budget_totals.entry(name).or_insert(Amount::zero());
+                let budget_total = *budget_totals
+                    .entry(name.clone())
+                    .or_insert(Amount::zero());
                 let budget_total_in_months = budget_total / amount;
 
                 budget_totals_in_months.insert(name, budget_total_in_months);
@@ -134,6 +135,46 @@ mod tests {
 
         assert_eq!(transactions.account_total("A"), Amount::from(150_00));
         assert_eq!(transactions.account_total("B"), Amount::from(50_00));
+    }
+
+    #[test]
+    fn allocate_should_take_existing_budgets_into_account() {
+        let config = config::Budgets {
+            unallocated: "Unallocated".into(),
+            targets: vec![
+                config::Budget {
+                    name: "A".into(),
+                    monthly: 100_00,
+                },
+                config::Budget {
+                    name: "B".into(),
+                    monthly: 50_00,
+                },
+            ],
+        };
+
+        let amount = Amount::from(100_00);
+        let mut transactions = Transactions::from(vec![
+            Transaction {
+                amount,
+                budgets: Accounts::new()
+                    .insert(&config.unallocated, amount / 2.0)
+                    .insert("A", amount / 2.0),
+                ..transaction()
+            },
+            Transaction {
+                amount: amount * 2.0,
+                budgets: Accounts::new()
+                    .insert(&config.unallocated, amount)
+                    .insert("B", amount),
+                ..transaction()
+            },
+        ]);
+
+        allocate(&mut transactions, config);
+
+        assert_eq!(transactions.account_total("A"), Amount::from(200_00));
+        assert_eq!(transactions.account_total("B"), Amount::from(100_00));
     }
 
     #[test]
