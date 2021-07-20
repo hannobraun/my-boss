@@ -10,15 +10,17 @@ use crate::{
 pub fn allocate(transactions: &mut Transactions, config: config::Budgets) {
     let mut monthly_budgets = IndexMap::new();
 
+    if config.targets.is_empty() {
+        // The rest of this function assumes that we have at lease one target
+        // budget configured.
+        return;
+    }
+
     for budget in config.targets {
         let existing_entry =
             monthly_budgets.insert(budget.name, Amount::from(budget.monthly));
         assert!(existing_entry.is_none());
     }
-
-    // TASK: If there are no budgets configured, it makes no sense to continue
-    //       here. Plus, the following code assumes that there is at least one
-    //       budget configured.
 
     let mut budget_totals = IndexMap::new();
 
@@ -133,6 +135,30 @@ mod tests {
 
         assert_eq!(transactions.account_total("A"), Amount::from(150_00));
         assert_eq!(transactions.account_total("B"), Amount::from(50_00));
+    }
+
+    #[test]
+    fn allocate_should_not_panic_if_no_targets_are_configured() {
+        let config = config::Budgets {
+            unallocated: "Unallocated".into(),
+            targets: Vec::new(),
+        };
+
+        let amount = Amount::from(100_00);
+        let mut transactions = Transactions::from(vec![
+            Transaction {
+                amount,
+                budgets: Accounts::new().insert(&config.unallocated, amount),
+                ..transaction()
+            },
+            Transaction {
+                amount,
+                budgets: Accounts::new().insert(&config.unallocated, amount),
+                ..transaction()
+            },
+        ]);
+
+        allocate(&mut transactions, config);
     }
 
     fn transaction() -> Transaction {
