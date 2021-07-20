@@ -8,13 +8,13 @@ use crate::{
 };
 
 pub fn allocate(transactions: &mut Transactions, config: config::Budgets) {
-    let mut monthly_budgets = IndexMap::new();
-
     if config.targets.is_empty() {
         // The rest of this function assumes that we have at lease one target
         // budget configured.
         return;
     }
+
+    let mut monthly_budgets = IndexMap::new();
 
     for budget in config.targets {
         let existing_entry =
