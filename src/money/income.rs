@@ -52,7 +52,7 @@ pub fn allocate(transactions: &mut Transactions, config: config::Budgets) {
                 let budget_total = *budget_totals
                     .entry(name.clone())
                     .or_insert(Amount::zero());
-                let budget_total_in_months = budget_total / amount;
+                let budget_total_in_months = (budget_total / amount).floor();
 
                 budget_totals_in_months.insert(name, budget_total_in_months);
             }
@@ -175,6 +175,42 @@ mod tests {
 
         assert_eq!(transactions.account_total("A"), Amount::from(200_00));
         assert_eq!(transactions.account_total("B"), Amount::from(100_00));
+    }
+
+    #[test]
+    fn allocate_should_fill_highest_priority_budget_to_next_month() {
+        let config = config::Budgets {
+            unallocated: "Unallocated".into(),
+            targets: vec![
+                config::Budget {
+                    name: "A".into(),
+                    monthly: 100_00,
+                },
+                config::Budget {
+                    name: "B".into(),
+                    monthly: 100_00,
+                },
+            ],
+        };
+
+        let amount = Amount::from(50_00);
+        let mut transactions = Transactions::from(vec![
+            Transaction {
+                amount,
+                budgets: Accounts::new().insert(&config.unallocated, amount),
+                ..transaction()
+            },
+            Transaction {
+                amount,
+                budgets: Accounts::new().insert(&config.unallocated, amount),
+                ..transaction()
+            },
+        ]);
+
+        allocate(&mut transactions, config);
+
+        assert_eq!(transactions.account_total("A"), Amount::from(100_00));
+        assert_eq!(transactions.account_total("B"), Amount::from(0_00));
     }
 
     #[test]
