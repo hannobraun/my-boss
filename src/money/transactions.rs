@@ -156,6 +156,14 @@ impl ops::Div for Amount {
     }
 }
 
+impl ops::Div<f64> for Amount {
+    type Output = Amount;
+
+    fn div(self, rhs: f64) -> Self::Output {
+        Self((self.0 as f64 / rhs).round() as i64)
+    }
+}
+
 impl ops::Mul<f64> for Amount {
     type Output = Self;
 
