@@ -24,11 +24,12 @@ impl Transactions {
         total
     }
 
-    pub fn account_total(&self, name: &str) -> Amount {
+    pub fn account_total(&self, name: impl AsRef<str>) -> Amount {
         let mut total = Amount::zero();
 
         for transaction in &self.0 {
-            if let Some(amount) = transaction.budgets.amount_for(name) {
+            if let Some(amount) = transaction.budgets.amount_for(name.as_ref())
+            {
                 total += amount;
             }
         }
