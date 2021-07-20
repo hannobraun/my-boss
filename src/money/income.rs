@@ -116,7 +116,6 @@ mod tests {
         };
 
         let amount = Amount::from(100_00);
-
         let mut transactions = Transactions::from(vec![
             Transaction {
                 amount,
