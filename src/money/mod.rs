@@ -22,7 +22,10 @@ impl Money {
         path: impl AsRef<Path>,
         config: config::Budgets,
     ) -> anyhow::Result<Self> {
-        let transactions = import::from_csv(path, config)?;
+        let transactions = import::from_csv(path.as_ref(), config)
+            .with_context(|| {
+                format!("Error importing from `{}`", path.as_ref().display())
+            })?;
         Ok(Self(transactions.into()))
     }
 
