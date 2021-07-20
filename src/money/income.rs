@@ -15,14 +15,13 @@ pub fn allocate(transactions: &mut Transactions, config: config::Budgets) {
     }
 
     let mut monthly_budgets = IndexMap::new();
+    let mut budget_totals = IndexMap::new();
 
     for budget in config.targets {
         let existing_entry =
             monthly_budgets.insert(budget.name, Amount::from(budget.monthly));
         assert!(existing_entry.is_none());
     }
-
-    let mut budget_totals = IndexMap::new();
 
     // TASK: We make the assumption here that the transactions have no budgets,
     //       except for the unallocated one. Since this is not a safe
