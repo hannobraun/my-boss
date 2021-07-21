@@ -139,11 +139,9 @@ impl Contact {
         if let Some(communication) = &self.communication {
             let mut wrote_something = false;
 
-            if let Some(latest) = &communication.latest {
-                if let Some(to) = latest.to {
-                    write!(summary, " (latest communication: {}", to)?;
-                    wrote_something = true;
-                }
+            if let Some(to) = communication.latest.to {
+                write!(summary, " (latest communication: {}", to)?;
+                wrote_something = true;
             }
             if let Some(planned) = communication.next_planned() {
                 if wrote_something {
@@ -208,7 +206,7 @@ pub struct Address {
 #[serde(default)]
 pub struct Communication {
     /// The latest communication with the contact
-    pub latest: Option<LatestCommunication>,
+    pub latest: LatestCommunication,
 
     pub planned: Vec<PlannedCommunication>,
 }
