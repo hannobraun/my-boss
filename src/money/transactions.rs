@@ -73,6 +73,10 @@ pub struct Transaction {
     /// The total amount of the transaction
     pub amount: Amount,
 
+    // TASK: Remove this field. Having allocation to budgets be part of this
+    //       makes things too complicated. An allocation should be a separate
+    //       struct and be stored in a separate file. It should build on top of
+    //       transaction.
     /// The budgets the transaction affected
     pub budgets: Accounts,
 }
