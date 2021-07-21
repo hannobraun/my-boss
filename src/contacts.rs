@@ -229,7 +229,7 @@ impl Communication {
 }
 
 /// The latest communication with a contact
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct LatestCommunication {
     /// The last communication to the contact
     pub to: Option<Date>,
