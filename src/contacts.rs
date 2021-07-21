@@ -140,8 +140,10 @@ impl Contact {
             let mut wrote_something = false;
 
             if let Some(latest) = &communication.latest {
-                write!(summary, " (latest communication: {}", latest.to)?;
-                wrote_something = true;
+                if let Some(to) = latest.to {
+                    write!(summary, " (latest communication: {}", to)?;
+                    wrote_something = true;
+                }
             }
             if let Some(planned) = communication.next_planned() {
                 if wrote_something {
@@ -230,10 +232,10 @@ impl Communication {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct LatestCommunication {
     /// The last communication to the contact
-    pub to: Date,
+    pub to: Option<Date>,
 
     /// The latest communication from the contact
-    pub from: Date,
+    pub from: Option<Date>,
 }
 
 /// A planned communication with a contact
