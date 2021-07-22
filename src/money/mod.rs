@@ -4,6 +4,13 @@ mod report;
 mod store;
 mod transactions;
 
+// TASK: Add `allocation` module that contains an `Allocation` struct. An
+//       allocation refers back to a transaction, and allocates its amount to a
+//       number of budgets.
+//
+//       The core transaction logic doesn't need to know about this, but the
+//       report needs to be aware of them, to work them into the report.
+
 use std::{io, path::Path};
 
 use anyhow::Context as _;
