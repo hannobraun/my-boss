@@ -11,12 +11,12 @@ use time::{macros::format_description, Date};
 
 use crate::{
     config,
-    money::transactions::{Accounts, Amount, Transaction, Transactions},
+    money::transactions::{Amount, Transaction, Transactions},
 };
 
 pub fn from_csv(
     path: impl AsRef<Path>,
-    config: config::Budgets,
+    _config: config::Budgets,
 ) -> anyhow::Result<Transactions> {
     let mut buf = Vec::new();
     File::open(path)?.read_to_end(&mut buf)?;
@@ -70,14 +70,10 @@ pub fn from_csv(
         let description = description.to_owned();
         let amount = parse_amount(amount, credit_or_debit)?;
 
-        let budgets =
-            Accounts::new().insert(config.unallocated.clone(), amount);
-
         transactions.push(Transaction {
             date,
             description,
             amount,
-            budgets,
         });
     }
 

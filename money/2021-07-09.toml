@@ -1,6 +1,3 @@
 date = "2021-07-09"
 description = "Example 1"
 amount = 12345
-
-[budgets]
-"Upkeep" = 12345

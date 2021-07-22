@@ -1,6 +1,5 @@
 use std::{fmt, ops, path::Path, slice};
 
-use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use time::Date;
 
@@ -19,19 +18,6 @@ impl Transactions {
 
         for transaction in &self.0 {
             total += transaction.amount;
-        }
-
-        total
-    }
-
-    pub fn account_total(&self, name: impl AsRef<str>) -> Amount {
-        let mut total = Amount::zero();
-
-        for transaction in &self.0 {
-            if let Some(amount) = transaction.budgets.amount_for(name.as_ref())
-            {
-                total += amount;
-            }
         }
 
         total
@@ -72,46 +58,12 @@ pub struct Transaction {
 
     /// The total amount of the transaction
     pub amount: Amount,
-
-    // TASK: Remove this field. Having allocation to budgets be part of this
-    //       makes things too complicated. An allocation should be a separate
-    //       struct and be stored in a separate file. It should build on top of
-    //       transaction.
-    /// The budgets the transaction affected
-    pub budgets: Accounts,
 }
 
 impl Transaction {
     /// Load a transaction
     pub fn load(path: impl AsRef<Path>) -> anyhow::Result<Self> {
         toml::load(path)
-    }
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct Accounts(IndexMap<String, Amount>);
-
-impl Accounts {
-    pub fn new() -> Self {
-        Self(IndexMap::new())
-    }
-
-    pub fn insert(mut self, name: impl Into<String>, amount: Amount) -> Self {
-        self.0.insert(name.into(), amount);
-        self
-    }
-
-    pub fn names(&self) -> impl Iterator<Item = &String> {
-        self.0.keys()
-    }
-
-    pub fn amount_for(&self, name: impl AsRef<str>) -> Option<Amount> {
-        self.0.get(name.as_ref()).copied()
-    }
-
-    pub fn transfer(&mut self, amount: Amount, from: &str, to: String) {
-        self.0[from] -= amount;
-        *self.0.entry(to).or_insert(Amount::zero()) += amount;
     }
 }
 
