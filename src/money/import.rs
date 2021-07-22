@@ -9,7 +9,10 @@ use encoding::{all::ISO_8859_1, decode, DecoderTrap};
 use regex::Regex;
 use time::{macros::format_description, Date};
 
-use crate::money::transactions::{Amount, Transaction, Transactions};
+use crate::money::{
+    amount::Amount,
+    transactions::{Transaction, Transactions},
+};
 
 pub fn from_csv(path: impl AsRef<Path>) -> anyhow::Result<Transactions> {
     let mut buf = Vec::new();

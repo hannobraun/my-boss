@@ -3,7 +3,7 @@ use std::io::{self, Write as _};
 use tabwriter::TabWriter;
 use termcolor::{Ansi, Color, ColorSpec, WriteColor as _};
 
-use super::transactions::{Amount, Transactions};
+use super::{amount::Amount, transactions::Transactions};
 
 pub fn write_report(
     transactions: &Transactions,
