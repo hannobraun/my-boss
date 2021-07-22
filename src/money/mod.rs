@@ -15,8 +15,6 @@ use std::{io, path::Path};
 use anyhow::Context as _;
 use walkdir::WalkDir;
 
-use crate::config;
-
 use self::transactions::{Transaction, Transactions};
 
 #[derive(Clone, Debug)]
@@ -24,12 +22,9 @@ pub struct Money(Transactions);
 
 impl Money {
     /// Import transactions from CSV file
-    pub fn import(
-        path: impl AsRef<Path>,
-        config: config::Budgets,
-    ) -> anyhow::Result<Self> {
-        let transactions = import::from_csv(path.as_ref(), config)
-            .with_context(|| {
+    pub fn import(path: impl AsRef<Path>) -> anyhow::Result<Self> {
+        let transactions =
+            import::from_csv(path.as_ref()).with_context(|| {
                 format!("Error importing from `{}`", path.as_ref().display())
             })?;
         Ok(Self(transactions.into()))
