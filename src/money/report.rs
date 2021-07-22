@@ -41,6 +41,9 @@ pub fn write_report(
         writeln!(writer)?;
     }
 
+    // Write empty line below transactions
+    writeln!(writer, "\t\t")?;
+
     // Write totals
     writer.set_color(
         ColorSpec::new()
