@@ -42,14 +42,14 @@ impl Money {
                 continue;
             }
 
-            let contact =
+            let transaction =
                 Transaction::load(entry.path()).with_context(|| {
                     format!(
                         "Failed to load contact from `{}`",
                         entry.path().display()
                     )
                 })?;
-            transactions.push(contact);
+            transactions.push(transaction);
         }
 
         transactions.sort_by(|a, b| a.date.cmp(&b.date));
