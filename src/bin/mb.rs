@@ -41,9 +41,7 @@ fn main() -> anyhow::Result<()> {
         Command::Money(money::Command::Import(args)) => {
             let config = Config::load()?;
 
-            let mut money =
-                Money::import(args.file, config.money.budgets.clone())?;
-            money.allocate_income(config.money.budgets);
+            let money = Money::import(args.file, config.money.budgets.clone())?;
             money.store(config.money.path)?;
         }
         Command::Money(money::Command::Report(_)) => {
