@@ -1,9 +1,9 @@
-use std::{path::Path, slice};
+use std::slice;
 
 use serde::{Deserialize, Serialize};
 use time::Date;
 
-use crate::{money::amount::Amount, util::toml};
+use crate::money::amount::Amount;
 
 #[derive(Clone, Debug)]
 pub struct Transactions(Vec<Transaction>);
@@ -49,11 +49,4 @@ pub struct Transaction {
 
     /// The total amount of the transaction
     pub amount: Amount,
-}
-
-impl Transaction {
-    /// Load a transaction
-    pub fn load(path: impl AsRef<Path>) -> anyhow::Result<Self> {
-        toml::load(path)
-    }
 }

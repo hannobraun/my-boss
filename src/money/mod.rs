@@ -16,6 +16,8 @@ use std::{io, path::Path};
 use anyhow::Context as _;
 use walkdir::WalkDir;
 
+use crate::util::toml;
+
 use self::transactions::{Transaction, Transactions};
 
 #[derive(Clone, Debug)]
@@ -42,8 +44,8 @@ impl Money {
                 continue;
             }
 
-            let transaction =
-                Transaction::load(entry.path()).with_context(|| {
+            let transaction: Transaction = toml::load(entry.path())
+                .with_context(|| {
                     format!(
                         "Failed to load contact from `{}`",
                         entry.path().display()
