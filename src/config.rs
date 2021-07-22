@@ -69,35 +69,12 @@ impl Default for Config {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Money {
     pub path: PathBuf,
-    pub budgets: Budgets,
 }
 
 impl Default for Money {
     fn default() -> Self {
         Self {
             path: PathBuf::from("money"),
-            budgets: Budgets::default(),
         }
     }
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct Budgets {
-    pub unallocated: String,
-    pub targets: Vec<Budget>,
-}
-
-impl Default for Budgets {
-    fn default() -> Self {
-        Self {
-            unallocated: String::from("Unallocated"),
-            targets: Vec::new(),
-        }
-    }
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct Budget {
-    pub name: String,
-    pub monthly: i64,
 }
