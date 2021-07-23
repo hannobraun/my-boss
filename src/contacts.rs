@@ -85,11 +85,11 @@ pub struct Contact {
     /// Notes about the contact
     pub notes: Vec<String>,
 
-    /// The organizations that the contact is part of
-    pub organizations: Vec<Organization>,
-
     /// Links to the contact's website and other online profiles
     pub links: Vec<Link>,
+
+    /// The organizations that the contact is part of
+    pub organizations: Vec<Organization>,
 
     /// Means of communication with the contact
     ///
@@ -205,10 +205,10 @@ pub struct Address {
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(default)]
 pub struct Communication {
+    pub planned: Vec<PlannedCommunication>,
+
     /// The latest communication with the contact
     pub latest: LatestCommunication,
-
-    pub planned: Vec<PlannedCommunication>,
 }
 
 impl Communication {
