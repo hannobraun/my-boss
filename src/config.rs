@@ -12,7 +12,6 @@ const PATH: &str = "my-boss.toml";
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Config {
     pub contacts: PathBuf,
-    pub money: Money,
 }
 
 impl Config {
@@ -61,20 +60,6 @@ impl Default for Config {
     fn default() -> Self {
         Self {
             contacts: PathBuf::from("contacts"),
-            money: Money::default(),
-        }
-    }
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct Money {
-    pub path: PathBuf,
-}
-
-impl Default for Money {
-    fn default() -> Self {
-        Self {
-            path: PathBuf::from("money"),
         }
     }
 }
