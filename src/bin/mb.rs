@@ -1,11 +1,8 @@
-use std::io;
-
 use clap::Clap as _;
 use my_boss::{
-    args::{contacts, money, Args, Command},
+    args::{contacts, Args, Command},
     config::Config,
     contacts::{Contact, Contacts},
-    money::Money,
 };
 use time::OffsetDateTime;
 
@@ -37,18 +34,6 @@ fn main() -> anyhow::Result<()> {
             //       by this issue: https://github.com/time-rs/time/issues/293
             let today = OffsetDateTime::now_utc().date();
             print_contacts(contacts.due(today))?;
-        }
-        Command::Money(money::Command::Import(args)) => {
-            let config = Config::load()?;
-
-            let money = Money::import(args.file)?;
-            money.store(config.money.path)?;
-        }
-        Command::Money(money::Command::Report(_)) => {
-            let config = Config::load()?;
-
-            let money = Money::load(config.money.path)?;
-            money.report(io::stdout())?;
         }
     }
 
