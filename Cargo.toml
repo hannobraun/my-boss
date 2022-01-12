@@ -8,7 +8,6 @@ publish = false
 
 [dependencies]
 anyhow            = "*"
-clap              = "3.0.0-beta.2"
 csv               = "*"
 encoding          = "*"
 log               = "*"
@@ -16,6 +15,10 @@ pretty_env_logger = "*"
 regex             = "*"
 termcolor         = "*"
 walkdir           = "*"
+
+[dependencies.clap]
+version  = "*"
+features = ["derive"]
 
 [dependencies.indexmap]
 version  = "*"

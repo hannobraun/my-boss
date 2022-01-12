@@ -1,4 +1,4 @@
-use clap::Clap as _;
+use clap::Parser as _;
 use my_boss::{
     args::{contacts, Args, Command},
     config::Config,

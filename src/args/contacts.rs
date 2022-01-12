@@ -1,8 +1,6 @@
 use std::path::PathBuf;
 
-use clap::Clap;
-
-#[derive(Clap, Clone)]
+#[derive(clap::Parser, Clone)]
 pub enum Command {
     /// Create a new contact
     Create(Create),
@@ -12,7 +10,7 @@ pub enum Command {
     List(List),
 }
 
-#[derive(Clap, Clone)]
+#[derive(clap::Parser, Clone)]
 pub struct Create {
     /// The name of the new contact
     pub name: String,
@@ -23,7 +21,7 @@ pub struct Create {
     pub path: Option<PathBuf>,
 }
 
-#[derive(Clap, Clone)]
+#[derive(clap::Parser, Clone)]
 pub struct List {
     /// List all contacts, not just those where communication is due.
     #[clap(short, long)]
