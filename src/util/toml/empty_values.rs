@@ -23,7 +23,7 @@ pub fn remove(value: &mut toml::Value) {
             remove(value);
         }
 
-        array.retain(|value| should_retain(value));
+        array.retain(should_retain);
     }
 }
 
