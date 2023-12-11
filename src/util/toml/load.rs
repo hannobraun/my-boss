@@ -20,7 +20,7 @@ where
 
     let value: T = deserialize(buf.as_bytes(), path)?;
 
-    validate(&value, buf.as_bytes(), path)?;
+    validate(&value, &buf, path)?;
 
     Ok(value)
 }
@@ -28,14 +28,14 @@ where
 /// Validates the provided value against the file
 ///
 /// Makes sure that the provided file doesn't have keys not used by the value.
-fn validate<T>(value: &T, file: &[u8], path: &Path) -> anyhow::Result<()>
+fn validate<T>(value: &T, file: &str, path: &Path) -> anyhow::Result<()>
 where
     T: Serialize,
 {
     let buf = toml::to_string(value)
         .context("Failed to re-serialize for validation")?;
 
-    let mut original: toml::Value = deserialize(file, path)
+    let mut original: toml::Value = deserialize(file.as_bytes(), path)
         .context("Failed to deserialize for validation")?;
     let mut roundtrip: toml::Value = toml::from_slice(buf.as_bytes())
         .context("Failed to roundtrip-deserialize for validation")?;
