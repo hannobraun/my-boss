@@ -12,15 +12,15 @@ where
 {
     let path = path.as_ref();
 
-    let mut buf = Vec::new();
+    let mut buf = String::new();
     File::open(path)
         .with_context(|| format!("Failed to open file `{}`", path.display()))?
-        .read_to_end(&mut buf)
+        .read_to_string(&mut buf)
         .with_context(|| format!("Failed to read file `{}`", path.display()))?;
 
-    let value: T = deserialize(&buf, path)?;
+    let value: T = deserialize(buf.as_bytes(), path)?;
 
-    validate(&value, &buf, path)?;
+    validate(&value, buf.as_bytes(), path)?;
 
     Ok(value)
 }
