@@ -18,7 +18,7 @@ where
         .read_to_string(&mut buf)
         .with_context(|| format!("Failed to read file `{}`", path.display()))?;
 
-    let value: T = deserialize(buf.as_bytes(), path)?;
+    let value: T = deserialize(&buf, path)?;
 
     validate(&value, &buf, path)?;
 
@@ -35,7 +35,7 @@ where
     let buf = toml::to_string(value)
         .context("Failed to re-serialize for validation")?;
 
-    let mut original: toml::Value = deserialize(file.as_bytes(), path)
+    let mut original: toml::Value = deserialize(file, path)
         .context("Failed to deserialize for validation")?;
     let mut roundtrip: toml::Value = toml::from_slice(buf.as_bytes())
         .context("Failed to roundtrip-deserialize for validation")?;
@@ -69,11 +69,11 @@ where
     Ok(())
 }
 
-fn deserialize<T>(buf: &[u8], path: &Path) -> anyhow::Result<T>
+fn deserialize<T>(buf: &str, path: &Path) -> anyhow::Result<T>
 where
     T: DeserializeOwned,
 {
-    let value = toml::from_slice(buf).with_context(|| {
+    let value = toml::from_slice(buf.as_bytes()).with_context(|| {
         format!("Failed to deserialize `{}`", path.display())
     })?;
 
