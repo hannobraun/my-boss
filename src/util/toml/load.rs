@@ -32,12 +32,12 @@ fn validate<T>(value: &T, file: &[u8], path: &Path) -> anyhow::Result<()>
 where
     T: Serialize,
 {
-    let buf =
-        toml::to_vec(value).context("Failed to re-serialize for validation")?;
+    let buf = toml::to_string(value)
+        .context("Failed to re-serialize for validation")?;
 
     let mut original: toml::Value = deserialize(file, path)
         .context("Failed to deserialize for validation")?;
-    let mut roundtrip: toml::Value = toml::from_slice(&buf)
+    let mut roundtrip: toml::Value = toml::from_slice(buf.as_bytes())
         .context("Failed to roundtrip-deserialize for validation")?;
 
     normalize(&mut original);

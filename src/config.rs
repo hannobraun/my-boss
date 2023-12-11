@@ -17,7 +17,7 @@ pub struct Config {
 impl Config {
     pub fn init() -> anyhow::Result<()> {
         let config = Self::default();
-        let config = toml::to_vec(&config).with_context(|| {
+        let config = toml::to_string(&config).with_context(|| {
             format!("Error serializing default configuration ({:?})", config)
         })?;
 
@@ -28,7 +28,7 @@ impl Config {
             .with_context(|| {
                 format!("Error creating configuration file `{}`", PATH)
             })?
-            .write_all(&config)
+            .write_all(config.as_bytes())
             .with_context(|| {
                 format!("Error writing configuration file `{}`", PATH)
             })?;

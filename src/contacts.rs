@@ -116,12 +116,12 @@ impl Contact {
         let name = name.replace(' ', "-");
         let name = format!("{}.toml", name);
 
-        let contact = toml::to_vec(&contact)?;
+        let contact = toml::to_string(&contact)?;
 
         let path = path.as_ref().join(name).to_path_buf();
 
         let mut file = File::create(&path)?;
-        file.write_all(&contact)?;
+        file.write_all(contact.as_bytes())?;
 
         Ok(path)
     }
