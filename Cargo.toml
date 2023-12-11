@@ -1,5 +1,5 @@
 [package]
-name    = "my-boss"
+name = "my-boss"
 version = "0.1.0"
 authors = ["Hanno Braun <hb@hannobraun.de>"]
 edition = "2018"
@@ -7,35 +7,35 @@ publish = false
 
 
 [dependencies]
-anyhow            = "*"
-csv               = "*"
-encoding          = "*"
-log               = "*"
+anyhow = "*"
+csv = "*"
+encoding = "*"
+log = "*"
 pretty_env_logger = "*"
-regex             = "*"
-termcolor         = "*"
-walkdir           = "*"
+regex = "*"
+termcolor = "*"
+walkdir = "*"
 
 [dependencies.clap]
-version  = "*"
+version = "*"
 features = ["derive"]
 
 [dependencies.indexmap]
-version  = "*"
+version = "*"
 features = ["serde"]
 
 [dependencies.serde]
-version  = "*"
+version = "*"
 features = ["derive"]
 
 [dependencies.tabwriter]
-version  = "*"
+version = "*"
 features = ["ansi_formatting"]
 
 [dependencies.time]
-version  = "0.3.0-alpha-2"
+version = "0.3.0-alpha-2"
 features = ["macros", "serde-human-readable"]
 
 [dependencies.toml]
-version  = "*"
+version = "*"
 features = ["preserve_order"]
