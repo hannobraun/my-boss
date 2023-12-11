@@ -48,10 +48,9 @@ impl Config {
                 format!("Error reading configuration file `{}`", PATH)
             })?;
 
-        let config =
-            toml::from_slice(config.as_bytes()).with_context(|| {
-                format!("Error parsing configuration file `{}`", PATH)
-            })?;
+        let config = toml::from_str(&config).with_context(|| {
+            format!("Error parsing configuration file `{}`", PATH)
+        })?;
 
         Ok(config)
     }

@@ -37,7 +37,7 @@ where
 
     let mut original: toml::Value = deserialize(file, path)
         .context("Failed to deserialize for validation")?;
-    let mut roundtrip: toml::Value = toml::from_slice(buf.as_bytes())
+    let mut roundtrip: toml::Value = toml::from_str(&buf)
         .context("Failed to roundtrip-deserialize for validation")?;
 
     normalize(&mut original);
@@ -73,7 +73,7 @@ fn deserialize<T>(buf: &str, path: &Path) -> anyhow::Result<T>
 where
     T: DeserializeOwned,
 {
-    let value = toml::from_slice(buf.as_bytes()).with_context(|| {
+    let value = toml::from_str(buf).with_context(|| {
         format!("Failed to deserialize `{}`", path.display())
     })?;
 
