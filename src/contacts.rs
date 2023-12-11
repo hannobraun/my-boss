@@ -127,8 +127,8 @@ impl Contact {
     }
 
     pub fn example() -> anyhow::Result<Self> {
-        let example = include_bytes!("../contacts/ex-ample.toml");
-        let example = toml::from_slice(example)?;
+        let example = include_str!("../contacts/ex-ample.toml");
+        let example = toml::from_slice(example.as_bytes())?;
         Ok(example)
     }
 
