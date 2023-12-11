@@ -113,7 +113,7 @@ impl Contact {
         contact.name = name;
 
         let name = contact.name.to_lowercase();
-        let name = name.replace(" ", "-");
+        let name = name.replace(' ', "-");
         let name = format!("{}.toml", name);
 
         let contact = toml::to_vec(&contact)?;
