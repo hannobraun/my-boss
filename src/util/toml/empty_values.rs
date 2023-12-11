@@ -78,8 +78,7 @@ mod tests {
 
     #[test]
     fn remove_should_remove_empty_table_from_array() {
-        let mut array = toml::value::Array::new();
-        array.push(toml::Value::Table(toml::value::Table::new()));
+        let array = vec![toml::Value::Table(toml::value::Table::new())];
 
         let mut value = toml::Value::Array(array);
         remove(&mut value);
@@ -114,8 +113,7 @@ mod tests {
             toml::Value::Table(toml::value::Table::new()),
         );
 
-        let mut outer = toml::value::Array::new();
-        outer.push(toml::Value::Table(inner));
+        let outer = vec![toml::Value::Table(inner)];
 
         let mut value = toml::Value::Array(outer);
         remove(&mut value);
